@@ -1,0 +1,143 @@
+/* Restaurant Admin Panel */
+.restaurant-admin-panel {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.admin-header {
+  text-align: center;
+  margin-bottom: 30px;
+  color: white;
+}
+
+.admin-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.admin-header p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin: 0;
+}
+
+.admin-error {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+}
+
+.error-icon {
+  font-size: 1.2em;
+}
+
+.admin-content {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 30px;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: calc(100vh - 200px);
+}
+
+.admin-sidebar {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  height: fit-content;
+}
+
+.admin-main {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.admin-placeholder {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+}
+
+.placeholder-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.admin-placeholder h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.admin-placeholder p {
+  font-size: 1rem;
+  opacity: 0.7;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .admin-content {
+    grid-template-columns: 300px 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-content {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .admin-header h1 {
+    font-size: 2rem;
+  }
+  
+  .restaurant-admin-panel {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .admin-main,
+  .admin-sidebar {
+    padding: 20px;
+  }
+}
+
+/* Animation for panel appearance */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.restaurant-admin-panel {
+  animation: slideInUp 0.8s ease-out;
+}

@@ -1,0 +1,195 @@
+/* Restaurant Form Container */
+.restaurant-form {
+  max-width: 600px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.restaurant-form__header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.restaurant-form__header h1 {
+  color: #333;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.restaurant-form__header p {
+  color: #666;
+  font-size: 1rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Error Message */
+.restaurant-form__error {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.error-icon {
+  font-size: 1.1em;
+}
+
+/* Form Content */
+.restaurant-form__content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Form Rows for side-by-side fields */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Form Groups */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Labels */
+.form-label {
+  color: #333;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Inputs */
+.form-input {
+  padding: 12px 16px;
+  border: 2px solid #e1e5e9;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+  color: #333;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #8B4513;
+  box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.1);
+}
+
+.form-input--error {
+  border-color: #ff6b6b;
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+}
+
+.form-input::placeholder {
+  color: #999;
+}
+
+/* Textarea */
+.form-textarea {
+  padding: 12px 16px;
+  border: 2px solid #e1e5e9;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+  color: #333;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-textarea:focus {
+  outline: none;
+  border-color: #8B4513;
+  box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.1);
+}
+
+.form-textarea--error {
+  border-color: #ff6b6b;
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+}
+
+.form-textarea::placeholder {
+  color: #999;
+}
+
+/* Error Messages */
+.form-error {
+  color: #ff6b6b;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+/* Form Actions */
+.form-actions {
+  margin-top: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .restaurant-form {
+    max-width: 500px;
+    padding: 30px 20px;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .restaurant-form__header h1 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .restaurant-form {
+    padding: 25px 15px;
+    margin: 20px;
+  }
+  
+  .restaurant-form__header h1 {
+    font-size: 1.6rem;
+  }
+}
+
+/* Animation for form appearance */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.restaurant-form {
+  animation: fadeInUp 0.6s ease-out;
+}
