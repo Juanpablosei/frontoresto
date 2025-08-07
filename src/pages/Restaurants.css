@@ -40,45 +40,317 @@
   padding: 2rem;
 }
 
-.welcome-section {
-  margin-bottom: 3rem;
-}
-
-.welcome-card {
+.quick-actions {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 2rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 3rem;
 }
 
-.welcome-icon {
-  font-size: 4rem;
-  flex-shrink: 0;
+.quick-actions h3 {
+  color: #8B4513;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  text-align: center;
 }
 
-.welcome-text h2 {
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.action-btn {
+  background: linear-gradient(135deg, #8B4513, #D2691E);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
+}
+
+.action-icon {
+  font-size: 1.5rem;
+}
+
+/* Sección de Restaurantes */
+.restaurants-section {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 3rem;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.header-actions-top {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 1rem;
+}
+
+.back-btn {
+  background: linear-gradient(135deg, #8B4513, #D2691E);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.back-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(139, 69, 19, 0.3);
+}
+
+.section-header h2 {
   color: #8B4513;
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
 }
 
-.welcome-text p {
+.section-header p {
   color: #666;
   font-size: 1.1rem;
   margin: 0;
+}
+
+/* Estado vacío */
+.empty-restaurants {
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.6;
+}
+
+.empty-restaurants h3 {
+  color: #8B4513;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.empty-restaurants p {
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.create-first-btn {
+  background: linear-gradient(135deg, #8B4513, #D2691E);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.create-first-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
+}
+
+/* Grid de Restaurantes */
+.restaurants-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.restaurant-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.restaurant-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  border-color: #D2691E;
+}
+
+.restaurant-card.selected {
+  border-color: #8B4513;
+  background: linear-gradient(135deg, #FFF8DC, #FFEFD5);
+}
+
+.restaurant-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.restaurant-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #8B4513, #D2691E);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.restaurant-icon .icon {
+  font-size: 1.5rem;
+  color: white;
+}
+
+.restaurant-info {
+  flex: 1;
+}
+
+.restaurant-name {
+  color: #8B4513;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status-badge.open {
+  background: #E8F5E8;
+  color: #2E7D32;
+}
+
+.status-badge.closed {
+  background: #FFEBEE;
+  color: #C62828;
+}
+
+/* Detalles del Restaurante */
+.restaurant-details {
+  margin-bottom: 1rem;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  color: #666;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.detail-value {
+  color: #333;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.restaurant-description {
+  margin-bottom: 1.5rem;
+}
+
+.restaurant-description p {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Acciones del Restaurante */
+.restaurant-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.action-btn-small {
+  background: linear-gradient(135deg, #8B4513, #D2691E);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.action-btn-small:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(139, 69, 19, 0.3);
+}
+
+/* Sección del Dashboard */
+.dashboard-section {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dashboard-section h2 {
+  color: #8B4513;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-align: center;
 }
 
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
-  margin-bottom: 3rem;
 }
 
 .dashboard-card {
@@ -93,9 +365,36 @@
   cursor: pointer;
 }
 
+.dashboard-card.clickable {
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-card.clickable::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.dashboard-card.clickable:hover::before {
+  left: 100%;
+}
+
 .dashboard-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.dashboard-card.clickable:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(139, 69, 19, 0.2);
+  border-color: #D2691E;
 }
 
 .card-icon {
@@ -142,54 +441,6 @@
   font-weight: 500;
 }
 
-.quick-actions {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 2rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.quick-actions h3 {
-  color: #8B4513;
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-.actions-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-}
-
-.action-btn {
-  background: linear-gradient(135deg, #8B4513, #D2691E);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  padding: 1rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.action-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
-}
-
-.action-icon {
-  font-size: 1.5rem;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .restaurants-page {
@@ -210,20 +461,6 @@
     padding: 1rem;
   }
 
-  .welcome-card {
-    flex-direction: column;
-    text-align: center;
-    gap: 1rem;
-  }
-
-  .welcome-icon {
-    font-size: 3rem;
-  }
-
-  .welcome-text h2 {
-    font-size: 1.5rem;
-  }
-
   .dashboard-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
@@ -232,15 +469,24 @@
   .actions-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .restaurants-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .restaurant-card {
+    padding: 1rem;
+  }
+
+  .restaurant-actions {
+    justify-content: center;
+  }
 }
 
 @media (max-width: 480px) {
   .header-info h1 {
     font-size: 1.75rem;
-  }
-
-  .welcome-card {
-    padding: 1.5rem;
   }
 
   .dashboard-card {
@@ -250,4 +496,756 @@
   .actions-grid {
     grid-template-columns: 1fr;
   }
+
+  .restaurant-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .restaurant-icon {
+    align-self: center;
+  }
 }
+
+/* Formulario de Edición Modal */
+.edit-form-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+}
+
+.edit-form-container {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.edit-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.edit-form label {
+  color: #8B4513;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.edit-form input,
+.edit-form textarea {
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.edit-form input::placeholder,
+.edit-form textarea::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+.edit-form input:focus,
+.edit-form textarea:focus {
+  outline: none;
+  border-color: #D2691E;
+  box-shadow: 0 0 0 3px rgba(210, 105, 30, 0.1);
+}
+
+.edit-form input.error,
+.edit-form textarea.error {
+  border-color: #e74c3c;
+}
+
+.edit-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #f0f0f0;
+}
+
+.cancel-btn {
+  background: #f8f9fa;
+  color: #666;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancel-btn:hover {
+  background: #e9ecef;
+  border-color: #ced4da;
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #8B4513, #D2691E);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.save-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
+}
+
+/* Responsive para el formulario de edición */
+@media (max-width: 768px) {
+  .edit-form-overlay {
+    padding: 1rem;
+  }
+
+  .edit-form-container {
+    padding: 1.5rem;
+    max-height: 95vh;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .cancel-btn,
+  .save-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Sección de Empleados Modal */
+.employees-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+}
+
+.employees-container {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.employees-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.employees-header h2 {
+  color: #8B4513;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #666;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.employees-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.empty-employees {
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+.empty-employees .empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.6;
+}
+
+.empty-employees h3 {
+  color: #8B4513;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.empty-employees p {
+  color: #666;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.employees-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.employee-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.employee-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  border-color: #D2691E;
+}
+
+.employee-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.employee-avatar {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #8B4513, #D2691E);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-icon {
+  font-size: 1.5rem;
+  color: white;
+}
+
+.employee-info {
+  flex: 1;
+}
+
+.employee-name {
+  color: #8B4513;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.role-badge.active {
+  background: #E8F5E8;
+  color: #2E7D32;
+}
+
+.role-badge.inactive {
+  background: #FFEBEE;
+  color: #C62828;
+}
+
+.employee-details {
+  margin-bottom: 1rem;
+}
+
+.employee-details .detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.employee-details .detail-item:last-child {
+  border-bottom: none;
+}
+
+.employee-details .detail-label {
+  color: #666;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.employee-details .detail-value {
+  color: #333;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.employee-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Responsive para la sección de empleados */
+@media (max-width: 768px) {
+  .employees-overlay {
+    padding: 1rem;
+  }
+
+  .employees-container {
+    padding: 1.5rem;
+    max-height: 95vh;
+  }
+
+  .employees-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .employees-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .employees-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .employee-card {
+    padding: 1rem;
+  }
+
+  .employee-actions {
+    justify-content: center;
+  }
+}
+
+/* Sección de Todos los Empleados */
+.employees-section {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  margin-top: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 2px solid #f0f0f0;
+}
+
+.employees-section .section-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.employees-section .section-header h2 {
+  color: #8B4513;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.employees-section .section-header p {
+  color: #666;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.employees-section .empty-employees {
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+.employees-section .empty-employees .empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.6;
+}
+
+.employees-section .empty-employees h3 {
+  color: #8B4513;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.employees-section .empty-employees p {
+  color: #666;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.employees-section .employees-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.employees-section .employee-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.employees-section .employee-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  border-color: #D2691E;
+}
+
+.employees-section .employee-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.employees-section .employee-avatar {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #8B4513, #D2691E);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.employees-section .avatar-icon {
+  font-size: 1.5rem;
+  color: white;
+}
+
+.employees-section .employee-info {
+  flex: 1;
+}
+
+.employees-section .employee-name {
+  color: #8B4513;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.employees-section .role-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.employees-section .role-badge.active {
+  background: #E8F5E8;
+  color: #2E7D32;
+}
+
+.employees-section .role-badge.inactive {
+  background: #FFEBEE;
+  color: #C62828;
+}
+
+.employees-section .employee-details {
+  margin-bottom: 1rem;
+}
+
+.employees-section .employee-details .detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.employees-section .employee-details .detail-item:last-child {
+  border-bottom: none;
+}
+
+.employees-section .employee-details .detail-label {
+  color: #666;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.employees-section .employee-details .detail-value {
+  color: #333;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.employees-section .employee-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Responsive para la sección de empleados */
+@media (max-width: 768px) {
+  .employees-section {
+    padding: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .employees-section .section-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .employees-section .employees-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .employees-section .employee-card {
+    padding: 1rem;
+  }
+
+         .employees-section .employee-actions {
+         justify-content: center;
+       }
+     }
+
+     /* Estilos para la tabla de empleados */
+     .employees-table-container {
+       overflow-x: auto;
+       background: white;
+       border-radius: 12px;
+       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+     }
+
+     .employees-table {
+       width: 100%;
+       border-collapse: collapse;
+       font-size: 0.9rem;
+     }
+
+     .employees-table thead {
+       background: linear-gradient(135deg, #8B4513, #A0522D);
+       color: white;
+     }
+
+     .employees-table th {
+       padding: 1rem 0.75rem;
+       text-align: left;
+       font-weight: 600;
+       border-bottom: 2px solid #f0f0f0;
+     }
+
+     .employees-table tbody tr {
+       border-bottom: 1px solid #f0f0f0;
+       transition: background-color 0.2s ease;
+     }
+
+     .employees-table tbody tr:hover {
+       background-color: #f8f9fa;
+     }
+
+     .employee-row {
+       background: white;
+     }
+
+     .employee-cell {
+       padding: 0.75rem;
+       vertical-align: middle;
+     }
+
+     .employee-info-cell {
+       display: flex;
+       align-items: center;
+       gap: 0.75rem;
+     }
+
+     .employee-avatar-small {
+       width: 32px;
+       height: 32px;
+       border-radius: 50%;
+       background: linear-gradient(135deg, #8B4513, #A0522D);
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       flex-shrink: 0;
+     }
+
+     .employee-avatar-small .avatar-icon {
+       font-size: 1rem;
+       color: white;
+     }
+
+     .employee-name {
+       font-weight: 600;
+       color: #2c3e50;
+       font-size: 0.95rem;
+     }
+
+     .role-badge-table {
+       background: linear-gradient(135deg, #3498db, #2980b9);
+       color: white;
+       padding: 0.25rem 0.75rem;
+       border-radius: 20px;
+       font-size: 0.8rem;
+       font-weight: 500;
+       display: inline-block;
+     }
+
+     .status-badge {
+       padding: 0.25rem 0.75rem;
+       border-radius: 20px;
+       font-size: 0.8rem;
+       font-weight: 500;
+       display: inline-block;
+     }
+
+     .status-badge.active {
+       background: linear-gradient(135deg, #27ae60, #2ecc71);
+       color: white;
+     }
+
+     .status-badge.inactive {
+       background: linear-gradient(135deg, #e74c3c, #c0392b);
+       color: white;
+     }
+
+     .table-actions {
+       display: flex;
+       gap: 0.5rem;
+       justify-content: center;
+     }
+
+     .action-btn-table {
+       background: none;
+       border: none;
+       padding: 0.5rem;
+       border-radius: 8px;
+       cursor: pointer;
+       font-size: 1rem;
+       transition: all 0.2s ease;
+       color: #666;
+     }
+
+     .action-btn-table:hover {
+       background: #f0f0f0;
+       color: #8B4513;
+       transform: scale(1.1);
+     }
+
+     /* Responsive para la tabla */
+     @media (max-width: 1024px) {
+       .employees-table-container {
+         font-size: 0.8rem;
+       }
+
+       .employees-table th,
+       .employees-table td {
+         padding: 0.5rem 0.25rem;
+       }
+
+       .employee-info-cell {
+         gap: 0.5rem;
+       }
+
+       .employee-avatar-small {
+         width: 28px;
+         height: 28px;
+       }
+
+       .role-badge-table,
+       .status-badge {
+         font-size: 0.7rem;
+         padding: 0.2rem 0.5rem;
+       }
+     }
+
+     @media (max-width: 768px) {
+       .employees-table-container {
+         overflow-x: auto;
+       }
+
+       .employees-table {
+         min-width: 800px;
+       }
+
+       .employee-info-cell {
+         flex-direction: column;
+         align-items: flex-start;
+         gap: 0.25rem;
+       }
+
+       .table-actions {
+         flex-direction: column;
+         gap: 0.25rem;
+       }
+     }
+

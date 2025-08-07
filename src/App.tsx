@@ -5,6 +5,7 @@ import { Register, Login } from './pages/auth';
 import Admin from './pages/Admin';
 import Home from './pages/Home';
 import Restaurants from './pages/Restaurants';
+import CreateRestaurant from './pages/CreateRestaurant';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 
 function App() {
@@ -28,6 +29,14 @@ function App() {
             element={
               <ProtectedRoute requiredRoles={['CLIENT_OWNER']}>
                 <Restaurants />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/restaurants/create" 
+            element={
+              <ProtectedRoute requiredRoles={['CLIENT_OWNER']}>
+                <CreateRestaurant />
               </ProtectedRoute>
             } 
           />
