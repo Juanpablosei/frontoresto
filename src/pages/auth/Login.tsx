@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { LoginForm } from '../../components/forms/auth';
 import { LoginFormData } from '../../components/forms/auth';
 import { mockUsers } from '../../mock/users';
+import { useAuthStore } from '../../store/authStore';
 import './Login.css';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login, setLoading, setError: setAuthError, clearError } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>('');
 
   const handleLogin = async (data: LoginFormData) => {
     setIsLoading(true);
     setError('');
+    clearError();
 
     try {
       // Simular delay de login
@@ -24,9 +28,8 @@ const Login: React.FC = () => {
       );
 
       if (user) {
-        // Guardar datos del usuario en localStorage
-        localStorage.setItem('authToken', 'mock-token-' + user.id);
-        localStorage.setItem('userData', JSON.stringify(user));
+        // Usar el store de Zustand para hacer login
+        login(user);
         
         // Redirigir según el rol del usuario
         if (user.role === 'ADMIN') {
@@ -38,11 +41,15 @@ const Login: React.FC = () => {
           navigate('/dashboard');
         }
       } else {
-        setError('Credenciales incorrectas. Por favor, verifica tu email y contraseña.');
+        const errorMsg = 'Credenciales incorrectas. Por favor, verifica tu email y contraseña.';
+        setError(errorMsg);
+        setAuthError(errorMsg);
       }
       
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al iniciar sesión');
+      const errorMsg = err instanceof Error ? err.message : 'Error al iniciar sesión';
+      setError(errorMsg);
+      setAuthError(errorMsg);
     } finally {
       setIsLoading(false);
     }

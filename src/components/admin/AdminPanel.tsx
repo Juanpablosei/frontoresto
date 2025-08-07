@@ -6,10 +6,13 @@ import OwnerDetails from './OwnerDetails';
 import EmployeeList from './EmployeeList';
 import { AdminPanelProps, Owner, Restaurant } from './types';
 import { mockOwners } from '../../mock/adminData';
+import { useAuthStore } from '../../store/authStore';
+import UserInfo from '../auth/UserInfo';
 import './AdminPanel.css';
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
   const navigate = useNavigate();
+  const { logout } = useAuthStore();
   const [owners, setOwners] = useState<Owner[]>([]);
   const [selectedOwner, setSelectedOwner] = useState<Owner | null>(null);
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
@@ -45,8 +48,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userData');
+    logout();
     navigate('/auth/login');
     if (onLogout) onLogout();
   };
@@ -71,13 +73,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
             <p>Gestiona propietarios, restaurantes y empleados del sistema</p>
           </div>
           <div className="header-actions">
-            <Button
-              variant="secondary"
-              size="medium"
-              onClick={handleLogout}
-            >
-              🚪 Cerrar Sesión
-            </Button>
+            <UserInfo />
           </div>
         </div>
       </div>
