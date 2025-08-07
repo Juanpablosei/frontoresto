@@ -27,13 +27,11 @@ const Restaurants: React.FC = () => {
   const {
     restaurants,
     employees,
-    selectedRestaurant,
     showRestaurants,
     editingRestaurant,
     showEmployees,
     selectedRestaurantEmployees,
     selectedRestaurantForEmployees,
-    setSelectedRestaurant,
     setShowRestaurants,
     setShowEmployees,
     setSelectedRestaurantEmployees,
@@ -53,12 +51,10 @@ const Restaurants: React.FC = () => {
   } = useForm<EditRestaurantData>();
 
   const handleRestaurantSelect = (restaurant: any) => {
-    setSelectedRestaurant(restaurant);
+    navigate(`/restaurants/${restaurant.id}`);
   };
 
-  const handleBackToList = () => {
-    setSelectedRestaurant(null);
-  };
+
 
   const handleShowRestaurants = () => {
     setShowRestaurants(true);
@@ -67,7 +63,6 @@ const Restaurants: React.FC = () => {
 
   const handleHideRestaurants = () => {
     setShowRestaurants(false);
-    setSelectedRestaurant(null);
     setEditingRestaurant(null);
   };
 
@@ -209,7 +204,7 @@ const Restaurants: React.FC = () => {
                 {restaurants.map((restaurant) => (
                   <div
                     key={restaurant.id}
-                    className={`restaurant-card ${selectedRestaurant?.id === restaurant.id ? 'selected' : ''}`}
+                    className="restaurant-card"
                     onClick={() => handleRestaurantSelect(restaurant)}
                   >
                     <div className="restaurant-header">

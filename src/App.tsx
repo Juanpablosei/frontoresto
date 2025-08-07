@@ -6,6 +6,7 @@ import Admin from './pages/Admin';
 import Home from './pages/Home';
 import Restaurants from './pages/Restaurants';
 import CreateRestaurant from './pages/CreateRestaurant';
+import RestaurantManagement from './pages/RestaurantManagement';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 
 function App() {
@@ -37,6 +38,14 @@ function App() {
             element={
               <ProtectedRoute requiredRoles={['CLIENT_OWNER']}>
                 <CreateRestaurant />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/restaurants/:id" 
+            element={
+              <ProtectedRoute requiredRoles={['CLIENT_OWNER']}>
+                <RestaurantManagement />
               </ProtectedRoute>
             } 
           />
