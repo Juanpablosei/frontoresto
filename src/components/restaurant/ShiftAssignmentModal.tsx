@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useRestaurantStore } from '../../store/restaurantStore';
 import { Button } from '../buttons';
 import { useThemeColors } from '../../hooks/useThemeColors';
+
+interface Employee {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  role: string;
+  status: string;
+  restaurantId: string;
+  hireDate: string;
+  isActive: boolean;
+}
 
 interface ShiftAssignmentModalProps {
   isOpen: boolean;
@@ -9,6 +20,7 @@ interface ShiftAssignmentModalProps {
   onAssignEmployees: (employeeIds: string[]) => void;
   shiftName: string;
   dayName: string;
+  employees: Employee[]; // Add employees as prop
 }
 
 const ShiftAssignmentModal: React.FC<ShiftAssignmentModalProps> = ({
@@ -17,8 +29,8 @@ const ShiftAssignmentModal: React.FC<ShiftAssignmentModalProps> = ({
   onAssignEmployees,
   shiftName,
   dayName,
+  employees, // Add employees prop
 }) => {
-  const { employees } = useRestaurantStore();
   const [selectedEmployees, setSelectedEmployees] = useState<string[]>([]);
   const [isAssigning, setIsAssigning] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -70,13 +82,13 @@ const ShiftAssignmentModal: React.FC<ShiftAssignmentModalProps> = ({
     setSelectedEmployees([]);
   };
 
-  const getSelectedEmployeesByRole = () => {
+  const getSelectedEmployeesByRole = (): Record<string, Employee[]> => {
     const selected = employees.filter(emp => selectedEmployees.includes(emp.id));
     const grouped = selected.reduce((acc, emp) => {
       if (!acc[emp.role]) acc[emp.role] = [];
       acc[emp.role].push(emp);
       return acc;
-    }, {} as Record<string, typeof employees>);
+    }, {} as Record<string, Employee[]>);
     return grouped;
   };
 
@@ -228,7 +240,7 @@ const ShiftAssignmentModal: React.FC<ShiftAssignmentModalProps> = ({
                     {role}
                   </h4>
                   <div className="flex flex-wrap gap-2">
-                    {roleEmployees.map(employee => (
+                    {roleEmployees.map((employee: Employee) => (
                       <div
                         key={employee.id}
                         className="flex items-center gap-2 px-3 py-1 rounded-full text-sm"

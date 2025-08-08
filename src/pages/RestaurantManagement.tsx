@@ -39,6 +39,153 @@ const RestaurantManagement: React.FC = () => {
   // Estado para el modal de agregar empleado
   const [addEmployeeModalOpen, setAddEmployeeModalOpen] = useState(false);
 
+  // Estado para los menús
+  const [menus, setMenus] = useState([
+    {
+      id: 'menu-1',
+      name: 'Menú Principal',
+      description: 'Platos principales y especialidades de la casa',
+      category: 'PRINCIPAL',
+      price: 2500,
+      isActive: true,
+      items: 12,
+      createdAt: '2024-01-15',
+      updatedAt: '2024-01-20'
+    },
+    {
+      id: 'menu-2',
+      name: 'Menú Ejecutivo',
+      description: 'Opciones rápidas para el almuerzo de trabajo',
+      category: 'EJECUTIVO',
+      price: 1800,
+      isActive: true,
+      items: 8,
+      createdAt: '2024-01-10',
+      updatedAt: '2024-01-18'
+    },
+    {
+      id: 'menu-3',
+      name: 'Carta de Vinos',
+      description: 'Selección de vinos nacionales e importados',
+      category: 'BEBIDAS',
+      price: 0,
+      isActive: true,
+      items: 25,
+      createdAt: '2024-01-05',
+      updatedAt: '2024-01-15'
+    },
+    {
+      id: 'menu-4',
+      name: 'Menú Vegetariano',
+      description: 'Opciones saludables sin carne',
+      category: 'ESPECIAL',
+      price: 2200,
+      isActive: false,
+      items: 6,
+      createdAt: '2024-01-12',
+      updatedAt: '2024-01-25'
+    },
+    {
+      id: 'menu-5',
+      name: 'Postres',
+      description: 'Dulces caseros y helados artesanales',
+      category: 'POSTRES',
+      price: 800,
+      isActive: true,
+      items: 10,
+      createdAt: '2024-01-08',
+      updatedAt: '2024-01-22'
+    }
+  ]);
+
+  // Estado para los productos
+  const [products, setProducts] = useState([
+    {
+      id: 'prod-1',
+      name: 'Milanesa Napolitana',
+      description: 'Milanesa con jamón, queso y tomate',
+      category: 'PRINCIPAL',
+      price: 2800,
+      cost: 1200,
+      stock: 50,
+      isActive: true,
+      allergens: ['Gluten', 'Lactosa'],
+      preparationTime: 15,
+      createdAt: '2024-01-10',
+      updatedAt: '2024-01-20'
+    },
+    {
+      id: 'prod-2',
+      name: 'Pizza Margherita',
+      description: 'Pizza tradicional con mozzarella y albahaca',
+      category: 'PIZZA',
+      price: 2200,
+      cost: 800,
+      stock: 30,
+      isActive: true,
+      allergens: ['Gluten', 'Lactosa'],
+      preparationTime: 20,
+      createdAt: '2024-01-08',
+      updatedAt: '2024-01-18'
+    },
+    {
+      id: 'prod-3',
+      name: 'Ensalada César',
+      description: 'Lechuga, crutones, parmesano y aderezo César',
+      category: 'ENSALADA',
+      price: 1800,
+      cost: 600,
+      stock: 25,
+      isActive: true,
+      allergens: ['Gluten', 'Lactosa'],
+      preparationTime: 10,
+      createdAt: '2024-01-12',
+      updatedAt: '2024-01-22'
+    },
+    {
+      id: 'prod-4',
+      name: 'Tiramisú',
+      description: 'Postre italiano con café y mascarpone',
+      category: 'POSTRE',
+      price: 1200,
+      cost: 400,
+      stock: 15,
+      isActive: true,
+      allergens: ['Gluten', 'Lactosa', 'Huevo'],
+      preparationTime: 5,
+      createdAt: '2024-01-05',
+      updatedAt: '2024-01-15'
+    },
+    {
+      id: 'prod-5',
+      name: 'Coca-Cola',
+      description: 'Bebida gaseosa 500ml',
+      category: 'BEBIDA',
+      price: 500,
+      cost: 200,
+      stock: 100,
+      isActive: true,
+      allergens: [],
+      preparationTime: 1,
+      createdAt: '2024-01-01',
+      updatedAt: '2024-01-10'
+    },
+    {
+      id: 'prod-6',
+      name: 'Pasta Carbonara',
+      description: 'Pasta con salsa cremosa y panceta',
+      category: 'PASTA',
+      price: 2400,
+      cost: 900,
+      stock: 0,
+      isActive: false,
+      allergens: ['Gluten', 'Lactosa', 'Huevo'],
+      preparationTime: 18,
+      createdAt: '2024-01-15',
+      updatedAt: '2024-01-25'
+    }
+  ]);
+
   // Estado para horarios detallados con empleados asignados
   const [detailedSchedule, setDetailedSchedule] = useState({
     monday: {
@@ -329,6 +476,75 @@ const RestaurantManagement: React.FC = () => {
       handleAssignEmployeesToShift(employeeIds);
       handleCloseShiftAssignmentModal();
     }
+  };
+
+  // Funciones para manejar menús
+  const handleToggleMenuStatus = (menuId: string) => {
+    setMenus(prev => prev.map(menu => 
+      menu.id === menuId 
+        ? { ...menu, isActive: !menu.isActive }
+        : menu
+    ));
+  };
+
+  const handleEditMenu = (menuId: string) => {
+    console.log('Editar menú:', menuId);
+    // Implementar edición del menú
+  };
+
+  const handleDeleteMenu = (menuId: string) => {
+    setMenus(prev => prev.filter(menu => menu.id !== menuId));
+  };
+
+  const handleAddMenu = () => {
+    const newMenu = {
+      id: `menu-${Date.now()}`,
+      name: 'Nuevo Menú',
+      description: 'Descripción del nuevo menú',
+      category: 'PRINCIPAL',
+      price: 0,
+      isActive: true,
+      items: 0,
+      createdAt: new Date().toISOString().split('T')[0],
+      updatedAt: new Date().toISOString().split('T')[0]
+    };
+    setMenus(prev => [...prev, newMenu]);
+  };
+
+  // Funciones para manejar productos
+  const handleToggleProductStatus = (productId: string) => {
+    setProducts(prev => prev.map(product => 
+      product.id === productId 
+        ? { ...product, isActive: !product.isActive }
+        : product
+    ));
+  };
+
+  const handleEditProduct = (productId: string) => {
+    console.log('Editar producto:', productId);
+    // Implementar edición del producto
+  };
+
+  const handleDeleteProduct = (productId: string) => {
+    setProducts(prev => prev.filter(product => product.id !== productId));
+  };
+
+  const handleAddProduct = () => {
+    const newProduct = {
+      id: `prod-${Date.now()}`,
+      name: 'Nuevo Producto',
+      description: 'Descripción del nuevo producto',
+      category: 'PRINCIPAL',
+      price: 0,
+      cost: 0,
+      stock: 0,
+      isActive: true,
+      allergens: [],
+      preparationTime: 10,
+      createdAt: new Date().toISOString().split('T')[0],
+      updatedAt: new Date().toISOString().split('T')[0]
+    };
+    setProducts(prev => [...prev, newProduct]);
   };
 
   if (!restaurant) {
@@ -934,48 +1150,453 @@ const RestaurantManagement: React.FC = () => {
   );
 
   const renderMenusTab = () => (
-    <div 
-      className="p-6 rounded-xl border shadow-lg"
-      style={{
-        backgroundColor: getCardBackground(),
-        borderColor: getCardBorder(),
-      }}
-    >
-      <h3 
-        className="text-xl font-bold mb-4"
-        style={{ color: getTextColor(900) }}
+    <div className="space-y-6">
+      <div 
+        className="p-6 rounded-xl border shadow-lg"
+        style={{
+          backgroundColor: getCardBackground(),
+          borderColor: getCardBorder(),
+        }}
       >
-        🍽️ Menús
-      </h3>
-      <p 
-        className="text-gray-600"
-        style={{ color: getTextColor(600) }}
-      >
-        Gestión de menús próximamente...
-      </p>
+        <div className="flex justify-between items-center mb-6">
+          <h3 
+            className="text-xl font-bold"
+            style={{ color: getTextColor(900) }}
+          >
+            🍽️ Menús ({menus.length})
+          </h3>
+          <Button
+            variant="primary"
+            onClick={handleAddMenu}
+          >
+            ➕ Agregar Menú
+          </Button>
+        </div>
+
+        {menus.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="text-6xl mb-4">🍽️</div>
+            <h3 
+              className="text-2xl font-semibold mb-2"
+              style={{ color: getTextColor(900) }}
+            >
+              No hay menús en este restaurante
+            </h3>
+            <p 
+              className="text-base"
+              style={{ color: getTextColor(600) }}
+            >
+              Agrega menús para comenzar a operar
+            </p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr 
+                  className="border-b"
+                  style={{ borderColor: getCardBorder() }}
+                >
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: getTextColor(700) }}
+                  >
+                    Menú
+                  </th>
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: getTextColor(700) }}
+                  >
+                    Categoría
+                  </th>
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: getTextColor(700) }}
+                  >
+                    Precio
+                  </th>
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: getTextColor(700) }}
+                  >
+                    Items
+                  </th>
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: getTextColor(700) }}
+                  >
+                    Estado
+                  </th>
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: getTextColor(700) }}
+                  >
+                    Actualizado
+                  </th>
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: getTextColor(700) }}
+                  >
+                    Acciones
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {menus.map((menu, index) => (
+                  <tr 
+                    key={menu.id}
+                    className="border-b transition-colors duration-200 hover:bg-opacity-50"
+                    style={{ 
+                      borderColor: getCardBorder(),
+                      backgroundColor: index % 2 === 0 ? 'transparent' : `${getCardBackground()}50`
+                    }}
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center gap-3">
+                        <div 
+                          className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                          style={{ backgroundColor: getInfoColor() }}
+                        >
+                          <span className="text-white text-sm">🍽️</span>
+                        </div>
+                        <div>
+                          <span 
+                            className="font-semibold text-sm block"
+                            style={{ color: getTextColor(900) }}
+                          >
+                            {menu.name}
+                          </span>
+                          <span 
+                            className="text-xs block"
+                            style={{ color: getTextColor(600) }}
+                          >
+                            {menu.description}
+                          </span>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span 
+                        className="px-3 py-1 rounded-full text-xs font-medium text-white"
+                        style={{ backgroundColor: getInfoColor() }}
+                      >
+                        {menu.category}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span style={{ color: getTextColor(800) }}>
+                        {menu.price > 0 ? `$${menu.price.toLocaleString()}` : 'Gratis'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span style={{ color: getTextColor(800) }}>
+                        {menu.items} items
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span 
+                        className={`px-3 py-1 rounded-full text-xs font-medium text-white ${
+                          menu.isActive ? '' : ''
+                        }`}
+                        style={{
+                          backgroundColor: menu.isActive ? getSuccessColor() : getDangerColor()
+                        }}
+                      >
+                        {menu.isActive ? 'Activo' : 'Inactivo'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span style={{ color: getTextColor(800) }}>
+                        {new Date(menu.updatedAt).toLocaleDateString()}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex gap-2 justify-center">
+                        <button 
+                          className="p-2 rounded-md cursor-pointer text-base transition-all duration-200 hover:scale-110"
+                          style={{ 
+                            color: getTextColor(600),
+                            backgroundColor: 'transparent'
+                          }}
+                          onClick={() => handleEditMenu(menu.id)}
+                          title="Editar menú"
+                        >
+                          ✏️
+                        </button>
+                        <button
+                          className="p-2 rounded-md cursor-pointer text-base transition-all duration-200 hover:scale-110"
+                          onClick={() => handleToggleMenuStatus(menu.id)}
+                          style={{ 
+                            color: getTextColor(600),
+                            backgroundColor: 'transparent'
+                          }}
+                          title={menu.isActive ? 'Desactivar menú' : 'Activar menú'}
+                        >
+                          {menu.isActive ? '🔴' : '🟢'}
+                        </button>
+                        <button 
+                          className="p-2 rounded-md cursor-pointer text-base transition-all duration-200 hover:scale-110"
+                          onClick={() => handleDeleteMenu(menu.id)}
+                          style={{ 
+                            color: getDangerColor(),
+                            backgroundColor: 'transparent'
+                          }}
+                          title="Eliminar menú"
+                        >
+                          🗑️
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </div>
   );
 
   const renderProductsTab = () => (
-    <div 
-      className="p-6 rounded-xl border shadow-lg"
-      style={{
-        backgroundColor: getCardBackground(),
-        borderColor: getCardBorder(),
-      }}
-    >
-      <h3 
-        className="text-xl font-bold mb-4"
-        style={{ color: getTextColor(900) }}
+    <div className="space-y-6">
+      <div 
+        className="p-6 rounded-xl border shadow-lg"
+        style={{
+          backgroundColor: getCardBackground(),
+          borderColor: getCardBorder(),
+        }}
       >
-        📦 Productos
-      </h3>
-      <p 
-        className="text-gray-600"
-        style={{ color: getTextColor(600) }}
-      >
-        Gestión de productos próximamente...
-      </p>
+        <div className="flex justify-between items-center mb-6">
+          <h3 
+            className="text-xl font-bold"
+            style={{ color: getTextColor(900) }}
+          >
+            📦 Productos ({products.length})
+          </h3>
+          <Button
+            variant="primary"
+            onClick={handleAddProduct}
+          >
+            ➕ Agregar Producto
+          </Button>
+        </div>
+
+        {products.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="text-6xl mb-4">📦</div>
+            <h3 
+              className="text-2xl font-semibold mb-2"
+              style={{ color: getTextColor(900) }}
+            >
+              No hay productos en este restaurante
+            </h3>
+            <p 
+              className="text-base"
+              style={{ color: getTextColor(600) }}
+            >
+              Agrega productos para comenzar a operar
+            </p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr 
+                  className="border-b"
+                  style={{ borderColor: getCardBorder() }}
+                >
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: getTextColor(700) }}
+                  >
+                    Producto
+                  </th>
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: getTextColor(700) }}
+                  >
+                    Categoría
+                  </th>
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: getTextColor(700) }}
+                  >
+                    Precio
+                  </th>
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: getTextColor(700) }}
+                  >
+                    Stock
+                  </th>
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: getTextColor(700) }}
+                  >
+                    Tiempo
+                  </th>
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: getTextColor(700) }}
+                  >
+                    Estado
+                  </th>
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: getTextColor(700) }}
+                  >
+                    Acciones
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.map((product, index) => (
+                  <tr 
+                    key={product.id}
+                    className="border-b transition-colors duration-200 hover:bg-opacity-50"
+                    style={{ 
+                      borderColor: getCardBorder(),
+                      backgroundColor: index % 2 === 0 ? 'transparent' : `${getCardBackground()}50`
+                    }}
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center gap-3">
+                        <div 
+                          className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                          style={{ backgroundColor: getInfoColor() }}
+                        >
+                          <span className="text-white text-sm">🍽️</span>
+                        </div>
+                        <div>
+                          <span 
+                            className="font-semibold text-sm block"
+                            style={{ color: getTextColor(900) }}
+                          >
+                            {product.name}
+                          </span>
+                          <span 
+                            className="text-xs block"
+                            style={{ color: getTextColor(600) }}
+                          >
+                            {product.description}
+                          </span>
+                          {product.allergens.length > 0 && (
+                            <div className="flex gap-1 mt-1">
+                              {product.allergens.map((allergen, idx) => (
+                                <span 
+                                  key={idx}
+                                  className="px-1 py-0.5 text-xs rounded bg-yellow-100 text-yellow-800"
+                                  style={{ 
+                                    backgroundColor: getWarningColor() + '20',
+                                    color: getWarningColor()
+                                  }}
+                                >
+                                  {allergen}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span 
+                        className="px-3 py-1 rounded-full text-xs font-medium text-white"
+                        style={{ backgroundColor: getInfoColor() }}
+                      >
+                        {product.category}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div>
+                        <span 
+                          className="font-semibold text-sm block"
+                          style={{ color: getTextColor(900) }}
+                        >
+                          ${product.price.toLocaleString()}
+                        </span>
+                        <span 
+                          className="text-xs block"
+                          style={{ color: getTextColor(600) }}
+                        >
+                          Costo: ${product.cost.toLocaleString()}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span 
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          product.stock > 10 ? 'text-white' : 'text-white'
+                        }`}
+                        style={{
+                          backgroundColor: product.stock > 10 ? getSuccessColor() : 
+                                         product.stock > 0 ? getWarningColor() : getDangerColor()
+                        }}
+                      >
+                        {product.stock} unidades
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span style={{ color: getTextColor(800) }}>
+                        {product.preparationTime} min
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span 
+                        className={`px-3 py-1 rounded-full text-xs font-medium text-white ${
+                          product.isActive ? '' : ''
+                        }`}
+                        style={{
+                          backgroundColor: product.isActive ? getSuccessColor() : getDangerColor()
+                        }}
+                      >
+                        {product.isActive ? 'Activo' : 'Inactivo'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex gap-2 justify-center">
+                        <button 
+                          className="p-2 rounded-md cursor-pointer text-base transition-all duration-200 hover:scale-110"
+                          style={{ 
+                            color: getTextColor(600),
+                            backgroundColor: 'transparent'
+                          }}
+                          onClick={() => handleEditProduct(product.id)}
+                          title="Editar producto"
+                        >
+                          ✏️
+                        </button>
+                        <button
+                          className="p-2 rounded-md cursor-pointer text-base transition-all duration-200 hover:scale-110"
+                          onClick={() => handleToggleProductStatus(product.id)}
+                          style={{ 
+                            color: getTextColor(600),
+                            backgroundColor: 'transparent'
+                          }}
+                          title={product.isActive ? 'Desactivar producto' : 'Activar producto'}
+                        >
+                          {product.isActive ? '🔴' : '🟢'}
+                        </button>
+                        <button 
+                          className="p-2 rounded-md cursor-pointer text-base transition-all duration-200 hover:scale-110"
+                          onClick={() => handleDeleteProduct(product.id)}
+                          style={{ 
+                            color: getDangerColor(),
+                            backgroundColor: 'transparent'
+                          }}
+                          title="Eliminar producto"
+                        >
+                          🗑️
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </div>
   );
 
@@ -1100,6 +1721,7 @@ const RestaurantManagement: React.FC = () => {
           onAssignEmployees={handleAssignEmployeesToNewShift}
           shiftName={newShiftData.shiftName}
           dayName={newShiftData.dayName}
+          employees={employees}
         />
       )}
 
