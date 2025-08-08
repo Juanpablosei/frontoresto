@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Restaurants from './pages/Restaurants';
 import CreateRestaurant from './pages/CreateRestaurant';
 import RestaurantManagement from './pages/RestaurantManagement';
+import UnifiedDashboard from './pages/UnifiedDashboard';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 
 function App() {
@@ -18,20 +19,20 @@ function App() {
           <Route path="/auth/login" element={<Login />} />
           <Route path="/auth/registro" element={<Register />} />
           <Route 
-            path="/admin" 
+            path="/dashboard" 
             element={
-              <ProtectedRoute requiredRoles={['ADMIN']}>
-                <Admin />
+              <ProtectedRoute requiredRoles={['ADMIN', 'CLIENT_OWNER']}>
+                <UnifiedDashboard />
               </ProtectedRoute>
             } 
           />
           <Route 
+            path="/admin" 
+            element={<Navigate to="/dashboard" replace />} 
+          />
+          <Route 
             path="/restaurants" 
-            element={
-              <ProtectedRoute requiredRoles={['CLIENT_OWNER']}>
-                <Restaurants />
-              </ProtectedRoute>
-            } 
+            element={<Navigate to="/dashboard" replace />} 
           />
           <Route 
             path="/restaurants/create" 
@@ -44,7 +45,7 @@ function App() {
           <Route 
             path="/restaurants/:id" 
             element={
-              <ProtectedRoute requiredRoles={['CLIENT_OWNER']}>
+              <ProtectedRoute requiredRoles={['CLIENT_OWNER', 'ADMIN']}>
                 <RestaurantManagement />
               </ProtectedRoute>
             } 

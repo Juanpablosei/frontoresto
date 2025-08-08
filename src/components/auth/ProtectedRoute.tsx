@@ -23,14 +23,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   // Si hay roles requeridos, verificar que el usuario tenga al menos uno
   if (requiredRoles.length > 0 && !hasAnyRole(requiredRoles)) {
-    // Redirigir según el rol del usuario
-    if (user?.role === 'ADMIN') {
-      return <Navigate to="/admin" replace />;
-    } else if (user?.role === 'CLIENT_OWNER') {
-      return <Navigate to="/restaurants" replace />;
-    } else {
-      return <Navigate to="/dashboard" replace />;
-    }
+    // Redirigir al dashboard unificado para todos los usuarios autenticados
+    return <Navigate to="/dashboard" replace />;
   }
 
   return <>{children}</>;

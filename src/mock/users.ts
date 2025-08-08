@@ -29,7 +29,7 @@ export const mockUsers: MockUser[] = [
     name: 'Carlos Rodríguez',
     email: 'carlos@buensabor.com',
     password: 'carlos123',
-    role: 'MANAGER',
+    role: 'CLIENT_OWNER',
     isActive: true
   },
   {
@@ -61,7 +61,7 @@ export const mockUsers: MockUser[] = [
     name: 'Diego Morales',
     email: 'diego@deliciasgourmet.com',
     password: 'diego123',
-    role: 'HOST',
+    role: 'CLIENT_OWNER',
     isActive: true
   },
   {

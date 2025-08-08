@@ -31,15 +31,8 @@ const Login: React.FC = () => {
         // Usar el store de Zustand para hacer login
         login(user);
         
-        // Redirigir según el rol del usuario
-        if (user.role === 'ADMIN') {
-          navigate('/admin');
-        } else if (user.role === 'CLIENT_OWNER') {
-          navigate('/restaurants');
-        } else {
-          // Para otros roles, redirigir a una página genérica
-          navigate('/dashboard');
-        }
+        // Redirigir al dashboard unificado para todos los usuarios
+        navigate('/dashboard');
       } else {
         const errorMsg = 'Credenciales incorrectas. Por favor, verifica tu email y contraseña.';
         setError(errorMsg);

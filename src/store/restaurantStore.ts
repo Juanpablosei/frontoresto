@@ -12,6 +12,7 @@ export interface Restaurant {
   isOpen: boolean;
   isActive: boolean;
   createdAt: string;
+  ownerId: string; // ID del usuario propietario
 }
 
 export interface Employee {
@@ -60,6 +61,7 @@ interface RestaurantActions {
   
   // Utilidades
   getEmployeesByRestaurant: (restaurantId: string) => Employee[];
+  getRestaurantsByOwner: (ownerId: string) => Restaurant[];
   getRestaurantById: (id: string) => Restaurant | undefined;
   getEmployeeById: (id: string) => Employee | undefined;
   clearAndReload: () => void;
@@ -79,7 +81,8 @@ const initialRestaurants: Restaurant[] = [
     website: 'https://www.elbuensabor.com',
     isOpen: true,
     isActive: true,
-    createdAt: '2024-01-15T00:00:00Z'
+    createdAt: '2024-01-15T00:00:00Z',
+    ownerId: 'user-002' // María González
   },
   {
     id: '2',
@@ -91,7 +94,8 @@ const initialRestaurants: Restaurant[] = [
     website: 'https://www.laitaliana.com',
     isOpen: false,
     isActive: true,
-    createdAt: '2024-02-01T00:00:00Z'
+    createdAt: '2024-02-01T00:00:00Z',
+    ownerId: 'user-002' // María González
   },
   {
     id: '3',
@@ -103,7 +107,34 @@ const initialRestaurants: Restaurant[] = [
     website: 'https://www.cafecentral.com',
     isOpen: true,
     isActive: true,
-    createdAt: '2024-01-20T00:00:00Z'
+    createdAt: '2024-01-20T00:00:00Z',
+    ownerId: 'user-007' // Diego Morales
+  },
+  {
+    id: '4',
+    name: 'Delicias Gourmet',
+    description: 'Restaurante de alta cocina con platos gourmet',
+    address: 'Recoleta 321, Buenos Aires',
+    phone: '+54 11 7777 8888',
+    email: 'info@deliciasgourmet.com',
+    website: 'https://www.deliciasgourmet.com',
+    isOpen: true,
+    isActive: true,
+    createdAt: '2024-02-15T00:00:00Z',
+    ownerId: 'user-007' // Diego Morales
+  },
+  {
+    id: '5',
+    name: 'Sushi Bar Sakura',
+    description: 'Auténtica cocina japonesa y sushi fresco',
+    address: 'Palermo 654, Buenos Aires',
+    phone: '+54 11 9999 0000',
+    email: 'info@sakura.com',
+    website: 'https://www.sakura.com',
+    isOpen: false,
+    isActive: true,
+    createdAt: '2024-03-01T00:00:00Z',
+    ownerId: 'user-003' // Carlos Rodríguez
   }
 ];
 
@@ -816,6 +847,11 @@ export const useRestaurantStore = create<RestaurantStore>()(
       getEmployeesByRestaurant: (restaurantId) => {
         const state = get();
         return state.employees.filter(employee => employee.restaurantId === restaurantId);
+      },
+      
+      getRestaurantsByOwner: (ownerId) => {
+        const state = get();
+        return state.restaurants.filter(restaurant => restaurant.ownerId === ownerId);
       },
       
       getRestaurantById: (id) => {
