@@ -1,81 +1,149 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../../store/authStore';
 import { Button } from '../../buttons';
-import { LoginFormData, LoginFormProps } from './types';
+import { useThemeColors } from '../../../hooks/useThemeColors';
+import { mockUsers } from '../../../mock/users';
 
-const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isLoading, error }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm<LoginFormData>();
+const LoginForm: React.FC = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const { login } = useAuthStore();
+  const navigate = useNavigate();
+  const { 
+    getCardBackground, 
+    getCardBorder, 
+    getTextColor, 
+    getInputBackground, 
+    getInputBorder, 
+    getInputFocusBorder,
+    getDangerColor
+  } = useThemeColors();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
+    
+    try {
+      // Simular delay de login
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Buscar usuario en mock data
+      const user = mockUsers.find(u => 
+        u.email === email && u.password === password
+      );
+
+      if (user) {
+        // Usar el store de Zustand para hacer login
+        login(user);
+        
+        // Redirigir al dashboard unificado para todos los usuarios
+        navigate('/dashboard');
+      } else {
+        setError('Credenciales incorrectas. Por favor, verifica tu email y contraseña.');
+      }
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+      setError('Error al iniciar sesión. Por favor, intenta de nuevo.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
-    <div className="bg-white/95 backdrop-blur-lg rounded-3xl p-10 shadow-2xl border border-white/20 max-w-md w-full mx-auto">
+    <div 
+      className="w-full max-w-md mx-auto p-8 rounded-2xl shadow-2xl backdrop-blur-lg border"
+      style={{
+        backgroundColor: getCardBackground(),
+        borderColor: getCardBorder(),
+      }}
+    >
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-amber-800 mb-2">🍽️ Iniciar Sesión</h1>
-        <p className="text-gray-600 text-sm">Accede a tu cuenta para gestionar tu restaurante</p>
+        <h2 
+          className="text-3xl font-bold mb-2"
+          style={{ color: getTextColor(900) }}
+        >
+          🚀 Bienvenido
+        </h2>
+        <p 
+          className="text-lg"
+          style={{ color: getTextColor(600) }}
+        >
+          Inicia sesión en tu cuenta
+        </p>
       </div>
 
       {error && (
-        <div className="bg-gradient-to-r from-red-500 to-red-600 text-white p-4 rounded-xl mb-6 text-center font-medium">
-          <span>⚠️ {error}</span>
+        <div 
+          className="mb-6 p-4 rounded-lg text-white text-center font-medium"
+          style={{ backgroundColor: getDangerColor() }}
+        >
+          ⚠️ {error}
         </div>
       )}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-        <div className="flex flex-col gap-2">
-          <label htmlFor="email" className="font-semibold text-amber-800 text-sm">📧 Correo Electrónico</label>
-          <input
-            id="email"
-            type="email"
-            {...register('email', {
-              required: 'El correo electrónico es requerido',
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: 'Ingresa un correo electrónico válido'
-              }
-            })}
-            placeholder="tu@email.com"
-            className={`p-4 border-2 border-gray-200 rounded-xl text-base transition-all duration-300 bg-white focus:outline-none focus:border-amber-800 focus:shadow-lg focus:shadow-amber-800/10 ${errors.email ? 'border-red-500' : ''}`}
-          />
-          {errors.email && (
-            <span className="text-red-500 text-sm font-medium">{errors.email.message}</span>
-          )}
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <label htmlFor="password" className="font-semibold text-amber-800 text-sm">🔒 Contraseña</label>
-          <input
-            id="password"
-            type="password"
-            {...register('password', {
-              required: 'La contraseña es requerida',
-              minLength: {
-                value: 6,
-                message: 'La contraseña debe tener al menos 6 caracteres'
-              }
-            })}
-            placeholder="••••••••"
-            className={`p-4 border-2 border-gray-200 rounded-xl text-base transition-all duration-300 bg-white focus:outline-none focus:border-amber-800 focus:shadow-lg focus:shadow-amber-800/10 ${errors.password ? 'border-red-500' : ''}`}
-          />
-          {errors.password && (
-            <span className="text-red-500 text-sm font-medium">{errors.password.message}</span>
-          )}
-        </div>
-
-        <div className="flex items-center gap-3">
-          <label className="flex items-center gap-3 cursor-pointer font-medium text-gray-600 text-sm">
-            <input
-              type="checkbox"
-              {...register('rememberMe')}
-              className="hidden"
-            />
-            <span className="w-5 h-5 border-2 border-gray-200 rounded relative transition-all duration-300 peer-checked:bg-amber-800 peer-checked:border-amber-800">
-              <span className="absolute inset-0 flex items-center justify-center text-white text-xs font-bold opacity-0 peer-checked:opacity-100">✓</span>
-            </span>
-            Recordarme
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <label 
+            htmlFor="email" 
+            className="block text-sm font-medium mb-2"
+            style={{ color: getTextColor(700) }}
+          >
+            📧 Correo Electrónico
           </label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full px-4 py-3 rounded-lg border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-opacity-50"
+            style={{
+              backgroundColor: getInputBackground(),
+              borderColor: getInputBorder(),
+              color: getTextColor(900),
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = getInputFocusBorder();
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = getInputBorder();
+            }}
+            placeholder="tu@email.com"
+          />
+        </div>
+
+        <div>
+          <label 
+            htmlFor="password" 
+            className="block text-sm font-medium mb-2"
+            style={{ color: getTextColor(700) }}
+          >
+            🔒 Contraseña
+          </label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="w-full px-4 py-3 rounded-lg border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-opacity-50"
+            style={{
+              backgroundColor: getInputBackground(),
+              borderColor: getInputBorder(),
+              color: getTextColor(900),
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = getInputFocusBorder();
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = getInputBorder();
+            }}
+            placeholder="••••••••"
+          />
         </div>
 
         <Button
@@ -89,11 +157,20 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isLoading, error }) => 
         </Button>
       </form>
 
-      <div className="text-center mt-8 pt-6 border-t border-gray-200">
-        <p className="text-gray-600 mb-2 text-sm">¿No tienes una cuenta?</p>
-        <a href="/auth/registro" className="text-amber-800 font-semibold text-sm transition-colors duration-300 hover:text-amber-700 hover:underline">
-          Crear Cuenta
-        </a>
+      <div className="mt-6 text-center">
+        <p 
+          className="text-sm"
+          style={{ color: getTextColor(500) }}
+        >
+          ¿No tienes cuenta?{' '}
+          <a 
+            href="/auth/register" 
+            className="font-semibold hover:underline transition-colors duration-200"
+            style={{ color: getTextColor(700) }}
+          >
+            Regístrate aquí
+          </a>
+        </p>
       </div>
     </div>
   );

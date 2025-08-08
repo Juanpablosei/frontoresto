@@ -24,45 +24,51 @@ const Button: React.FC<ButtonProps> = ({
   type = 'button',
   className = '',
 }) => {
-  const { getColorClass, getGradientClass } = useThemeColors();
+  const { 
+    getButtonPrimaryBackground, 
+    getButtonSecondaryBackground, 
+    getButtonAccentBackground,
+    getDangerColor,
+    getSuccessColor,
+  } = useThemeColors();
 
   const getVariantStyles = () => {
     switch (variant) {
       case 'primary':
         return {
-          background: getGradientClass('primary', 500, 600),
+          background: getButtonPrimaryBackground(),
           color: 'white',
-          hoverBackground: getGradientClass('primary', 600, 700),
+          hoverBackground: getButtonPrimaryBackground(),
         };
       case 'secondary':
         return {
-          background: getGradientClass('secondary', 500, 600),
+          background: getButtonSecondaryBackground(),
           color: 'white',
-          hoverBackground: getGradientClass('secondary', 600, 700),
+          hoverBackground: getButtonSecondaryBackground(),
         };
       case 'accent':
         return {
-          background: getGradientClass('accent', 500, 600),
+          background: getButtonAccentBackground(),
           color: 'white',
-          hoverBackground: getGradientClass('accent', 600, 700),
+          hoverBackground: getButtonAccentBackground(),
         };
       case 'danger':
         return {
-          background: 'linear-gradient(to right, #ef4444, #dc2626)',
+          background: `linear-gradient(to right, ${getDangerColor()}, #dc2626)`,
           color: 'white',
-          hoverBackground: 'linear-gradient(to right, #dc2626, #b91c1c)',
+          hoverBackground: `linear-gradient(to right, #dc2626, #b91c1c)`,
         };
       case 'success':
         return {
-          background: 'linear-gradient(to right, #22c55e, #16a34a)',
+          background: `linear-gradient(to right, ${getSuccessColor()}, #16a34a)`,
           color: 'white',
-          hoverBackground: 'linear-gradient(to right, #16a34a, #15803d)',
+          hoverBackground: `linear-gradient(to right, #16a34a, #15803d)`,
         };
       default:
         return {
-          background: getGradientClass('primary', 500, 600),
+          background: getButtonPrimaryBackground(),
           color: 'white',
-          hoverBackground: getGradientClass('primary', 600, 700),
+          hoverBackground: getButtonPrimaryBackground(),
         };
     }
   };

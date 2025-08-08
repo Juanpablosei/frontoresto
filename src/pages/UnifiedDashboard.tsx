@@ -10,7 +10,12 @@ const UnifiedDashboard: React.FC = () => {
   const navigate = useNavigate();
   const { user, hasRole, hasAnyRole } = useAuthStore();
   const { restaurants, getRestaurantsByOwner, getEmployeesByRestaurant } = useRestaurantStore();
-  const { getBackgroundGradient } = useThemeColors();
+  const { 
+    getBackgroundGradient, 
+    getCardBackground, 
+    getCardBorder, 
+    getTextColor 
+  } = useThemeColors();
 
   // Estados para manejar la vista
   const [showUsers, setShowUsers] = useState(false);
@@ -106,7 +111,12 @@ const UnifiedDashboard: React.FC = () => {
             <div className="mb-6">
               <button
                 onClick={handleHideUsers}
-                className="px-4 py-2 bg-white/20 backdrop-blur-lg rounded-lg border border-white/30 text-white hover:bg-white/30 transition-all duration-200 text-sm font-medium"
+                className="px-4 py-2 backdrop-blur-lg rounded-lg border text-sm font-medium transition-all duration-200"
+                style={{
+                  backgroundColor: getCardBackground(),
+                  borderColor: getCardBorder(),
+                  color: getTextColor(900),
+                }}
               >
                 ← Volver a Usuarios
               </button>
@@ -116,20 +126,54 @@ const UnifiedDashboard: React.FC = () => {
           {/* Vista de Admin - Lista de Usuarios */}
           {isAdmin && showUsers && (
             <div>
-              <h2 className="text-3xl lg:text-4xl font-semibold text-white text-center mb-8 shadow-lg">
+              <h2 
+                className="text-3xl lg:text-4xl font-semibold text-center mb-8 shadow-lg"
+                style={{ color: getTextColor(900) }}
+              >
                 👥 Gestión de Usuarios
               </h2>
               
-              <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
+              <div 
+                className="backdrop-blur-lg rounded-2xl p-8 border"
+                style={{
+                  backgroundColor: getCardBackground(),
+                  borderColor: getCardBorder(),
+                }}
+              >
                 <div className="overflow-x-auto">
-                  <table className="w-full text-white">
+                  <table className="w-full">
                     <thead>
-                      <tr className="border-b border-white/20">
-                        <th className="text-left p-4 font-semibold">Nombre</th>
-                        <th className="text-left p-4 font-semibold">Email</th>
-                        <th className="text-center p-4 font-semibold">Restaurantes</th>
-                        <th className="text-center p-4 font-semibold">Empleados</th>
-                        <th className="text-center p-4 font-semibold">Acciones</th>
+                      <tr style={{ borderColor: getCardBorder() }} className="border-b">
+                        <th 
+                          className="text-left p-4 font-semibold"
+                          style={{ color: getTextColor(700) }}
+                        >
+                          Nombre
+                        </th>
+                        <th 
+                          className="text-left p-4 font-semibold"
+                          style={{ color: getTextColor(700) }}
+                        >
+                          Email
+                        </th>
+                        <th 
+                          className="text-center p-4 font-semibold"
+                          style={{ color: getTextColor(700) }}
+                        >
+                          Restaurantes
+                        </th>
+                        <th 
+                          className="text-center p-4 font-semibold"
+                          style={{ color: getTextColor(700) }}
+                        >
+                          Empleados
+                        </th>
+                        <th 
+                          className="text-center p-4 font-semibold"
+                          style={{ color: getTextColor(700) }}
+                        >
+                          Acciones
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -143,15 +187,46 @@ const UnifiedDashboard: React.FC = () => {
                         return (
                           <tr 
                             key={user.id} 
-                            className="border-b border-white/10 hover:bg-white/5 transition-colors duration-200 cursor-pointer"
+                            className="border-b transition-colors duration-200 cursor-pointer hover:bg-opacity-50"
+                            style={{ 
+                              borderColor: getCardBorder(),
+                              backgroundColor: 'transparent'
+                            }}
                             onClick={() => handleUserSelect(user)}
                           >
-                            <td className="p-4 font-medium">{user.name}</td>
-                            <td className="p-4 text-white/80">{user.email}</td>
-                            <td className="p-4 text-center">{userRestaurants.length}</td>
-                            <td className="p-4 text-center">{totalEmployees}</td>
+                            <td 
+                              className="p-4 font-medium"
+                              style={{ color: getTextColor(900) }}
+                            >
+                              {user.name}
+                            </td>
+                            <td 
+                              className="p-4"
+                              style={{ color: getTextColor(600) }}
+                            >
+                              {user.email}
+                            </td>
+                            <td 
+                              className="p-4 text-center"
+                              style={{ color: getTextColor(800) }}
+                            >
+                              {userRestaurants.length}
+                            </td>
+                            <td 
+                              className="p-4 text-center"
+                              style={{ color: getTextColor(800) }}
+                            >
+                              {totalEmployees}
+                            </td>
                             <td className="p-4 text-center">
-                              <button className="px-3 py-1 bg-white/20 rounded-lg text-sm hover:bg-white/30 transition-colors duration-200">
+                              <button 
+                                className="px-3 py-1 rounded-lg text-sm transition-colors duration-200"
+                                style={{
+                                  backgroundColor: getCardBackground(),
+                                  borderColor: getCardBorder(),
+                                  color: getTextColor(700),
+                                }}
+                              >
                                 Ver Detalles
                               </button>
                             </td>
@@ -168,7 +243,10 @@ const UnifiedDashboard: React.FC = () => {
           {/* Vista de Admin - Restaurantes del Usuario Seleccionado */}
           {isAdmin && showingUserRestaurants && selectedUser && (
             <div>
-              <h2 className="text-3xl lg:text-4xl font-semibold text-white text-center mb-8 shadow-lg">
+              <h2 
+                className="text-3xl lg:text-4xl font-semibold text-center mb-8 shadow-lg"
+                style={{ color: getTextColor(900) }}
+              >
                 🏪 Restaurantes de {selectedUser.name}
               </h2>
               
@@ -178,15 +256,29 @@ const UnifiedDashboard: React.FC = () => {
                   return (
                     <div
                       key={restaurant.id}
-                      className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:shadow-2xl cursor-pointer"
+                      className="backdrop-blur-lg rounded-2xl p-6 border transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl cursor-pointer"
+                      style={{
+                        backgroundColor: getCardBackground(),
+                        borderColor: getCardBorder(),
+                      }}
                       onClick={() => handleRestaurantSelect(restaurant.id)}
                     >
                       <div className="text-4xl mb-4">🏪</div>
-                      <h3 className="text-xl font-semibold text-white mb-2">{restaurant.name}</h3>
-                      <p className="text-white/80 text-sm mb-4">{restaurant.description}</p>
-                      <div className="flex justify-between items-center text-sm text-white/60">
-                        <span>📍 {restaurant.address}</span>
-                        <span>👥 {restaurantEmployees.length} empleados</span>
+                      <h3 
+                        className="text-xl font-semibold mb-2"
+                        style={{ color: getTextColor(900) }}
+                      >
+                        {restaurant.name}
+                      </h3>
+                      <p 
+                        className="text-sm mb-4"
+                        style={{ color: getTextColor(600) }}
+                      >
+                        {restaurant.description}
+                      </p>
+                      <div className="flex justify-between items-center text-sm">
+                        <span style={{ color: getTextColor(600) }}>📍 {restaurant.address}</span>
+                        <span style={{ color: getTextColor(600) }}>👥 {restaurantEmployees.length} empleados</span>
                       </div>
                     </div>
                   );
@@ -199,12 +291,20 @@ const UnifiedDashboard: React.FC = () => {
           {isOwner && showRestaurants && (
             <div>
               <div className="flex justify-between items-center mb-8">
-                <h2 className="text-3xl lg:text-4xl font-semibold text-white shadow-lg">
+                <h2 
+                  className="text-3xl lg:text-4xl font-semibold shadow-lg"
+                  style={{ color: 'white' }}
+                >
                   🏪 Mis Restaurantes
                 </h2>
                 <button
                   onClick={() => navigate('/create-restaurant')}
-                  className="px-6 py-3 bg-white/20 backdrop-blur-lg rounded-lg border border-white/30 text-white hover:bg-white/30 transition-all duration-200 font-medium"
+                  className="px-6 py-3 backdrop-blur-lg rounded-lg border font-medium transition-all duration-200"
+                  style={{
+                    backgroundColor: getCardBackground(),
+                    borderColor: getCardBorder(),
+                    color: getTextColor(900),
+                  }}
                 >
                   ➕ Crear Restaurante
                 </button>
@@ -213,11 +313,26 @@ const UnifiedDashboard: React.FC = () => {
               {currentRestaurants.length === 0 ? (
                 <div className="text-center py-16">
                   <div className="text-6xl mb-4">🏪</div>
-                  <h3 className="text-2xl font-semibold text-white mb-4">No tienes restaurantes aún</h3>
-                  <p className="text-white/80 mb-8">Comienza creando tu primer restaurante</p>
+                  <h3 
+                    className="text-2xl font-semibold mb-4"
+                    style={{ color: getTextColor(900) }}
+                  >
+                    No tienes restaurantes aún
+                  </h3>
+                  <p 
+                    className="mb-8"
+                    style={{ color: getTextColor(600) }}
+                  >
+                    Comienza creando tu primer restaurante
+                  </p>
                   <button
                     onClick={() => navigate('/create-restaurant')}
-                    className="px-8 py-4 bg-white/20 backdrop-blur-lg rounded-lg border border-white/30 text-white hover:bg-white/30 transition-all duration-200 font-medium text-lg"
+                    className="px-8 py-4 backdrop-blur-lg rounded-lg border font-medium text-lg transition-all duration-200"
+                    style={{
+                      backgroundColor: getCardBackground(),
+                      borderColor: getCardBorder(),
+                      color: getTextColor(900),
+                    }}
                   >
                     🚀 Crear Mi Primer Restaurante
                   </button>
@@ -229,15 +344,29 @@ const UnifiedDashboard: React.FC = () => {
                     return (
                       <div
                         key={restaurant.id}
-                        className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:shadow-2xl cursor-pointer"
+                        className="backdrop-blur-lg rounded-2xl p-6 border transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl cursor-pointer"
+                        style={{
+                          backgroundColor: getCardBackground(),
+                          borderColor: getCardBorder(),
+                        }}
                         onClick={() => handleRestaurantSelect(restaurant.id)}
                       >
                         <div className="text-4xl mb-4">🏪</div>
-                        <h3 className="text-xl font-semibold text-white mb-2">{restaurant.name}</h3>
-                        <p className="text-white/80 text-sm mb-4">{restaurant.description}</p>
-                        <div className="flex justify-between items-center text-sm text-white/60">
-                          <span>📍 {restaurant.address}</span>
-                          <span>👥 {restaurantEmployees.length} empleados</span>
+                        <h3 
+                          className="text-xl font-semibold mb-2"
+                          style={{ color: getTextColor(900) }}
+                        >
+                          {restaurant.name}
+                        </h3>
+                        <p 
+                          className="text-sm mb-4"
+                          style={{ color: getTextColor(600) }}
+                        >
+                          {restaurant.description}
+                        </p>
+                        <div className="flex justify-between items-center text-sm">
+                          <span style={{ color: getTextColor(600) }}>📍 {restaurant.address}</span>
+                          <span style={{ color: getTextColor(600) }}>👥 {restaurantEmployees.length} empleados</span>
                         </div>
                       </div>
                     );
