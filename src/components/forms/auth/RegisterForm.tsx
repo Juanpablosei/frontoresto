@@ -2,7 +2,6 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from '../../buttons';
 import { RegisterFormData, RegisterFormProps } from './types';
-import './RegisterForm.css';
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading = false, error }) => {
   const {
@@ -21,28 +20,28 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading = false
   };
 
   return (
-    <div className="register-form">
-      <div className="register-form__header">
-        <h1>🍽️ Registrarse</h1>
-        <p>Únete a nuestro restaurante. Completa tus datos para comenzar a disfrutar.</p>
+    <div className="bg-white/95 backdrop-blur-lg rounded-2xl p-10 shadow-2xl border border-white/20 max-w-lg w-full">
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-800 mb-2">🍽️ Registrarse</h1>
+        <p className="text-gray-600">Únete a nuestro restaurante. Completa tus datos para comenzar a disfrutar.</p>
       </div>
 
       {error && (
-        <div className="register-form__error">
-          <span className="error-icon">⚠️</span>
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 text-red-700 flex items-center gap-2 text-sm">
+          <span>⚠️</span>
           {error}
         </div>
       )}
 
-      <form onSubmit={handleSubmit(onSubmitForm)} className="register-form__content">
-        <div className="form-group">
-          <label htmlFor="name" className="form-label">
+      <form onSubmit={handleSubmit(onSubmitForm)} className="flex flex-col gap-6">
+        <div className="flex flex-col gap-2">
+          <label htmlFor="name" className="text-gray-800 font-semibold text-sm flex items-center gap-2">
             👤 Nombre Completo
           </label>
           <input
             id="name"
             type="text"
-            className={`form-input ${errors.name ? 'form-input--error' : ''}`}
+            className={`p-3 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 bg-white focus:outline-none focus:border-amber-800 focus:shadow-lg focus:shadow-amber-800/10 ${errors.name ? 'border-red-500' : ''}`}
             placeholder="Tu nombre completo"
             {...register('name', {
               required: 'El nombre es requerido',
@@ -53,18 +52,18 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading = false
             })}
           />
           {errors.name && (
-            <span className="form-error">{errors.name.message}</span>
+            <span className="text-red-500 text-sm font-medium">{errors.name.message}</span>
           )}
         </div>
 
-        <div className="form-group">
-          <label htmlFor="email" className="form-label">
+        <div className="flex flex-col gap-2">
+          <label htmlFor="email" className="text-gray-800 font-semibold text-sm flex items-center gap-2">
             📧 Correo Electrónico
           </label>
           <input
             id="email"
             type="email"
-            className={`form-input ${errors.email ? 'form-input--error' : ''}`}
+            className={`p-3 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 bg-white focus:outline-none focus:border-amber-800 focus:shadow-lg focus:shadow-amber-800/10 ${errors.email ? 'border-red-500' : ''}`}
             placeholder="tu@email.com"
             {...register('email', {
               required: 'El correo electrónico es requerido',
@@ -75,18 +74,18 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading = false
             })}
           />
           {errors.email && (
-            <span className="form-error">{errors.email.message}</span>
+            <span className="text-red-500 text-sm font-medium">{errors.email.message}</span>
           )}
         </div>
 
-        <div className="form-group">
-          <label htmlFor="password" className="form-label">
+        <div className="flex flex-col gap-2">
+          <label htmlFor="password" className="text-gray-800 font-semibold text-sm flex items-center gap-2">
             🔒 Contraseña
           </label>
           <input
             id="password"
             type="password"
-            className={`form-input ${errors.password ? 'form-input--error' : ''}`}
+            className={`p-3 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 bg-white focus:outline-none focus:border-amber-800 focus:shadow-lg focus:shadow-amber-800/10 ${errors.password ? 'border-red-500' : ''}`}
             placeholder="••••••••"
             {...register('password', {
               required: 'La contraseña es requerida',
@@ -101,18 +100,18 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading = false
             })}
           />
           {errors.password && (
-            <span className="form-error">{errors.password.message}</span>
+            <span className="text-red-500 text-sm font-medium">{errors.password.message}</span>
           )}
         </div>
 
-        <div className="form-group">
-          <label htmlFor="confirmPassword" className="form-label">
+        <div className="flex flex-col gap-2">
+          <label htmlFor="confirmPassword" className="text-gray-800 font-semibold text-sm flex items-center gap-2">
             🔐 Confirmar Contraseña
           </label>
           <input
             id="confirmPassword"
             type="password"
-            className={`form-input ${errors.confirmPassword ? 'form-input--error' : ''}`}
+            className={`p-3 border-2 border-gray-200 rounded-lg text-base transition-all duration-300 bg-white focus:outline-none focus:border-amber-800 focus:shadow-lg focus:shadow-amber-800/10 ${errors.confirmPassword ? 'border-red-500' : ''}`}
             placeholder="••••••••"
             {...register('confirmPassword', {
               required: 'Confirma tu contraseña',
@@ -120,27 +119,30 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading = false
             })}
           />
           {errors.confirmPassword && (
-            <span className="form-error">{errors.confirmPassword.message}</span>
+            <span className="text-red-500 text-sm font-medium">{errors.confirmPassword.message}</span>
           )}
         </div>
 
-        <div className="form-group">
-          <label className="checkbox-container">
+        <div className="flex items-start gap-3">
+          <label className="flex items-start gap-3 cursor-pointer text-gray-600 text-sm leading-relaxed">
             <input
               type="checkbox"
               {...register('acceptTerms', {
                 required: 'Debes aceptar los términos y condiciones'
               })}
+              className="hidden"
             />
-            <span className="checkmark"></span>
-            Acepto los <a href="/auth/terms" className="terms-link">términos y condiciones</a> y la <a href="/auth/privacy" className="terms-link">política de privacidad</a>
+            <span className="w-5 h-5 border-2 border-gray-200 rounded relative transition-all duration-300 mt-0.5 flex-shrink-0">
+              <span className="absolute inset-0 flex items-center justify-center text-white text-xs font-bold opacity-0 peer-checked:opacity-100">✓</span>
+            </span>
+            Acepto los <a href="/auth/terms" className="text-amber-800 font-semibold transition-colors duration-300 hover:text-amber-700 hover:underline">términos y condiciones</a> y la <a href="/auth/privacy" className="text-amber-800 font-semibold transition-colors duration-300 hover:text-amber-700 hover:underline">política de privacidad</a>
           </label>
           {errors.acceptTerms && (
-            <span className="form-error">{errors.acceptTerms.message}</span>
+            <span className="text-red-500 text-sm font-medium">{errors.acceptTerms.message}</span>
           )}
         </div>
 
-        <div className="form-actions">
+        <div className="mt-4">
           <Button
             type="submit"
             variant="primary"
@@ -153,10 +155,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading = false
           </Button>
         </div>
 
-        <div className="form-footer">
-          <p>
+        <div className="text-center mt-6 pt-6 border-t border-gray-200">
+          <p className="text-gray-600 text-sm">
             ¿Ya tienes una cuenta?{' '}
-            <a href="/auth/login" className="form-link">
+            <a href="/auth/login" className="text-amber-800 font-semibold transition-colors duration-300 hover:text-amber-700 hover:underline">
               Iniciar Sesión
             </a>
           </p>

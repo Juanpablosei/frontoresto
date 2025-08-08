@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RegisterForm } from '../../components/forms/auth';
 import { RegisterFormData } from '../../components/forms/auth';
-import './Register.css';
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
@@ -28,13 +27,13 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="register-page">
-      <div className="register-page__background">
-        <div className="register-page__overlay"></div>
+    <div className="min-h-screen flex items-center justify-center relative bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 p-8">
+      <div className="absolute inset-0 bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 -z-10">
+        <div className="absolute inset-0 bg-black/30 -z-10"></div>
       </div>
       
-      <div className="register-page__content">
-        <div className="register-page__container">
+      <div className="w-full max-w-6xl flex items-center justify-center z-10">
+        <div className="w-full flex justify-center items-center">
           <RegisterForm
             onSubmit={handleRegister}
             isLoading={isLoading}

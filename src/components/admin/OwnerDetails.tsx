@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button } from '../buttons';
 import { OwnerDetailsProps } from './types';
-import './OwnerDetails.css';
 
 const OwnerDetails: React.FC<OwnerDetailsProps> = ({ owner, onRestaurantSelect, selectedRestaurant }) => {
   return (
@@ -119,7 +118,7 @@ const OwnerDetails: React.FC<OwnerDetailsProps> = ({ owner, onRestaurantSelect, 
                                          <Button
                        variant="primary"
                        size="small"
-                       onClick={(e) => {
+                       onClick={(e?: React.MouseEvent<HTMLButtonElement>) => {
                          e?.stopPropagation();
                          onRestaurantSelect(restaurant);
                        }}

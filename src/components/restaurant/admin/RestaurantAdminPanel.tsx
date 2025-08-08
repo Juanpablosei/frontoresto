@@ -3,7 +3,6 @@ import { Restaurant, AdminPanelState } from './types';
 import RestaurantList from './RestaurantList';
 import RestaurantDetails from './RestaurantDetails';
 import RestaurantActions from './RestaurantActions';
-import './RestaurantAdminPanel.css';
 
 const RestaurantAdminPanel: React.FC = () => {
   const [state, setState] = useState<AdminPanelState>({

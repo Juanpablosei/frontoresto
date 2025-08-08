@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button } from '../buttons';
 import { EmployeeListProps } from './types';
-import './EmployeeList.css';
 
 const EmployeeList: React.FC<EmployeeListProps> = ({ employees, restaurantName, onBack }) => {
   const getRoleIcon = (role: string) => {

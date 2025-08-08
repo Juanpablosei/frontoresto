@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Restaurant } from './types';
 import { Button } from '../../buttons';
-import './RestaurantList.css';
 
 interface RestaurantListProps {
   restaurants: Restaurant[];

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Restaurant, Table, Product, Menu, RestaurantStats } from './types';
 import { Button } from '../../buttons';
-import './RestaurantActions.css';
 
 interface RestaurantActionsProps {
   restaurant: Restaurant;

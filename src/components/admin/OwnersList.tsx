@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button } from '../buttons';
 import { OwnersListProps } from './types';
-import './OwnersList.css';
 
 const OwnersList: React.FC<OwnersListProps> = ({ owners, onOwnerSelect, selectedOwner }) => {
   return (
@@ -74,7 +73,7 @@ const OwnersList: React.FC<OwnersListProps> = ({ owners, onOwnerSelect, selected
                                      <Button
                      variant="primary"
                      size="small"
-                     onClick={(e) => {
+                     onClick={(e?: React.MouseEvent<HTMLButtonElement>) => {
                        e?.stopPropagation();
                        onOwnerSelect(owner);
                      }}

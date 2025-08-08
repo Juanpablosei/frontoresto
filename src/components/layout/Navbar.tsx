@@ -1,7 +1,6 @@
 import React from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import UserInfo from '../auth/UserInfo';
-import './Navbar.css';
 
 const Navbar: React.FC = () => {
   const { isAuthenticated, user } = useAuth();
@@ -11,13 +10,13 @@ const Navbar: React.FC = () => {
   }
 
   return (
-    <nav className="navbar">
-      <div className="navbar-container">
-        <div className="navbar-brand">
-          <h1>🍽️ RestoManager</h1>
+    <nav className="bg-white/10 backdrop-blur-lg border-b border-white/20">
+      <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+        <div className="flex items-center">
+          <h1 className="text-2xl font-bold text-white">🍽️ RestoManager</h1>
         </div>
         
-        <div className="navbar-user">
+        <div className="flex items-center">
           <UserInfo />
         </div>
       </div>

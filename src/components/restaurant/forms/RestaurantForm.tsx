@@ -2,7 +2,6 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from '../../buttons';
 import { RestaurantFormData, RestaurantFormProps } from './types';
-import './RestaurantForm.css';
 
 const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, isLoading = false, error }) => {
   const {
