@@ -267,34 +267,12 @@ const UnifiedDashboard: React.FC = () => {
             </p>
           </div>
           <div className="header-actions">
-            {isAdmin && impersonatedUser && (
-              <button
-                className="exit-impersonation-btn"
-                onClick={handleExitImpersonation}
-              >
-                🔄 Salir de Vista de {impersonatedUser.name}
-              </button>
-            )}
             <UserInfo />
           </div>
         </div>
       </div>
 
       <div className="restaurants-content">
-        {/* Navegación principal */}
-        <div className="main-navigation">
-          {!(isAdmin && impersonatedUser) && (
-            <button
-              className={`nav-btn ${isAdmin ? (showUsers ? 'active' : '') : (showRestaurants ? 'active' : '')}`}
-              onClick={isAdmin ? handleShowUsers : handleShowRestaurants}
-            >
-              {isAdmin ? '👥 Ver Propietarios' : '🏪 Mis Restaurantes'}
-            </button>
-          )}
-          
-          
-        </div>
-
         {/* Contenido principal */}
         <div className="main-content">
           {/* Vista de usuarios para admin */}
@@ -311,42 +289,53 @@ const UnifiedDashboard: React.FC = () => {
               </div>
 
               {!showingUserRestaurants ? (
-                <div className="users-grid">
-                  {mockUsers.filter(user => user.role === 'CLIENT_OWNER').map((user) => (
-                    <div
-                      key={user.id}
-                      className="user-card"
-                      onClick={() => handleUserSelect(user)}
-                    >
-                      <div className="user-header">
-                        <div className="user-avatar">
-                          <span className="avatar-icon">👤</span>
-                        </div>
-                        <div className="user-info">
-                          <h3 className="user-name">{user.name}</h3>
-                          <span className="user-role">{user.role}</span>
-                        </div>
-                        <div className="user-status">
-                          <span className={`status-badge ${user.isActive ? 'active' : 'inactive'}`}>
-                            {user.isActive ? 'Activo' : 'Inactivo'}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="user-details">
-                        <div className="detail-item">
-                          <span className="detail-label">📧 Email:</span>
-                          <span className="detail-value">{user.email}</span>
-                        </div>
-                      </div>
-
-                      <div className="user-actions">
-                        <button className="action-btn restaurants-btn">
-                          🏪 Ver Restaurantes
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+                <div className="users-table-container">
+                  <table className="users-table">
+                    <thead>
+                      <tr>
+                        <th>👤 Usuario</th>
+                        <th>📧 Email</th>
+                        <th>🏪 Restaurantes</th>
+                        <th>👥 Empleados</th>
+                        <th>📊 Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {mockUsers.filter(user => user.role === 'CLIENT_OWNER').map((user) => {
+                        const userRestaurants = getRestaurantsByOwner(user.id);
+                        const totalEmployees = userRestaurants.reduce((total, restaurant) => {
+                          const restaurantEmployees = getEmployeesByRestaurant(restaurant.id);
+                          return total + restaurantEmployees.length;
+                        }, 0);
+                        
+                        return (
+                          <tr 
+                            key={user.id} 
+                            className="user-row"
+                            onClick={() => handleUserSelect(user)}
+                          >
+                            <td className="user-name-cell">
+                              <div className="user-name-info">
+                                <span className="user-name">{user.name}</span>
+                              </div>
+                            </td>
+                            <td className="user-email">{user.email}</td>
+                            <td className="restaurants-count">
+                              <span className="count-badge">{userRestaurants.length}</span>
+                            </td>
+                            <td className="employees-count">
+                              <span className="count-badge">{totalEmployees}</span>
+                            </td>
+                            <td className="user-actions">
+                              <button className="view-btn">
+                                🏪 Ver Restaurantes
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
                 </div>
               ) : (
                 <div className="user-restaurants-section">
@@ -421,6 +410,16 @@ const UnifiedDashboard: React.FC = () => {
 
           {showRestaurants && (
             <div className="restaurants-section">
+              {isAdmin && impersonatedUser && (
+                <div className="exit-impersonation-container">
+                  <button
+                    className="exit-impersonation-btn-sober"
+                    onClick={handleExitImpersonation}
+                  >
+                    ← Volver a Propietarios
+                  </button>
+                </div>
+              )}
               <div className="section-header">
                 <h2>
                   {isAdmin 

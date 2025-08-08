@@ -77,6 +77,41 @@
   transform: translateY(0);
 }
 
+/* Contenedor del botón de salir de impersonación */
+.exit-impersonation-container {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
+
+/* Botón de salir de impersonación sobrio */
+.exit-impersonation-btn-sober {
+  background: #f8f9fa;
+  color: #6c757d;
+  border: 1px solid #dee2e6;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.exit-impersonation-btn-sober:hover {
+  background: #e9ecef;
+  color: #495057;
+  border-color: #adb5bd;
+}
+
+.exit-impersonation-btn-sober:active {
+  background: #dee2e6;
+  transform: translateY(1px);
+}
+
 .restaurants-content {
   max-width: 1200px;
   margin: 0 auto;
@@ -835,5 +870,150 @@
 .action-btn.restaurants-btn:hover {
   background: linear-gradient(135deg, #2563eb, #1e40af);
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Estilos para la tabla de usuarios */
+.users-table-container {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.users-table thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.users-table th {
+  padding: 16px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.users-table tbody tr {
+  border-bottom: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.users-table tbody tr:hover {
+  background: #f8fafc;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.users-table td {
+  padding: 16px 12px;
+  vertical-align: middle;
+}
+
+.user-name-cell {
+  min-width: 200px;
+}
+
+.user-name-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #374151;
+  font-size: 14px;
+}
+
+.user-role {
+  font-size: 12px;
+  color: #6b7280;
+  text-transform: capitalize;
+}
+
+.user-email {
+  color: #374151;
+  font-size: 14px;
+}
+
+.count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  border-radius: 12px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 24px;
+  height: 24px;
+}
+
+.view-btn {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.view-btn:hover {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+/* Responsive para la tabla */
+@media (max-width: 768px) {
+  .users-table-container {
+    padding: 16px;
+  }
+  
+  .users-table {
+    font-size: 12px;
+  }
+  
+  .users-table th,
+  .users-table td {
+    padding: 12px 8px;
+  }
+  
+  .user-name-cell {
+    min-width: 150px;
+  }
+  
+  .user-name {
+    font-size: 13px;
+  }
+  
+  .user-role {
+    font-size: 11px;
+  }
+  
+  .count-badge {
+    padding: 2px 8px;
+    font-size: 11px;
+    min-width: 20px;
+    height: 20px;
+  }
+  
+  .view-btn {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
 }
 
