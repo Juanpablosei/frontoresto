@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useRestaurantStore } from '../store/restaurantStore';
+import { useRestaurantSchedule } from '../store/scheduleStore';
 import EmployeeTransferModal from '../components/restaurant/EmployeeTransferModal';
 import ShiftAssignmentModal from '../components/restaurant/ShiftAssignmentModal';
 import AddEmployeeModal from '../components/restaurant/AddEmployeeModal';
+import ScheduleWizard from '../components/restaurant/ScheduleWizard';
 import Button from '../components/buttons/Button';
 import { useThemeColors } from '../hooks/useThemeColors';
 
@@ -11,6 +13,7 @@ const RestaurantManagement: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { getRestaurantById, getEmployeesByRestaurant, clearAndReload } = useRestaurantStore();
+  const { schedule, saveSchedule } = useRestaurantSchedule(id || '');
   const { 
     getCardBackground, 
     getCardBorder, 
@@ -38,6 +41,9 @@ const RestaurantManagement: React.FC = () => {
 
   // Estado para el modal de agregar empleado
   const [addEmployeeModalOpen, setAddEmployeeModalOpen] = useState(false);
+
+  // Estado para el wizard de horarios
+  const [scheduleWizardOpen, setScheduleWizardOpen] = useState(false);
 
   // Estado para los menús
   const [menus, setMenus] = useState([
@@ -186,100 +192,8 @@ const RestaurantManagement: React.FC = () => {
     }
   ]);
 
-  // Estado para horarios detallados con empleados asignados
-  const [detailedSchedule, setDetailedSchedule] = useState({
-    monday: {
-      openingHours: '08:00',
-      closingHours: '22:00',
-      shifts: [
-        {
-          id: 'monday-morning',
-          name: 'Mañana',
-          startTime: '08:00',
-          endTime: '12:00',
-          assignedEmployees: [] // Array de IDs de empleados asignados
-        }
-      ]
-    },
-    tuesday: {
-      openingHours: '08:00',
-      closingHours: '22:00',
-      shifts: [
-        {
-          id: 'tuesday-morning',
-          name: 'Mañana',
-          startTime: '08:00',
-          endTime: '12:00',
-          assignedEmployees: []
-        }
-      ]
-    },
-    wednesday: {
-      openingHours: '08:00',
-      closingHours: '22:00',
-      shifts: [
-        {
-          id: 'wednesday-morning',
-          name: 'Mañana',
-          startTime: '08:00',
-          endTime: '12:00',
-          assignedEmployees: []
-        }
-      ]
-    },
-    thursday: {
-      openingHours: '08:00',
-      closingHours: '22:00',
-      shifts: [
-        {
-          id: 'thursday-morning',
-          name: 'Mañana',
-          startTime: '08:00',
-          endTime: '12:00',
-          assignedEmployees: []
-        }
-      ]
-    },
-    friday: {
-      openingHours: '08:00',
-      closingHours: '22:00',
-      shifts: [
-        {
-          id: 'friday-morning',
-          name: 'Mañana',
-          startTime: '08:00',
-          endTime: '12:00',
-          assignedEmployees: []
-        }
-      ]
-    },
-    saturday: {
-      openingHours: '08:00',
-      closingHours: '22:00',
-      shifts: [
-        {
-          id: 'saturday-morning',
-          name: 'Mañana',
-          startTime: '08:00',
-          endTime: '12:00',
-          assignedEmployees: []
-        }
-      ]
-    },
-    sunday: {
-      openingHours: '08:00',
-      closingHours: '22:00',
-      shifts: [
-        {
-          id: 'sunday-morning',
-          name: 'Mañana',
-          startTime: '08:00',
-          endTime: '12:00',
-          assignedEmployees: []
-        }
-      ]
-    }
-  });
+  // Usar el schedule del store de Zustand
+  const detailedSchedule = schedule;
 
   useEffect(() => {
     if (id) {
@@ -324,6 +238,14 @@ const RestaurantManagement: React.FC = () => {
     setSelectedEmployee(null);
   };
 
+  const handleOpenScheduleWizard = () => {
+    setScheduleWizardOpen(true);
+  };
+
+  const handleCloseScheduleWizard = () => {
+    setScheduleWizardOpen(false);
+  };
+
   const handleAddShift = (day: string) => {
     const daySchedule = detailedSchedule[day as keyof typeof detailedSchedule];
     const newShiftId = `${day}-shift-${Date.now()}`;
@@ -335,13 +257,15 @@ const RestaurantManagement: React.FC = () => {
       assignedEmployees: []
     };
 
-    setDetailedSchedule(prev => ({
-      ...prev,
+    const updatedSchedule = {
+      ...detailedSchedule,
       [day]: {
         ...daySchedule,
-        shifts: [...daySchedule.shifts, newShift]
+        shifts: [...(daySchedule?.shifts || []), newShift]
       }
-    }));
+    };
+    
+    saveSchedule(updatedSchedule);
   };
 
   const handleOpenAssignmentModal = (day: string, shiftId: string) => {
@@ -361,11 +285,11 @@ const RestaurantManagement: React.FC = () => {
 
   const handleAssignEmployeesToShift = (employeeIds: string[]) => {
     if (newShiftData) {
-      setDetailedSchedule(prev => ({
-        ...prev,
+      const updatedSchedule = {
+        ...detailedSchedule,
         [newShiftData.day]: {
-          ...prev[newShiftData.day as keyof typeof prev],
-          shifts: prev[newShiftData.day as keyof typeof prev].shifts.map(shift => {
+          ...detailedSchedule[newShiftData.day as keyof typeof detailedSchedule],
+          shifts: detailedSchedule[newShiftData.day as keyof typeof detailedSchedule].shifts.map(shift => {
             if (shift.id === newShiftData.shiftId) {
               return {
                 ...shift,
@@ -375,16 +299,18 @@ const RestaurantManagement: React.FC = () => {
             return shift;
           })
         }
-      }));
+      };
+      
+      saveSchedule(updatedSchedule);
     }
   };
 
   const handleUpdateShift = (day: string, shiftId: string, field: string, value: any) => {
-    setDetailedSchedule(prev => ({
-      ...prev,
+    const updatedSchedule = {
+      ...detailedSchedule,
       [day]: {
-        ...prev[day as keyof typeof prev],
-        shifts: prev[day as keyof typeof prev].shifts.map(shift => {
+        ...detailedSchedule[day as keyof typeof detailedSchedule],
+        shifts: detailedSchedule[day as keyof typeof detailedSchedule].shifts.map(shift => {
           if (shift.id === shiftId) {
             return {
               ...shift,
@@ -394,17 +320,21 @@ const RestaurantManagement: React.FC = () => {
           return shift;
         })
       }
-    }));
+    };
+    
+    saveSchedule(updatedSchedule);
   };
 
   const handleRemoveShift = (day: string, shiftId: string) => {
-    setDetailedSchedule(prev => ({
-      ...prev,
+    const updatedSchedule = {
+      ...detailedSchedule,
       [day]: {
-        ...prev[day as keyof typeof prev],
-        shifts: prev[day as keyof typeof prev].shifts.filter(shift => shift.id !== shiftId)
+        ...detailedSchedule[day as keyof typeof detailedSchedule],
+        shifts: detailedSchedule[day as keyof typeof detailedSchedule].shifts.filter(shift => shift.id !== shiftId)
       }
-    }));
+    };
+    
+    saveSchedule(updatedSchedule);
   };
 
   const calculateWorkHours = (startTime: string, endTime: string) => {
@@ -416,13 +346,15 @@ const RestaurantManagement: React.FC = () => {
   };
 
   const handleUpdateDayHours = (day: string, field: 'openingHours' | 'closingHours', value: string) => {
-    setDetailedSchedule(prev => ({
-      ...prev,
+    const updatedSchedule = {
+      ...detailedSchedule,
       [day]: {
-        ...prev[day as keyof typeof prev],
+        ...detailedSchedule[day as keyof typeof detailedSchedule],
         [field]: value
       }
-    }));
+    };
+    
+    saveSchedule(updatedSchedule);
   };
 
   const calculateShiftCoverage = (day: string) => {
@@ -755,198 +687,220 @@ const RestaurantManagement: React.FC = () => {
           borderColor: getCardBorder(),
         }}
       >
-        <h3 
-          className="text-xl font-bold mb-6"
-          style={{ color: getTextColor(900) }}
-        >
-          📅 Horarios Detallados
-        </h3>
+        <div className="flex justify-between items-center mb-6">
+          <h3 
+            className="text-xl font-bold"
+            style={{ color: getTextColor(900) }}
+          >
+            📅 Horarios Detallados
+          </h3>
+          <Button
+            variant="primary"
+            onClick={handleOpenScheduleWizard}
+          >
+            ⏰ Configurar Horarios
+          </Button>
+        </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {Object.entries(detailedSchedule).map(([day, daySchedule]) => (
-            <div 
-              key={day}
-              className="p-4 rounded-lg border"
-              style={{
-                backgroundColor: getCardBackground(),
-                borderColor: getCardBorder(),
-              }}
-            >
-              <div className="flex justify-between items-center mb-4">
-                <h4 
-                  className="font-semibold text-lg"
-                  style={{ color: getTextColor(900) }}
+        {/* Tarjeta de resumen estética */}
+        {Object.keys(schedule).length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {(() => {
+              const dayNames = {
+                monday: 'Lunes',
+                tuesday: 'Martes', 
+                wednesday: 'Miércoles',
+                thursday: 'Jueves',
+                friday: 'Viernes',
+                saturday: 'Sábado',
+                sunday: 'Domingo'
+              };
+              
+              // Orden de los días de la semana
+              const dayOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+              
+              // Filtrar y ordenar los días configurados
+              const orderedDays = dayOrder
+                .filter(dayKey => schedule[dayKey])
+                .map(dayKey => ({ dayKey, daySchedule: schedule[dayKey] }));
+              
+              return orderedDays.map(({ dayKey, daySchedule }) => {
+              
+              const totalShifts = daySchedule.shifts?.length || 0;
+              const totalEmployees = daySchedule.shifts?.reduce((total, shift) => 
+                total + (shift.assignedEmployees?.length || 0), 0) || 0;
+              
+              return (
+                <div 
+                  key={dayKey}
+                  className="p-6 rounded-xl border shadow-lg hover:shadow-xl transition-all duration-300"
+                  style={{
+                    backgroundColor: getCardBackground(),
+                    borderColor: getCardBorder(),
+                  }}
                 >
-                  {day.charAt(0).toUpperCase() + day.slice(1)}
-                </h4>
-                <Button
-                  variant="primary"
-                  size="small"
-                  onClick={() => handleAddShift(day)}
-                >
-                  ➕ Agregar Turno
-                </Button>
-              </div>
-
-              {/* Horarios de Apertura y Cierre */}
-              <div className="grid grid-cols-2 gap-2 mb-4">
-                <div>
-                  <label 
-                    className="block text-xs font-medium mb-1"
-                    style={{ color: getTextColor(700) }}
-                  >
-                    Apertura
-                  </label>
-                  <input
-                    type="time"
-                    value={daySchedule.openingHours}
-                    onChange={(e) => handleUpdateDayHours(day, 'openingHours', e.target.value)}
-                    className="w-full px-2 py-1 text-sm border rounded"
-                    style={{
-                      backgroundColor: getCardBackground(),
-                      borderColor: getCardBorder(),
-                      color: getTextColor(900),
-                    }}
-                  />
-                </div>
-                <div>
-                  <label 
-                    className="block text-xs font-medium mb-1"
-                    style={{ color: getTextColor(700) }}
-                  >
-                    Cierre
-                  </label>
-                  <input
-                    type="time"
-                    value={daySchedule.closingHours}
-                    onChange={(e) => handleUpdateDayHours(day, 'closingHours', e.target.value)}
-                    className="w-full px-2 py-1 text-sm border rounded"
-                    style={{
-                      backgroundColor: getCardBackground(),
-                      borderColor: getCardBorder(),
-                      color: getTextColor(900),
-                    }}
-                  />
-                </div>
-              </div>
-
-              {/* Barra de Progreso */}
-              <div className="mb-4">
-                <div className="flex justify-between text-xs mb-1">
-                  <span style={{ color: getTextColor(600) }}>Cobertura de Turnos</span>
-                  <span style={{ color: getTextColor(600) }}>{Math.round(calculateShiftCoverage(day))}%</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div 
-                    className="h-2 rounded-full transition-all duration-300"
-                    style={{
-                      width: `${calculateShiftCoverage(day)}%`,
-                      backgroundColor: getInfoColor()
-                    }}
-                  ></div>
-                </div>
-              </div>
-
-              {/* Turnos */}
-              <div className="space-y-3">
-                {daySchedule.shifts.map((shift) => (
-                  <div 
-                    key={shift.id}
-                    className="p-3 rounded-lg border"
-                    style={{
-                      backgroundColor: getCardBackground(),
-                      borderColor: getCardBorder(),
-                    }}
-                  >
-                    <div className="flex justify-between items-center mb-2">
-                      <h5 
-                        className="font-medium"
+                  {/* Header de la tarjeta */}
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <h4 
+                        className="font-bold text-lg mb-1"
                         style={{ color: getTextColor(900) }}
                       >
-                        {shift.name}
-                      </h5>
-                      <button
-                        onClick={() => handleRemoveShift(day, shift.id)}
-                        className="text-red-500 hover:text-red-700 text-sm"
+                        {dayNames[dayKey as keyof typeof dayNames]}
+                      </h4>
+                      <p 
+                        className="text-sm"
+                        style={{ color: getTextColor(600) }}
                       >
-                        🗑️
-                      </button>
+                        {daySchedule.openingHours} - {daySchedule.closingHours}
+                      </p>
                     </div>
-                    
-                    <div className="grid grid-cols-2 gap-2 mb-3">
-                      <div>
-                        <label 
-                          className="block text-xs font-medium mb-1"
-                          style={{ color: getTextColor(700) }}
-                        >
-                          Inicio
-                        </label>
-                        <input
-                          type="time"
-                          value={shift.startTime}
-                          onChange={(e) => handleUpdateShift(day, shift.id, 'startTime', e.target.value)}
-                          className="w-full px-2 py-1 text-xs border rounded"
-                          style={{
-                            backgroundColor: getCardBackground(),
-                            borderColor: getCardBorder(),
-                            color: getTextColor(900),
-                          }}
-                        />
+                    <div className="text-right">
+                      <div 
+                        className="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold"
+                        style={{ 
+                          backgroundColor: getInfoColor() + '20',
+                          color: getInfoColor()
+                        }}
+                      >
+                        {totalShifts}
                       </div>
-                      <div>
-                        <label 
-                          className="block text-xs font-medium mb-1"
-                          style={{ color: getTextColor(700) }}
-                        >
-                          Fin
-                        </label>
-                        <input
-                          type="time"
-                          value={shift.endTime}
-                          onChange={(e) => handleUpdateShift(day, shift.id, 'endTime', e.target.value)}
-                          className="w-full px-2 py-1 text-xs border rounded"
-                          style={{
-                            backgroundColor: getCardBackground(),
-                            borderColor: getCardBorder(),
-                            color: getTextColor(900),
-                          }}
-                        />
-                      </div>
+                      <p 
+                        className="text-xs mt-1"
+                        style={{ color: getTextColor(600) }}
+                      >
+                        Turnos
+                      </p>
                     </div>
+                  </div>
 
-                    <div className="flex justify-between items-center">
-                      <span 
+                  {/* Estadísticas */}
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="text-center">
+                      <div 
+                        className="text-2xl font-bold"
+                        style={{ color: getTextColor(900) }}
+                      >
+                        {totalShifts}
+                      </div>
+                      <div 
                         className="text-xs"
                         style={{ color: getTextColor(600) }}
                       >
-                        {calculateWorkHours(shift.startTime, shift.endTime)}h
-                      </span>
-                                             <Button
-                         variant="accent"
-                         size="small"
-                         onClick={() => handleOpenAssignmentModal(day, shift.id)}
-                       >
-                         👥 Asignar Empleados
-                       </Button>
-                    </div>
-
-                    {/* Empleados Asignados */}
-                    {shift.assignedEmployees.length > 0 && (
-                      <div className="mt-2 pt-2 border-t">
-                        <span 
-                          className="text-xs font-medium"
-                          style={{ color: getTextColor(700) }}
-                        >
-                          Empleados: {shift.assignedEmployees.length}
-                        </span>
+                        Turnos configurados
                       </div>
-                    )}
+                    </div>
+                    <div className="text-center">
+                      <div 
+                        className="text-2xl font-bold"
+                        style={{ color: getTextColor(900) }}
+                      >
+                        {totalEmployees}
+                      </div>
+                      <div 
+                        className="text-xs"
+                        style={{ color: getTextColor(600) }}
+                      >
+                        Empleados asignados
+                      </div>
+                    </div>
                   </div>
-                ))}
-              </div>
+
+                  {/* Lista de turnos */}
+                  {daySchedule.shifts && daySchedule.shifts.length > 0 && (
+                    <div className="mb-4">
+                      <h5 
+                        className="text-sm font-semibold mb-2"
+                        style={{ color: getTextColor(700) }}
+                      >
+                        Turnos:
+                      </h5>
+                      <div className="space-y-2">
+                        {daySchedule.shifts.map((shift, index) => (
+                          <div 
+                            key={shift.id}
+                            className="p-2 rounded-lg"
+                            style={{
+                              backgroundColor: getInfoColor() + '10',
+                              border: `1px solid ${getInfoColor()}20`
+                            }}
+                          >
+                            <div className="flex justify-between items-center">
+                              <span 
+                                className="text-sm font-medium"
+                                style={{ color: getTextColor(800) }}
+                              >
+                                {shift.name}
+                              </span>
+                              <span 
+                                className="text-xs"
+                                style={{ color: getTextColor(600) }}
+                              >
+                                {shift.startTime} - {shift.endTime}
+                              </span>
+                            </div>
+                            {shift.assignedEmployees && shift.assignedEmployees.length > 0 && (
+                              <div 
+                                className="text-xs mt-1"
+                                style={{ color: getTextColor(600) }}
+                              >
+                                {shift.assignedEmployees.length} empleado{shift.assignedEmployees.length !== 1 ? 's' : ''}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Botón de editar */}
+                  <Button
+                    variant="secondary"
+                    size="small"
+                    onClick={handleOpenScheduleWizard}
+                    className="w-full"
+                  >
+                    ✏️ Editar Horarios
+                  </Button>
+                </div>
+              );
+            });
+          })()}
+          </div>
+        ) : (
+          <div 
+            className="text-center py-12 rounded-xl border-2 border-dashed"
+            style={{
+              backgroundColor: getCardBackground(),
+              borderColor: getCardBorder(),
+            }}
+          >
+            <div 
+              className="text-6xl mb-4"
+              style={{ color: getTextColor(400) }}
+            >
+              ⏰
             </div>
-          ))}
-        </div>
+            <h4 
+              className="text-lg font-semibold mb-2"
+              style={{ color: getTextColor(700) }}
+            >
+              No hay horarios configurados
+            </h4>
+            <p 
+              className="text-sm mb-4"
+              style={{ color: getTextColor(600) }}
+            >
+              Configura los horarios de trabajo para este restaurante
+            </p>
+            <Button
+              variant="primary"
+              onClick={handleOpenScheduleWizard}
+            >
+              🚀 Configurar Horarios
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -1729,6 +1683,12 @@ const RestaurantManagement: React.FC = () => {
         isOpen={addEmployeeModalOpen}
         onClose={handleCloseAddEmployeeModal}
         onAddEmployee={handleAddEmployee}
+      />
+
+      <ScheduleWizard
+        isOpen={scheduleWizardOpen}
+        onClose={handleCloseScheduleWizard}
+        restaurantId={id || ''}
       />
     </div>
   );
