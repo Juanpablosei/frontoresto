@@ -2,9 +2,11 @@ import React from 'react';
 import { useAuthStore } from '../../store/authStore';
 import ThemeToggle from '../theme/ThemeToggle';
 import { useThemeColors } from '../../hooks/useThemeColors';
+import { useTranslation } from '../../hooks/useTranslation';
 
 const UserInfo: React.FC = () => {
   const { user, logout } = useAuthStore();
+  const { t } = useTranslation();
   const { 
     getCardBackground, 
     getCardBorder, 
@@ -30,11 +32,11 @@ const UserInfo: React.FC = () => {
   const getRoleName = (role: string) => {
     switch (role) {
       case 'ADMIN':
-        return 'Administrador';
+        return t('auth.roles.admin');
       case 'CLIENT_OWNER':
-        return 'Propietario';
+        return t('auth.roles.owner');
       default:
-        return 'Usuario';
+        return t('auth.roles.user');
     }
   };
 
@@ -79,7 +81,7 @@ const UserInfo: React.FC = () => {
           className="px-4 py-2 rounded-lg transition-colors duration-200 text-sm font-medium text-white"
           style={{ backgroundColor: getDangerColor() }}
         >
-          Cerrar Sesión
+          {t('auth.logout')}
         </button>
       </div>
     </div>

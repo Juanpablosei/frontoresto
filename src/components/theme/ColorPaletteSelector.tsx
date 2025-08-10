@@ -1,33 +1,35 @@
 import React from 'react';
 import { useThemeStore } from '../../store/themeStore';
+import { useTranslation } from '../../hooks/useTranslation';
 
 const ColorPaletteSelector: React.FC = () => {
   const { selectedPaletteName, setPalette, getPaletteNames, getCurrentPalette } = useThemeStore();
+  const { t } = useTranslation();
   const paletteNames = getPaletteNames();
   const paletteInfo = {
     'amber': {
-      name: 'Ámbar',
-      description: 'Tono cálido y acogedor',
+      name: t('theme.themes.orange.name'),
+      description: t('theme.themes.orange.description'),
       colors: ['#f59e0b', '#d97706', '#b45309'],
     },
     'emerald': {
-      name: 'Esmeralda',
-      description: 'Verde fresco y natural',
+      name: t('theme.themes.green.name'),
+      description: t('theme.themes.green.description'),
       colors: ['#10b981', '#059669', '#047857'],
     },
     'purple': {
-      name: 'Púrpura',
-      description: 'Elegante y sofisticado',
+      name: t('theme.themes.purple.name'),
+      description: t('theme.themes.purple.description'),
       colors: ['#a855f7', '#9333ea', '#7c3aed'],
     },
     'rose': {
-      name: 'Rosa',
-      description: 'Moderno y vibrante',
+      name: t('theme.themes.pink.name'),
+      description: t('theme.themes.pink.description'),
       colors: ['#f43f5e', '#e11d48', '#be123c'],
     },
     'sober': {
-      name: 'Sobrio',
-      description: 'Grises y blancos elegantes',
+      name: t('theme.themes.blue.name'),
+      description: t('theme.themes.blue.description'),
       colors: ['#64748b', '#475569', '#334155'],
     },
   };
@@ -35,9 +37,9 @@ const ColorPaletteSelector: React.FC = () => {
   return (
     <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-white mb-4">🎨 Personaliza tu Experiencia</h2>
+        <h2 className="text-3xl font-bold text-white mb-4">🎨 {t('home.customizeExperience')}</h2>
         <p className="text-white/80 text-lg">
-          Selecciona una paleta de colores que refleje tu estilo
+          {t('home.customizeDescription')}
         </p>
       </div>
 
@@ -89,7 +91,7 @@ const ColorPaletteSelector: React.FC = () => {
 
       <div className="mt-8 text-center">
         <p className="text-white/60 text-sm">
-          Los cambios se aplicarán automáticamente en toda la aplicación
+          {t('home.themeInfo')}
         </p>
       </div>
     </div>

@@ -3,12 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { Button } from '../components/buttons';
 import ColorPaletteSelector from '../components/theme/ColorPaletteSelector';
+import { LanguageSelector } from '../components/language';
 import { useThemeColors } from '../hooks/useThemeColors';
+import { useTranslation } from '../hooks/useTranslation';
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuthStore();
   const { getBackgroundGradient } = useThemeColors();
+  const { t } = useTranslation();
 
   // Solo redirigir si el usuario está autenticado
   useEffect(() => {
@@ -39,16 +42,17 @@ const Home: React.FC = () => {
         <header className="p-6 lg:p-8 bg-white/10 backdrop-blur-lg border-b border-white/20">
           <div className="max-w-6xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-4 lg:gap-0">
             <div className="flex flex-col gap-1">
-              <h1 className="text-2xl lg:text-3xl font-bold text-white shadow-lg">🍽️ RestoManager</h1>
-              <p className="text-sm text-white/80 font-light">Sistema de Gestión de Restaurantes</p>
+              <h1 className="text-2xl lg:text-3xl font-bold text-white shadow-lg">🍽️ {t('home.title')}</h1>
+              <p className="text-sm text-white/80 font-light">{t('home.subtitle')}</p>
             </div>
             <div className="flex gap-4">
+              <LanguageSelector />
               <Button
                 variant="primary"
                 size="medium"
                 onClick={handleIngresar}
               >
-                🚀 Ingresar
+                🚀 {t('home.enter')}
               </Button>
             </div>
           </div>
@@ -58,11 +62,10 @@ const Home: React.FC = () => {
           <div className="text-center mb-16 lg:mb-16 py-16 lg:py-16">
             <div className="max-w-4xl mx-auto">
               <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight shadow-lg">
-                Gestiona tu restaurante de manera inteligente
+                {t('home.heroTitle')}
               </h1>
               <p className="text-lg lg:text-xl text-white/90 mb-12 leading-relaxed max-w-3xl mx-auto">
-                Sistema completo para la administración de restaurantes. 
-                Control de mesas, productos, menús, empleados y estadísticas en tiempo real.
+                {t('home.heroDescription')}
               </p>
               <div className="flex justify-center gap-4 flex-wrap">
                 <Button
@@ -71,7 +74,7 @@ const Home: React.FC = () => {
                   onClick={handleIngresar}
                   fullWidth
                 >
-                  🚀 Comenzar Ahora
+                  🚀 {t('home.startNow')}
                 </Button>
               </div>
             </div>
@@ -83,35 +86,35 @@ const Home: React.FC = () => {
           </div>
 
           <div className="py-16 lg:py-16">
-            <h2 className="text-3xl lg:text-4xl font-semibold text-white text-center mb-12 shadow-lg">¿Por qué elegir RestoManager?</h2>
+            <h2 className="text-3xl lg:text-4xl font-semibold text-white text-center mb-12 shadow-lg">{t('home.whyChoose')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto">
-              <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 text-center border border-white/20 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:shadow-2xl">
-                <div className="text-5xl mb-4 block">📊</div>
-                <h3 className="text-xl font-semibold text-white mb-4 shadow-md">Estadísticas en Tiempo Real</h3>
-                <p className="text-white/80 leading-relaxed">Monitorea el rendimiento de tu restaurante con datos actualizados al momento.</p>
-              </div>
-              <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 text-center border border-white/20 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:shadow-2xl">
-                <div className="text-5xl mb-4 block">👥</div>
-                <h3 className="text-xl font-semibold text-white mb-4 shadow-md">Gestión de Empleados</h3>
-                <p className="text-white/80 leading-relaxed">Administra tu equipo de trabajo con roles y permisos específicos.</p>
-              </div>
-              <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 text-center border border-white/20 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:shadow-2xl">
-                <div className="text-5xl mb-4 block">🍽️</div>
-                <h3 className="text-xl font-semibold text-white mb-4 shadow-md">Control de Menús</h3>
-                <p className="text-white/80 leading-relaxed">Gestiona tus productos y menús de manera eficiente y organizada.</p>
-              </div>
-              <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 text-center border border-white/20 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:shadow-2xl">
-                <div className="text-5xl mb-4 block">📱</div>
-                <h3 className="text-xl font-semibold text-white mb-4 shadow-md">Interfaz Moderna</h3>
-                <p className="text-white/80 leading-relaxed">Diseño intuitivo y responsive para una experiencia de usuario excepcional.</p>
-              </div>
+                              <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 text-center border border-white/20 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:shadow-2xl">
+                  <div className="text-5xl mb-4 block">📊</div>
+                  <h3 className="text-xl font-semibold text-white mb-4 shadow-md">{t('home.realTimeStats')}</h3>
+                  <p className="text-white/80 leading-relaxed">{t('home.realTimeStatsDesc')}</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 text-center border border-white/20 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:shadow-2xl">
+                  <div className="text-5xl mb-4 block">👥</div>
+                  <h3 className="text-xl font-semibold text-white mb-4 shadow-md">{t('home.employeeManagement')}</h3>
+                  <p className="text-white/80 leading-relaxed">{t('home.employeeManagementDesc')}</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 text-center border border-white/20 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:shadow-2xl">
+                  <div className="text-5xl mb-4 block">🍽️</div>
+                  <h3 className="text-xl font-semibold text-white mb-4 shadow-md">{t('home.menuControl')}</h3>
+                  <p className="text-white/80 leading-relaxed">{t('home.menuControlDesc')}</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 text-center border border-white/20 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:shadow-2xl">
+                  <div className="text-5xl mb-4 block">📱</div>
+                  <h3 className="text-xl font-semibold text-white mb-4 shadow-md">{t('home.modernInterface')}</h3>
+                  <p className="text-white/80 leading-relaxed">{t('home.modernInterfaceDesc')}</p>
+                </div>
             </div>
           </div>
         </main>
 
         <footer className="p-8 bg-black/20 backdrop-blur-lg border-t border-white/10">
           <div className="max-w-6xl mx-auto text-center">
-            <p className="text-white/70 text-sm">&copy; 2024 RestoManager. Todos los derechos reservados.</p>
+            <p className="text-white/70 text-sm">{t('home.footer')}</p>
           </div>
         </footer>
       </div>

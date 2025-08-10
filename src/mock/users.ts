@@ -7,6 +7,17 @@ export interface MockUser {
   isActive: boolean;
 }
 
+// Función para obtener el nombre traducido de un usuario mock
+export const getTranslatedUserName = (user: MockUser, t: (key: string) => string): string => {
+  // Casos especiales que necesitan traducción
+  if (user.id === 'user-001' && user.role === 'ADMIN') {
+    return t('dashboard.adminSystem');
+  }
+  
+  // Para otros usuarios, devolver el nombre original
+  return user.name;
+};
+
 export const mockUsers: MockUser[] = [
   {
     id: 'user-001',

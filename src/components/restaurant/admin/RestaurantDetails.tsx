@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Restaurant } from './types';
 import { Button } from '../../buttons';
+import { useTranslation } from '../../../hooks/useTranslation';
 
 interface RestaurantDetailsProps {
   restaurant: Restaurant;
@@ -13,6 +14,7 @@ const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
   onUpdate,
   isLoading
 }) => {
+  const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState<Partial<Restaurant>>(restaurant);
 
@@ -33,7 +35,7 @@ const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
   return (
     <div className="restaurant-details">
       <div className="details-header">
-        <h2>📋 Detalles del Restaurante</h2>
+        <h2>📋 {t('restaurant.restaurantDetails')}</h2>
         <div className="header-actions">
           {isEditing ? (
             <>
@@ -44,7 +46,7 @@ const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
                 loading={isLoading}
                 disabled={isLoading}
               >
-                💾 Guardar
+                💾 {t('common.save')}
               </Button>
               <Button
                 variant="secondary"
@@ -52,7 +54,7 @@ const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
                 onClick={handleCancel}
                 disabled={isLoading}
               >
-                ❌ Cancelar
+                ❌ {t('common.cancel')}
               </Button>
             </>
           ) : (
@@ -62,7 +64,7 @@ const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
               onClick={() => setIsEditing(true)}
               disabled={isLoading}
             >
-              ✏️ Editar
+              ✏️ {t('common.edit')}
             </Button>
           )}
         </div>
@@ -70,10 +72,10 @@ const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
 
       <div className="details-content">
         <div className="detail-section">
-          <h3>🏪 Información Básica</h3>
+          <h3>{t('restaurant.basicInformation')}</h3>
           <div className="detail-grid">
             <div className="detail-item">
-              <label>Nombre:</label>
+              <label>{t('common.name')}:</label>
               {isEditing ? (
                 <input
                   type="text"
@@ -86,7 +88,7 @@ const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
               )}
             </div>
             <div className="detail-item">
-              <label>Descripción:</label>
+              <label>{t('common.description')}:</label>
               {isEditing ? (
                 <textarea
                   value={editData.description || ''}
@@ -102,10 +104,10 @@ const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
         </div>
 
         <div className="detail-section">
-          <h3>📍 Información de Contacto</h3>
+          <h3>{t('restaurant.contactInformationTitle')}</h3>
           <div className="detail-grid">
             <div className="detail-item">
-              <label>Dirección:</label>
+              <label>{t('restaurant.address')}:</label>
               {isEditing ? (
                 <input
                   type="text"
@@ -118,7 +120,7 @@ const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
               )}
             </div>
             <div className="detail-item">
-              <label>Teléfono:</label>
+              <label>{t('restaurant.phone')}:</label>
               {isEditing ? (
                 <input
                   type="tel"
@@ -131,7 +133,7 @@ const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
               )}
             </div>
             <div className="detail-item">
-              <label>Email:</label>
+              <label>{t('restaurant.email')}:</label>
               {isEditing ? (
                 <input
                   type="email"
@@ -144,7 +146,7 @@ const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
               )}
             </div>
             <div className="detail-item">
-              <label>Sitio Web:</label>
+              <label>{t('restaurant.websiteLabel')}:</label>
               {isEditing ? (
                 <input
                   type="url"
@@ -164,29 +166,25 @@ const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
         </div>
 
         <div className="detail-section">
-          <h3>🆔 Información Técnica</h3>
+          <h3>{t('restaurant.technicalInformation')}</h3>
           <div className="detail-grid">
             <div className="detail-item">
-              <label>ID del Cliente:</label>
-              <span className="technical-info">{restaurant.clientId}</span>
+              <label>{t('restaurant.id')}:</label>
+              <span>{restaurant.id}</span>
             </div>
             <div className="detail-item">
-              <label>Estado:</label>
+              <label>{t('restaurant.status')}:</label>
               <span className={`status-badge ${restaurant.isOpen ? 'open' : 'closed'}`}>
-                {restaurant.isOpen ? '🟢 Abierto' : '🔴 Cerrado'}
+                {restaurant.isOpen ? t('restaurant.open') : t('restaurant.closed')}
               </span>
             </div>
             <div className="detail-item">
-              <label>Creado:</label>
-              <span className="technical-info">
-                {new Date(restaurant.createdAt).toLocaleDateString()}
-              </span>
+              <label>{t('restaurant.createdAt')}:</label>
+              <span>{new Date(restaurant.createdAt).toLocaleDateString()}</span>
             </div>
             <div className="detail-item">
-              <label>Actualizado:</label>
-              <span className="technical-info">
-                {new Date(restaurant.updatedAt).toLocaleDateString()}
-              </span>
+              <label>{t('restaurant.updatedAt')}:</label>
+              <span>{new Date(restaurant.updatedAt).toLocaleDateString()}</span>
             </div>
           </div>
         </div>

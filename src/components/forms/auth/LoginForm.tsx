@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../../store/authStore';
 import { Button } from '../../buttons';
 import { useThemeColors } from '../../../hooks/useThemeColors';
+import { useTranslation } from '../../../hooks/useTranslation';
 import { mockUsers } from '../../../mock/users';
 
 const LoginForm: React.FC = () => {
@@ -12,6 +13,7 @@ const LoginForm: React.FC = () => {
   const [error, setError] = useState('');
   const { login } = useAuthStore();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { 
     getCardBackground, 
     getCardBorder, 
@@ -43,11 +45,11 @@ const LoginForm: React.FC = () => {
         // Redirigir al dashboard unificado para todos los usuarios
         navigate('/dashboard');
       } else {
-        setError('Credenciales incorrectas. Por favor, verifica tu email y contraseña.');
+        setError(t('auth.incorrectCredentials'));
       }
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
-      setError('Error al iniciar sesión. Por favor, intenta de nuevo.');
+      setError(t('auth.loginError'));
     } finally {
       setIsLoading(false);
     }
@@ -66,13 +68,13 @@ const LoginForm: React.FC = () => {
           className="text-3xl font-bold mb-2"
           style={{ color: getTextColor(900) }}
         >
-          🚀 Bienvenido
+          {t('auth.welcome')}
         </h2>
         <p 
           className="text-lg"
           style={{ color: getTextColor(600) }}
         >
-          Inicia sesión en tu cuenta
+          {t('auth.loginSubtitle')}
         </p>
       </div>
 
@@ -92,7 +94,7 @@ const LoginForm: React.FC = () => {
             className="block text-sm font-medium mb-2"
             style={{ color: getTextColor(700) }}
           >
-            📧 Correo Electrónico
+            📧 {t('auth.email')}
           </label>
           <input
             type="email"
@@ -112,7 +114,7 @@ const LoginForm: React.FC = () => {
             onBlur={(e) => {
               e.target.style.borderColor = getInputBorder();
             }}
-            placeholder="tu@email.com"
+            placeholder={t('auth.emailPlaceholder')}
           />
         </div>
 
@@ -122,7 +124,7 @@ const LoginForm: React.FC = () => {
             className="block text-sm font-medium mb-2"
             style={{ color: getTextColor(700) }}
           >
-            🔒 Contraseña
+            🔒 {t('auth.password')}
           </label>
           <input
             type="password"
@@ -142,7 +144,7 @@ const LoginForm: React.FC = () => {
             onBlur={(e) => {
               e.target.style.borderColor = getInputBorder();
             }}
-            placeholder="••••••••"
+            placeholder={t('auth.passwordPlaceholder')}
           />
         </div>
 
@@ -153,7 +155,7 @@ const LoginForm: React.FC = () => {
           fullWidth
           loading={isLoading}
         >
-          {isLoading ? 'Iniciando sesión...' : '🚀 Iniciar Sesión'}
+          {isLoading ? t('auth.loggingIn') : t('auth.loginButtonText')}
         </Button>
       </form>
 
@@ -162,13 +164,13 @@ const LoginForm: React.FC = () => {
           className="text-sm"
           style={{ color: getTextColor(500) }}
         >
-          ¿No tienes cuenta?{' '}
+          {t('auth.noAccount')}{' '}
           <a 
             href="/auth/register" 
             className="font-semibold hover:underline transition-colors duration-200"
             style={{ color: getTextColor(700) }}
           >
-            Regístrate aquí
+            {t('auth.registerHere')}
           </a>
         </p>
       </div>

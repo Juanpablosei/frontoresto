@@ -3,13 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { useRestaurantStore } from '../store/restaurantStore';
 import { UserInfo } from '../components/auth';
-import { mockUsers } from '../mock/users';
+import { useTranslation } from '../hooks/useTranslation';
+import { LanguageSelector } from '../components/language';
+import { mockUsers, getTranslatedUserName } from '../mock/users';
 import { useThemeColors } from '../hooks/useThemeColors';
 
 const UnifiedDashboard: React.FC = () => {
   const navigate = useNavigate();
   const { user, hasRole, hasAnyRole } = useAuthStore();
   const { restaurants, getRestaurantsByOwner, getEmployeesByRestaurant } = useRestaurantStore();
+  const { t } = useTranslation();
   const { 
     getBackgroundGradient, 
     getCardBackground, 
@@ -23,6 +26,11 @@ const UnifiedDashboard: React.FC = () => {
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [userRestaurants, setUserRestaurants] = useState<any[]>([]);
   const [showingUserRestaurants, setShowingUserRestaurants] = useState(false);
+  
+  // Estados para búsqueda y paginación
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 10;
 
   // Determinar si es admin u owner
   const isAdmin = hasRole('ADMIN');
@@ -92,6 +100,29 @@ const UnifiedDashboard: React.FC = () => {
 
   // Filtrar solo usuarios CLIENT_OWNER para mostrar al admin
   const ownerUsers = mockUsers.filter(user => user.role === 'CLIENT_OWNER');
+  
+  // Filtrar usuarios por término de búsqueda
+  const filteredUsers = ownerUsers.filter(user => 
+    getTranslatedUserName(user, t).toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  
+  // Calcular paginación
+  const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
+  const startIndex = (currentPage - 1) * usersPerPage;
+  const endIndex = startIndex + usersPerPage;
+  const currentUsers = filteredUsers.slice(startIndex, endIndex);
+  
+  // Función para cambiar de página
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+  
+  // Función para manejar búsqueda
+  const handleSearch = (value: string) => {
+    setSearchTerm(value);
+    setCurrentPage(1); // Resetear a la primera página cuando se busca
+  };
 
   return (
     <div 
@@ -100,8 +131,14 @@ const UnifiedDashboard: React.FC = () => {
     >
       <div className="relative z-10 min-h-screen flex flex-col">
         <header className="p-6 lg:p-8 bg-white/10 backdrop-blur-lg border-b border-white/20">
-          <div className="max-w-6xl mx-auto">
-            <UserInfo />
+          <div className="max-w-6xl mx-auto grid grid-cols-3 items-center">
+            <div></div>
+            <div className="flex justify-center">
+              <UserInfo />
+            </div>
+            <div className="flex justify-end">
+              <LanguageSelector />
+            </div>
           </div>
         </header>
 
@@ -118,7 +155,7 @@ const UnifiedDashboard: React.FC = () => {
                   color: getTextColor(900),
                 }}
               >
-                ← Volver a Usuarios
+                ← {t('dashboard.backToUsers')}
               </button>
             </div>
           )}
@@ -130,7 +167,7 @@ const UnifiedDashboard: React.FC = () => {
                 className="text-3xl lg:text-4xl font-semibold text-center mb-8 shadow-lg"
                 style={{ color: getTextColor(900) }}
               >
-                👥 Gestión de Usuarios
+                👥 {t('dashboard.userManagement')}
               </h2>
               
               <div 
@@ -140,6 +177,36 @@ const UnifiedDashboard: React.FC = () => {
                   borderColor: getCardBorder(),
                 }}
               >
+                {/* Buscador */}
+                <div className="mb-6">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder={t('dashboard.searchUsers')}
+                      value={searchTerm}
+                      onChange={(e) => handleSearch(e.target.value)}
+                      className="w-full px-4 py-3 pl-10 rounded-lg border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-opacity-50"
+                      style={{
+                        backgroundColor: getCardBackground(),
+                        borderColor: getCardBorder(),
+                        color: getTextColor(900),
+                        boxShadow: '0 0 0 2px transparent',
+                      }}
+                      onFocus={(e) => {
+                        e.target.style.boxShadow = `0 0 0 2px ${getCardBorder()}40`;
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.boxShadow = '0 0 0 2px transparent';
+                      }}
+                    />
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <span className="text-gray-400">🔍</span>
+                    </div>
+                  </div>
+                </div>
+
+
+
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
@@ -148,36 +215,43 @@ const UnifiedDashboard: React.FC = () => {
                           className="text-left p-4 font-semibold"
                           style={{ color: getTextColor(700) }}
                         >
-                          Nombre
+                          {t('common.name')}
                         </th>
                         <th 
                           className="text-left p-4 font-semibold"
                           style={{ color: getTextColor(700) }}
                         >
-                          Email
+                          {t('common.email')}
                         </th>
                         <th 
                           className="text-center p-4 font-semibold"
                           style={{ color: getTextColor(700) }}
                         >
-                          Restaurantes
+                          {t('dashboard.restaurants')}
                         </th>
                         <th 
                           className="text-center p-4 font-semibold"
                           style={{ color: getTextColor(700) }}
                         >
-                          Empleados
+                          {t('dashboard.employees')}
                         </th>
                         <th 
                           className="text-center p-4 font-semibold"
                           style={{ color: getTextColor(700) }}
                         >
-                          Acciones
+                          {t('dashboard.actions')}
                         </th>
                       </tr>
                     </thead>
                     <tbody>
-                      {ownerUsers.map((user) => {
+                      {currentUsers.length === 0 ? (
+                        <tr>
+                          <td colSpan={5} className="text-center py-8" style={{ color: getTextColor(600) }}>
+                            {t('dashboard.noUsersFound')}
+                          </td>
+                        </tr>
+                      ) : (
+                        currentUsers.map((user) => {
                         const userRestaurants = getRestaurantsByOwner(user.id);
                         const totalEmployees = userRestaurants.reduce((total, restaurant) => {
                           const restaurantEmployees = getEmployeesByRestaurant(restaurant.id);
@@ -198,7 +272,7 @@ const UnifiedDashboard: React.FC = () => {
                               className="p-4 font-medium"
                               style={{ color: getTextColor(900) }}
                             >
-                              {user.name}
+                              {getTranslatedUserName(user, t)}
                             </td>
                             <td 
                               className="p-4"
@@ -227,15 +301,66 @@ const UnifiedDashboard: React.FC = () => {
                                   color: getTextColor(700),
                                 }}
                               >
-                                Ver Detalles
+                                {t('dashboard.viewDetails')}
                               </button>
                             </td>
                           </tr>
                         );
-                      })}
+                      })
+                      )}
                     </tbody>
                   </table>
                 </div>
+
+                {/* Paginación */}
+                {totalPages > 1 && (
+                  <div className="mt-6 flex justify-center items-center gap-2">
+                    <button
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      disabled={currentPage === 1}
+                      className="px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                      style={{
+                        backgroundColor: currentPage === 1 ? 'transparent' : getCardBackground(),
+                        borderColor: getCardBorder(),
+                        color: currentPage === 1 ? getTextColor(400) : getTextColor(700),
+                      }}
+                    >
+                      {t('dashboard.previous')}
+                    </button>
+                    
+                    <div className="flex gap-1">
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                        <button
+                          key={page}
+                          onClick={() => handlePageChange(page)}
+                          className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                            page === currentPage ? 'text-white' : ''
+                          }`}
+                          style={{
+                            backgroundColor: page === currentPage ? getCardBorder() : 'transparent',
+                            borderColor: getCardBorder(),
+                            color: page === currentPage ? 'white' : getTextColor(700),
+                          }}
+                        >
+                          {page}
+                        </button>
+                      ))}
+                    </div>
+                    
+                    <button
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                      className="px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                      style={{
+                        backgroundColor: currentPage === totalPages ? 'transparent' : getCardBackground(),
+                        borderColor: getCardBorder(),
+                        color: currentPage === totalPages ? getTextColor(400) : getTextColor(700),
+                      }}
+                    >
+                      {t('dashboard.next')}
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -247,7 +372,7 @@ const UnifiedDashboard: React.FC = () => {
                 className="text-3xl lg:text-4xl font-semibold text-center mb-8 shadow-lg"
                 style={{ color: getTextColor(900) }}
               >
-                🏪 Restaurantes de {selectedUser.name}
+                🏪 {t('dashboard.restaurantsOf')} {selectedUser.name}
               </h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -278,7 +403,7 @@ const UnifiedDashboard: React.FC = () => {
                       </p>
                       <div className="flex justify-between items-center text-sm">
                         <span style={{ color: getTextColor(600) }}>📍 {restaurant.address}</span>
-                        <span style={{ color: getTextColor(600) }}>👥 {restaurantEmployees.length} empleados</span>
+                        <span style={{ color: getTextColor(600) }}>👥 {restaurantEmployees.length} {t('dashboard.totalEmployees')}</span>
                       </div>
                     </div>
                   );
@@ -295,7 +420,7 @@ const UnifiedDashboard: React.FC = () => {
                   className="text-3xl lg:text-4xl font-semibold shadow-lg"
                   style={{ color: 'white' }}
                 >
-                  🏪 Mis Restaurantes
+                  🏪 {t('dashboard.myRestaurants')}
                 </h2>
                 <button
                   onClick={() => navigate('/create-restaurant')}
@@ -306,7 +431,7 @@ const UnifiedDashboard: React.FC = () => {
                     color: getTextColor(900),
                   }}
                 >
-                  ➕ Crear Restaurante
+                  ➕ {t('dashboard.createRestaurant')}
                 </button>
               </div>
               
@@ -317,13 +442,13 @@ const UnifiedDashboard: React.FC = () => {
                     className="text-2xl font-semibold mb-4"
                     style={{ color: getTextColor(900) }}
                   >
-                    No tienes restaurantes aún
+                    {t('dashboard.noRestaurants')}
                   </h3>
                   <p 
                     className="mb-8"
                     style={{ color: getTextColor(600) }}
                   >
-                    Comienza creando tu primer restaurante
+                    {t('dashboard.noRestaurantsDesc')}
                   </p>
                   <button
                     onClick={() => navigate('/create-restaurant')}
@@ -334,7 +459,7 @@ const UnifiedDashboard: React.FC = () => {
                       color: getTextColor(900),
                     }}
                   >
-                    🚀 Crear Mi Primer Restaurante
+                    🚀 {t('dashboard.createFirstRestaurant')}
                   </button>
                 </div>
               ) : (
@@ -366,7 +491,7 @@ const UnifiedDashboard: React.FC = () => {
                         </p>
                         <div className="flex justify-between items-center text-sm">
                           <span style={{ color: getTextColor(600) }}>📍 {restaurant.address}</span>
-                          <span style={{ color: getTextColor(600) }}>👥 {restaurantEmployees.length} empleados</span>
+                          <span style={{ color: getTextColor(600) }}>👥 {restaurantEmployees.length} {t('dashboard.totalEmployees')}</span>
                         </div>
                       </div>
                     );

@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RegisterForm } from '../../components/forms/auth';
 import { RegisterFormData } from '../../components/forms/auth';
+import { useTranslation } from '../../hooks/useTranslation';
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>('');
 
@@ -16,11 +18,11 @@ const Register: React.FC = () => {
       // Simular registro
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      alert('¡Cuenta creada exitosamente! Por favor, inicia sesión.');
+      alert(t('auth.accountCreatedSuccess'));
       navigate('/auth/login');
       
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al crear la cuenta');
+      setError(err instanceof Error ? err.message : t('auth.accountCreationError'));
     } finally {
       setIsLoading(false);
     }

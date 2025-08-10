@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useThemeColors } from '../../hooks/useThemeColors';
+import { useTranslation } from '../../hooks/useTranslation';
 import Button from '../buttons/Button';
 
 interface AddEmployeeModalProps {
@@ -19,6 +20,7 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
   onClose,
   onAddEmployee
 }) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -78,13 +80,13 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
             className="text-xl font-semibold"
             style={{ color: getTextColor(900) }}
           >
-            ➕ Agregar Nuevo Empleado
+            ➕ {t('employees.addEmployeeTitle')}
           </h2>
           <p 
             className="text-sm mt-1"
             style={{ color: getTextColor(600) }}
           >
-            Completa la información del empleado
+            {t('employees.addEmployeeDescription')}
           </p>
         </div>
 
@@ -95,7 +97,7 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
               className="block text-sm font-medium mb-2"
               style={{ color: getTextColor(700) }}
             >
-              Nombre Completo *
+              {t('employees.fullName')} *
             </label>
             <input
               type="text"
@@ -109,7 +111,7 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
               }}
               onFocus={(e) => { e.target.style.borderColor = getInputFocusBorder(); }}
               onBlur={(e) => { e.target.style.borderColor = getInputBorder(); }}
-              placeholder="Ej: María González"
+              placeholder={t('employees.namePlaceholder')}
               required
             />
           </div>
@@ -120,7 +122,7 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
               className="block text-sm font-medium mb-2"
               style={{ color: getTextColor(700) }}
             >
-              Email *
+              {t('common.email')} *
             </label>
             <input
               type="email"
@@ -134,7 +136,7 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
               }}
               onFocus={(e) => { e.target.style.borderColor = getInputFocusBorder(); }}
               onBlur={(e) => { e.target.style.borderColor = getInputBorder(); }}
-              placeholder="maria@restaurant.com"
+              placeholder={t('employees.emailPlaceholder')}
               required
             />
           </div>
@@ -145,7 +147,7 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
               className="block text-sm font-medium mb-2"
               style={{ color: getTextColor(700) }}
             >
-              Teléfono *
+              {t('employees.phone')} *
             </label>
             <input
               type="tel"
@@ -159,7 +161,7 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
               }}
               onFocus={(e) => { e.target.style.borderColor = getInputFocusBorder(); }}
               onBlur={(e) => { e.target.style.borderColor = getInputBorder(); }}
-              placeholder="+54 9 11 1234-5678"
+              placeholder={t('employees.phonePlaceholder')}
               required
             />
           </div>
@@ -170,7 +172,7 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
               className="block text-sm font-medium mb-2"
               style={{ color: getTextColor(700) }}
             >
-              Rol
+              {t('employees.role')}
             </label>
             <select
               value={formData.role}
@@ -184,11 +186,11 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
               onFocus={(e) => { e.target.style.borderColor = getInputFocusBorder(); }}
               onBlur={(e) => { e.target.style.borderColor = getInputBorder(); }}
             >
-              <option value="WAITER">Mesero/a</option>
-              <option value="COOK">Cocinero/a</option>
-              <option value="MANAGER">Gerente</option>
-              <option value="CASHIER">Cajero/a</option>
-              <option value="HOST">Anfitrión/a</option>
+              <option value="WAITER">{t('employees.roles.WAITER')}</option>
+              <option value="COOK">{t('employees.roles.COOK')}</option>
+              <option value="MANAGER">{t('employees.roles.MANAGER')}</option>
+              <option value="CASHIER">{t('employees.roles.CASHIER')}</option>
+              <option value="HOST">{t('employees.roles.HOST')}</option>
             </select>
           </div>
 
@@ -198,7 +200,7 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
               className="block text-sm font-medium mb-2"
               style={{ color: getTextColor(700) }}
             >
-              Estado
+              {t('employees.status')}
             </label>
             <select
               value={formData.status}
@@ -212,28 +214,27 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
               onFocus={(e) => { e.target.style.borderColor = getInputFocusBorder(); }}
               onBlur={(e) => { e.target.style.borderColor = getInputBorder(); }}
             >
-              <option value="ACTIVE">Activo</option>
-              <option value="INACTIVE">Inactivo</option>
-              <option value="VACATION">Vacaciones</option>
-              <option value="SICK">Enfermo</option>
+              <option value="ACTIVE">{t('common.active')}</option>
+              <option value="INACTIVE">{t('common.inactive')}</option>
             </select>
           </div>
 
           {/* Botones */}
           <div className="flex gap-3 pt-4">
             <Button
+              type="button"
               variant="secondary"
-              fullWidth
               onClick={onClose}
+              className="flex-1"
             >
-              Cancelar
+              {t('common.cancel')}
             </Button>
             <Button
-              variant="primary"
-              fullWidth
               type="submit"
+              variant="primary"
+              className="flex-1"
             >
-              Agregar Empleado
+              {t('employees.addEmployee')}
             </Button>
           </div>
         </form>

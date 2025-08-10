@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useRestaurantStore } from '../store/restaurantStore';
 import { useRestaurantSchedule } from '../store/scheduleStore';
+import { useTranslation } from '../hooks/useTranslation';
+import { LanguageSelector } from '../components/language';
 import EmployeeTransferModal from '../components/restaurant/EmployeeTransferModal';
 import ShiftAssignmentModal from '../components/restaurant/ShiftAssignmentModal';
 import AddEmployeeModal from '../components/restaurant/AddEmployeeModal';
@@ -14,6 +16,7 @@ const RestaurantManagement: React.FC = () => {
   const navigate = useNavigate();
   const { getRestaurantById, getEmployeesByRestaurant, clearAndReload } = useRestaurantStore();
   const { schedule, saveSchedule } = useRestaurantSchedule(id || '');
+  const { t } = useTranslation();
   const { 
     getCardBackground, 
     getCardBorder, 
@@ -568,20 +571,20 @@ const RestaurantManagement: React.FC = () => {
           </h3>
           <div className="space-y-3">
             <div className="flex justify-between items-center py-3 border-b" style={{ borderColor: getCardBorder() }}>
-              <span className="font-semibold" style={{ color: getTextColor(600) }}>Dirección:</span>
+              <span className="font-semibold" style={{ color: getTextColor(600) }}>{t('restaurant.address')}:</span>
               <span className="font-medium" style={{ color: getTextColor(800) }}>{restaurant.address}</span>
             </div>
             <div className="flex justify-between items-center py-3 border-b" style={{ borderColor: getCardBorder() }}>
-              <span className="font-semibold" style={{ color: getTextColor(600) }}>Teléfono:</span>
+              <span className="font-semibold" style={{ color: getTextColor(600) }}>{t('restaurant.phone')}:</span>
               <span className="font-medium" style={{ color: getTextColor(800) }}>{restaurant.phone}</span>
             </div>
             <div className="flex justify-between items-center py-3 border-b" style={{ borderColor: getCardBorder() }}>
-              <span className="font-semibold" style={{ color: getTextColor(600) }}>Email:</span>
+              <span className="font-semibold" style={{ color: getTextColor(600) }}>{t('restaurant.email')}:</span>
               <span className="font-medium" style={{ color: getTextColor(800) }}>{restaurant.email}</span>
             </div>
             {restaurant.website && (
               <div className="flex justify-between items-center py-3">
-                <span className="font-semibold" style={{ color: getTextColor(600) }}>Sitio Web:</span>
+                <span className="font-semibold" style={{ color: getTextColor(600) }}>{t('restaurant.website')}:</span>
                 <span className="font-medium" style={{ color: getTextColor(800) }}>{restaurant.website}</span>
               </div>
             )}
@@ -605,19 +608,19 @@ const RestaurantManagement: React.FC = () => {
           <div className="grid grid-cols-2 gap-4">
             <div className="text-center p-4 rounded-lg" style={{ backgroundColor: `${getCardBackground()}80` }}>
               <span className="block text-3xl font-bold mb-2" style={{ color: getTextColor(900) }}>{employees.length}</span>
-              <span className="block text-sm" style={{ color: getTextColor(600) }}>Empleados</span>
+              <span className="block text-sm" style={{ color: getTextColor(600) }}>{t('restaurant.employees')}</span>
             </div>
             <div className="text-center p-4 rounded-lg" style={{ backgroundColor: `${getCardBackground()}80` }}>
               <span className="block text-3xl font-bold mb-2" style={{ color: getTextColor(900) }}>12</span>
-              <span className="block text-sm" style={{ color: getTextColor(600) }}>Mesas</span>
+              <span className="block text-sm" style={{ color: getTextColor(600) }}>{t('restaurant.tables')}</span>
             </div>
             <div className="text-center p-4 rounded-lg" style={{ backgroundColor: `${getCardBackground()}80` }}>
               <span className="block text-3xl font-bold mb-2" style={{ color: getTextColor(900) }}>45</span>
-              <span className="block text-sm" style={{ color: getTextColor(600) }}>Productos</span>
+              <span className="block text-sm" style={{ color: getTextColor(600) }}>{t('restaurant.products')}</span>
             </div>
             <div className="text-center p-4 rounded-lg" style={{ backgroundColor: `${getCardBackground()}80` }}>
               <span className="block text-3xl font-bold mb-2" style={{ color: getTextColor(900) }}>8</span>
-              <span className="block text-sm" style={{ color: getTextColor(600) }}>Menús</span>
+              <span className="block text-sm" style={{ color: getTextColor(600) }}>{t('restaurant.menus')}</span>
             </div>
           </div>
         </div>
@@ -657,13 +660,13 @@ const RestaurantManagement: React.FC = () => {
           </h3>
           <div className="space-y-3">
             <div className="flex justify-between items-center py-3 border-b" style={{ borderColor: getCardBorder() }}>
-              <span className="font-semibold" style={{ color: getTextColor(600) }}>Creado:</span>
+              <span className="font-semibold" style={{ color: getTextColor(600) }}>{t('restaurant.createdAt')}:</span>
               <span className="font-medium" style={{ color: getTextColor(800) }}>
                 {new Date(restaurant.createdAt).toLocaleDateString()}
               </span>
             </div>
             <div className="flex justify-between items-center py-3">
-              <span className="font-semibold" style={{ color: getTextColor(600) }}>Estado:</span>
+              <span className="font-semibold" style={{ color: getTextColor(600) }}>{t('restaurant.status')}:</span>
               <span 
                 className={`px-3 py-1 rounded-full text-sm font-semibold text-white ${
                   restaurant.isActive ? '' : ''
@@ -672,7 +675,7 @@ const RestaurantManagement: React.FC = () => {
                   backgroundColor: restaurant.isActive ? getSuccessColor() : getDangerColor()
                 }}
               >
-                {restaurant.isActive ? 'Activo' : 'Inactivo'}
+                {restaurant.isActive ? t('restaurant.active') : t('restaurant.inactive')}
               </span>
             </div>
           </div>
@@ -698,7 +701,7 @@ const RestaurantManagement: React.FC = () => {
             variant="primary"
             onClick={handleOpenScheduleWizard}
           >
-            ⏰ Configurar Horarios
+            ⏰ {t('restaurant.configureSchedules')}
           </Button>
         </div>
         
@@ -769,7 +772,7 @@ const RestaurantManagement: React.FC = () => {
                         className="text-xs mt-1"
                         style={{ color: getTextColor(600) }}
                       >
-                        Turnos
+                        {t('restaurant.shifts')}
                       </p>
                     </div>
                   </div>
@@ -787,7 +790,7 @@ const RestaurantManagement: React.FC = () => {
                         className="text-xs"
                         style={{ color: getTextColor(600) }}
                       >
-                        Turnos configurados
+                        {t('restaurant.configuredSchedules')}
                       </div>
                     </div>
                     <div className="text-center">
@@ -801,7 +804,7 @@ const RestaurantManagement: React.FC = () => {
                         className="text-xs"
                         style={{ color: getTextColor(600) }}
                       >
-                        Empleados asignados
+                        {t('restaurant.assignedEmployees')}
                       </div>
                     </div>
                   </div>
@@ -813,7 +816,7 @@ const RestaurantManagement: React.FC = () => {
                         className="text-sm font-semibold mb-2"
                         style={{ color: getTextColor(700) }}
                       >
-                        Turnos:
+                        {t('restaurant.shifts')}:
                       </h5>
                       <div className="space-y-2">
                         {daySchedule.shifts.map((shift, index) => (
@@ -844,7 +847,7 @@ const RestaurantManagement: React.FC = () => {
                                 className="text-xs mt-1"
                                 style={{ color: getTextColor(600) }}
                               >
-                                {shift.assignedEmployees.length} empleado{shift.assignedEmployees.length !== 1 ? 's' : ''}
+                                {shift.assignedEmployees.length} {t('restaurant.employee', { count: shift.assignedEmployees.length })}
                               </div>
                             )}
                           </div>
@@ -860,7 +863,7 @@ const RestaurantManagement: React.FC = () => {
                     onClick={handleOpenScheduleWizard}
                     className="w-full"
                   >
-                    ✏️ Editar Horarios
+                    ✏️ {t('restaurant.editSchedules')}
                   </Button>
                 </div>
               );
@@ -885,19 +888,19 @@ const RestaurantManagement: React.FC = () => {
               className="text-lg font-semibold mb-2"
               style={{ color: getTextColor(700) }}
             >
-              No hay horarios configurados
+              {t('restaurant.noSchedulesConfigured')}
             </h4>
             <p 
               className="text-sm mb-4"
               style={{ color: getTextColor(600) }}
             >
-              Configura los horarios de trabajo para este restaurante
+              {t('restaurant.configureWorkSchedules')}
             </p>
             <Button
               variant="primary"
               onClick={handleOpenScheduleWizard}
             >
-              🚀 Configurar Horarios
+              🚀 {t('restaurant.configureSchedules')}
             </Button>
           </div>
         )}
@@ -919,13 +922,13 @@ const RestaurantManagement: React.FC = () => {
             className="text-xl font-bold"
             style={{ color: getTextColor(900) }}
           >
-            👥 Empleados ({employees.length})
+            👥 {t('restaurant.employees')}({employees.length})
           </h3>
           <Button
             variant="primary"
             onClick={handleOpenAddEmployeeModal}
           >
-            ➕ Agregar Empleado
+            ➕ {t('restaurant.addEmployee')}
           </Button>
         </div>
 
@@ -936,13 +939,13 @@ const RestaurantManagement: React.FC = () => {
               className="text-2xl font-semibold mb-2"
               style={{ color: getTextColor(900) }}
             >
-              No hay empleados en este restaurante
+              {t('restaurant.noEmployees')}
             </h3>
             <p 
               className="text-base"
               style={{ color: getTextColor(600) }}
             >
-              Agrega empleados para comenzar a operar
+              {t('restaurant.addEmployeesToOperate')}
             </p>
           </div>
         ) : (
@@ -957,43 +960,43 @@ const RestaurantManagement: React.FC = () => {
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     style={{ color: getTextColor(700) }}
                   >
-                    Empleado
+                    {t('restaurant.employee')}
                   </th>
                   <th 
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     style={{ color: getTextColor(700) }}
                   >
-                    Rol
+                    {t('restaurant.role')}
                   </th>
                   <th 
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     style={{ color: getTextColor(700) }}
                   >
-                    Email
+                    {t('restaurant.email')}
                   </th>
                   <th 
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     style={{ color: getTextColor(700) }}
                   >
-                    Teléfono
+                    {t('restaurant.phone')}
                   </th>
                   <th 
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     style={{ color: getTextColor(700) }}
                   >
-                    Estado
+                    {t('restaurant.status')}
                   </th>
                   <th 
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     style={{ color: getTextColor(700) }}
                   >
-                    Contratado
+                    {t('restaurant.hired')}
                   </th>
                   <th 
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     style={{ color: getTextColor(700) }}
                   >
-                    Acciones
+                    {t('restaurant.actions')}
                   </th>
                 </tr>
               </thead>
@@ -1050,7 +1053,7 @@ const RestaurantManagement: React.FC = () => {
                           backgroundColor: employee.isActive ? getSuccessColor() : getDangerColor()
                         }}
                       >
-                        {employee.isActive ? 'Activo' : 'Inactivo'}
+                        {employee.isActive ? t('restaurant.active') : t('restaurant.inactive')}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -1066,7 +1069,7 @@ const RestaurantManagement: React.FC = () => {
                             color: getTextColor(600),
                             backgroundColor: 'transparent'
                           }}
-                          title="Editar empleado"
+                          title={t('restaurant.editEmployee')}
                         >
                           ✏️
                         </button>
@@ -1077,7 +1080,7 @@ const RestaurantManagement: React.FC = () => {
                             color: getTextColor(600),
                             backgroundColor: 'transparent'
                           }}
-                          title="Transferir empleado"
+                          title={t('restaurant.transferEmployee')}
                         >
                           🔄
                         </button>
@@ -1087,7 +1090,7 @@ const RestaurantManagement: React.FC = () => {
                             color: getTextColor(600),
                             backgroundColor: 'transparent'
                           }}
-                          title="Ver perfil"
+                          title={t('restaurant.viewProfile')}
                         >
                           📊
                         </button>
@@ -1117,13 +1120,13 @@ const RestaurantManagement: React.FC = () => {
             className="text-xl font-bold"
             style={{ color: getTextColor(900) }}
           >
-            🍽️ Menús ({menus.length})
+            🍽️ {t('restaurant.menus')}({menus.length})
           </h3>
           <Button
             variant="primary"
             onClick={handleAddMenu}
           >
-            ➕ Agregar Menú
+            ➕ {t('restaurant.addMenu')}
           </Button>
         </div>
 
@@ -1134,13 +1137,13 @@ const RestaurantManagement: React.FC = () => {
               className="text-2xl font-semibold mb-2"
               style={{ color: getTextColor(900) }}
             >
-              No hay menús en este restaurante
+              {t('restaurant.noMenus')}
             </h3>
             <p 
               className="text-base"
               style={{ color: getTextColor(600) }}
             >
-              Agrega menús para comenzar a operar
+              {t('restaurant.addMenusToOperate')}
             </p>
           </div>
         ) : (
@@ -1155,43 +1158,43 @@ const RestaurantManagement: React.FC = () => {
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     style={{ color: getTextColor(700) }}
                   >
-                    Menú
+                    {t('restaurant.menu')}
                   </th>
                   <th 
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     style={{ color: getTextColor(700) }}
                   >
-                    Categoría
+                    {t('restaurant.category')}
                   </th>
                   <th 
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     style={{ color: getTextColor(700) }}
                   >
-                    Precio
+                    {t('restaurant.price')}
                   </th>
                   <th 
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     style={{ color: getTextColor(700) }}
                   >
-                    Items
+                    {t('restaurant.items')}
                   </th>
                   <th 
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     style={{ color: getTextColor(700) }}
                   >
-                    Estado
+                    {t('restaurant.status')}
                   </th>
                   <th 
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     style={{ color: getTextColor(700) }}
                   >
-                    Actualizado
+                    {t('restaurant.updatedAt')}
                   </th>
                   <th 
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     style={{ color: getTextColor(700) }}
                   >
-                    Acciones
+                    {t('restaurant.actions')}
                   </th>
                 </tr>
               </thead>
@@ -1239,12 +1242,12 @@ const RestaurantManagement: React.FC = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span style={{ color: getTextColor(800) }}>
-                        {menu.price > 0 ? `$${menu.price.toLocaleString()}` : 'Gratis'}
+                        {menu.price > 0 ? `$${menu.price.toLocaleString()}` : t('restaurant.free')}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span style={{ color: getTextColor(800) }}>
-                        {menu.items} items
+                        {menu.items} {t('restaurant.items')}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -1256,7 +1259,7 @@ const RestaurantManagement: React.FC = () => {
                           backgroundColor: menu.isActive ? getSuccessColor() : getDangerColor()
                         }}
                       >
-                        {menu.isActive ? 'Activo' : 'Inactivo'}
+                        {menu.isActive ? t('restaurant.active') : t('restaurant.inactive')}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -1273,7 +1276,7 @@ const RestaurantManagement: React.FC = () => {
                             backgroundColor: 'transparent'
                           }}
                           onClick={() => handleEditMenu(menu.id)}
-                          title="Editar menú"
+                          title={t('restaurant.editMenu')}
                         >
                           ✏️
                         </button>
@@ -1284,7 +1287,7 @@ const RestaurantManagement: React.FC = () => {
                             color: getTextColor(600),
                             backgroundColor: 'transparent'
                           }}
-                          title={menu.isActive ? 'Desactivar menú' : 'Activar menú'}
+                          title={menu.isActive ? t('restaurant.deactivateMenu') : t('restaurant.activateMenu')}
                         >
                           {menu.isActive ? '🔴' : '🟢'}
                         </button>
@@ -1295,7 +1298,7 @@ const RestaurantManagement: React.FC = () => {
                             color: getDangerColor(),
                             backgroundColor: 'transparent'
                           }}
-                          title="Eliminar menú"
+                          title={t('restaurant.deleteMenu')}
                         >
                           🗑️
                         </button>
@@ -1325,13 +1328,13 @@ const RestaurantManagement: React.FC = () => {
             className="text-xl font-bold"
             style={{ color: getTextColor(900) }}
           >
-            📦 Productos ({products.length})
+            📦 {t('restaurant.products')}({products.length})
           </h3>
           <Button
             variant="primary"
             onClick={handleAddProduct}
           >
-            ➕ Agregar Producto
+            ➕ {t('restaurant.addProduct')}
           </Button>
         </div>
 
@@ -1342,13 +1345,13 @@ const RestaurantManagement: React.FC = () => {
               className="text-2xl font-semibold mb-2"
               style={{ color: getTextColor(900) }}
             >
-              No hay productos en este restaurante
+              {t('restaurant.noProducts')}
             </h3>
             <p 
               className="text-base"
               style={{ color: getTextColor(600) }}
             >
-              Agrega productos para comenzar a operar
+              {t('restaurant.addProductsToOperate')}
             </p>
           </div>
         ) : (
@@ -1363,43 +1366,43 @@ const RestaurantManagement: React.FC = () => {
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     style={{ color: getTextColor(700) }}
                   >
-                    Producto
+                    {t('restaurant.product')}
                   </th>
                   <th 
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     style={{ color: getTextColor(700) }}
                   >
-                    Categoría
+                    {t('restaurant.category')}
                   </th>
                   <th 
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     style={{ color: getTextColor(700) }}
                   >
-                    Precio
+                    {t('restaurant.price')}
                   </th>
                   <th 
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     style={{ color: getTextColor(700) }}
                   >
-                    Stock
+                    {t('restaurant.stock')}
                   </th>
                   <th 
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     style={{ color: getTextColor(700) }}
                   >
-                    Tiempo
+                    {t('restaurant.preparationTime')}
                   </th>
                   <th 
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     style={{ color: getTextColor(700) }}
                   >
-                    Estado
+                    {t('restaurant.status')}
                   </th>
                   <th 
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     style={{ color: getTextColor(700) }}
                   >
-                    Acciones
+                    {t('restaurant.actions')}
                   </th>
                 </tr>
               </thead>
@@ -1473,7 +1476,7 @@ const RestaurantManagement: React.FC = () => {
                           className="text-xs block"
                           style={{ color: getTextColor(600) }}
                         >
-                          Costo: ${product.cost.toLocaleString()}
+                          {t('restaurant.cost')}: ${product.cost.toLocaleString()}
                         </span>
                       </div>
                     </td>
@@ -1487,12 +1490,12 @@ const RestaurantManagement: React.FC = () => {
                                          product.stock > 0 ? getWarningColor() : getDangerColor()
                         }}
                       >
-                        {product.stock} unidades
+                        {product.stock} {t('restaurant.units')}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span style={{ color: getTextColor(800) }}>
-                        {product.preparationTime} min
+                        {product.preparationTime} {t('restaurant.minutes')}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -1504,7 +1507,7 @@ const RestaurantManagement: React.FC = () => {
                           backgroundColor: product.isActive ? getSuccessColor() : getDangerColor()
                         }}
                       >
-                        {product.isActive ? 'Activo' : 'Inactivo'}
+                        {product.isActive ? t('restaurant.active') : t('restaurant.inactive')}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -1516,7 +1519,7 @@ const RestaurantManagement: React.FC = () => {
                             backgroundColor: 'transparent'
                           }}
                           onClick={() => handleEditProduct(product.id)}
-                          title="Editar producto"
+                          title={t('restaurant.editProduct')}
                         >
                           ✏️
                         </button>
@@ -1527,7 +1530,7 @@ const RestaurantManagement: React.FC = () => {
                             color: getTextColor(600),
                             backgroundColor: 'transparent'
                           }}
-                          title={product.isActive ? 'Desactivar producto' : 'Activar producto'}
+                          title={product.isActive ? t('restaurant.deactivateProduct') : t('restaurant.activateProduct')}
                         >
                           {product.isActive ? '🔴' : '🟢'}
                         </button>
@@ -1538,7 +1541,7 @@ const RestaurantManagement: React.FC = () => {
                             color: getDangerColor(),
                             backgroundColor: 'transparent'
                           }}
-                          title="Eliminar producto"
+                          title={t('restaurant.deleteProduct')}
                         >
                           🗑️
                         </button>
@@ -1566,13 +1569,13 @@ const RestaurantManagement: React.FC = () => {
         className="text-xl font-bold mb-4"
         style={{ color: getTextColor(900) }}
       >
-        🪑 Mesas
+        🪑 {t('restaurant.tables')}
       </h3>
       <p 
         className="text-gray-600"
         style={{ color: getTextColor(600) }}
       >
-        Gestión de mesas próximamente...
+        {t('restaurant.tableManagementComingSoon')}
       </p>
     </div>
   );
@@ -1589,13 +1592,13 @@ const RestaurantManagement: React.FC = () => {
         className="text-xl font-bold mb-4"
         style={{ color: getTextColor(900) }}
       >
-        📊 Estadísticas
+        📊 {t('restaurant.statistics')}
       </h3>
       <p 
         className="text-gray-600"
         style={{ color: getTextColor(600) }}
       >
-        Estadísticas próximamente...
+        {t('restaurant.statisticsComingSoon')}
       </p>
     </div>
   );
@@ -1609,27 +1612,28 @@ const RestaurantManagement: React.FC = () => {
             variant="secondary"
             onClick={handleBackToRestaurants}
           >
-            ← Volver
+            {t('restaurant.backToRestaurants')}
           </Button>
           <h1 
             className="text-3xl font-bold"
             style={{ color: 'white' }}
           >
-            Panel de Administración
+            {t('restaurant.adminPanel')}
           </h1>
         </div>
+        <LanguageSelector />
       </div>
 
       {/* Tabs */}
       <div className="mb-6">
         <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg">
           {[
-            { id: 'overview', label: '📊 Resumen', icon: '📊' },
-            { id: 'employees', label: '👥 Empleados', icon: '👥' },
-            { id: 'menus', label: '🍽️ Menús', icon: '🍽️' },
-            { id: 'products', label: '📦 Productos', icon: '📦' },
-            { id: 'tables', label: '🪑 Mesas', icon: '🪑' },
-            { id: 'stats', label: '📈 Estadísticas', icon: '📈' }
+            { id: 'overview', label: t('restaurant.overview'), icon: '📊' },
+            { id: 'employees', label: t('restaurant.employees'), icon: '👥' },
+            { id: 'menus', label: t('restaurant.menus'), icon: '🍽️' },
+            { id: 'products', label: t('restaurant.products'), icon: '📦' },
+            { id: 'tables', label: t('restaurant.tables'), icon: '🪑' },
+            { id: 'stats', label: t('restaurant.statistics'), icon: '📈' }
           ].map((tab) => (
             <button
               key={tab.id}

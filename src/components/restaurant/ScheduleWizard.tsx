@@ -4,6 +4,7 @@ import { useThemeColors } from '../../hooks/useThemeColors';
 import { useRestaurantSchedule } from '../../store/scheduleStore';
 import { Shift, DaySchedule, ScheduleWizardStep } from '../../types/schedule';
 import { Employee } from '../admin/types';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface ScheduleWizardProps {
   isOpen: boolean;
@@ -90,6 +91,8 @@ const ScheduleWizard: React.FC<ScheduleWizardProps> = ({
     setLoading, 
     setError 
   } = useRestaurantSchedule(restaurantId);
+  
+  const { t } = useTranslation();
   
   // Estado local para días seleccionados (se mantiene durante la sesión del wizard)
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
@@ -438,12 +441,12 @@ const ScheduleWizard: React.FC<ScheduleWizardProps> = ({
         return (
           <div className="space-y-6">
             <div className="text-center mb-6">
-              <h3 className="text-lg font-semibold mb-2" style={{ color: getTextColor(900) }}>
-                Selecciona el día que quieres configurar
-              </h3>
-              <p className="text-sm" style={{ color: getTextColor(600) }}>
-                Solo puedes seleccionar un día a la vez para configurar sus horarios
-              </p>
+                    <h3 className="text-lg font-semibold mb-2" style={{ color: getTextColor(900) }}>
+        {t('schedules.wizard.step1.title')}
+      </h3>
+      <p className="text-sm" style={{ color: getTextColor(600) }}>
+        {t('schedules.wizard.step1.singleDayNote')}
+      </p>
             </div>
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">

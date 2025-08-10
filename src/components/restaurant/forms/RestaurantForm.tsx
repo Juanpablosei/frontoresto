@@ -1,9 +1,11 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from '../../buttons';
+import { useTranslation } from '../../../hooks/useTranslation';
 import { RestaurantFormData, RestaurantFormProps } from './types';
 
 const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, isLoading = false, error }) => {
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -19,8 +21,8 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, isLoading = f
   return (
     <div className="restaurant-form">
       <div className="restaurant-form__header">
-        <h1>🏪 Crear Restaurante</h1>
-        <p>Registra tu restaurante en nuestra plataforma. Completa todos los datos requeridos.</p>
+        <h1>{t('restaurant.createTitle')}</h1>
+        <p>{t('restaurant.createSubtitle')}</p>
       </div>
 
       {error && (
@@ -33,18 +35,18 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, isLoading = f
       <form onSubmit={handleSubmit(onSubmitForm)} className="restaurant-form__content">
         <div className="form-group">
           <label htmlFor="name" className="form-label">
-            🏪 Nombre del Restaurante
+            🏪 {t('restaurant.restaurantName')}
           </label>
           <input
             id="name"
             type="text"
             className={`form-input ${errors.name ? 'form-input--error' : ''}`}
-            placeholder="Ej: Restaurante El Buen Sabor"
+            placeholder={t('restaurant.namePlaceholder')}
             {...register('name', {
-              required: 'El nombre del restaurante es requerido',
+              required: t('auth.validation.restaurantNameRequired'),
               minLength: {
                 value: 3,
-                message: 'El nombre debe tener al menos 3 caracteres'
+                message: t('auth.validation.restaurantNameMinLength')
               }
             })}
           />
@@ -55,22 +57,22 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, isLoading = f
 
         <div className="form-group">
           <label htmlFor="description" className="form-label">
-            📝 Descripción
+            📝 {t('common.description')}
           </label>
           <textarea
             id="description"
             className={`form-textarea ${errors.description ? 'form-textarea--error' : ''}`}
-            placeholder="Describe tu restaurante, especialidades, ambiente..."
+            placeholder={t('restaurant.descriptionPlaceholder')}
             rows={4}
             {...register('description', {
-              required: 'La descripción es requerida',
+              required: t('auth.validation.descriptionRequired'),
               minLength: {
                 value: 10,
-                message: 'La descripción debe tener al menos 10 caracteres'
+                message: t('auth.validation.descriptionMinLength')
               },
               maxLength: {
                 value: 500,
-                message: 'La descripción no puede exceder 500 caracteres'
+                message: t('auth.validation.descriptionMaxLength')
               }
             })}
           />
@@ -81,18 +83,18 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, isLoading = f
 
         <div className="form-group">
           <label htmlFor="address" className="form-label">
-            📍 Dirección
+            📍 {t('restaurant.address')}
           </label>
           <input
             id="address"
             type="text"
             className={`form-input ${errors.address ? 'form-input--error' : ''}`}
-            placeholder="Calle Principal 123, Ciudad"
+            placeholder={t('restaurant.addressPlaceholder')}
             {...register('address', {
-              required: 'La dirección es requerida',
+              required: t('auth.validation.addressRequired'),
               minLength: {
                 value: 10,
-                message: 'La dirección debe tener al menos 10 caracteres'
+                message: t('auth.validation.addressMinLength')
               }
             })}
           />
@@ -104,18 +106,18 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, isLoading = f
         <div className="form-row">
           <div className="form-group">
             <label htmlFor="phone" className="form-label">
-              📞 Teléfono
+              📞 {t('restaurant.phone')}
             </label>
             <input
               id="phone"
               type="tel"
               className={`form-input ${errors.phone ? 'form-input--error' : ''}`}
-              placeholder="+1 234 567 8900"
+              placeholder={t('restaurant.phonePlaceholder')}
               {...register('phone', {
-                required: 'El teléfono es requerido',
+                required: t('auth.validation.phoneRequired'),
                 pattern: {
                   value: /^[\+]?[1-9][\d]{0,15}$/,
-                  message: 'Ingresa un número de teléfono válido'
+                  message: t('auth.validation.phoneInvalid')
                 }
               })}
             />
@@ -126,18 +128,18 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, isLoading = f
 
           <div className="form-group">
             <label htmlFor="email" className="form-label">
-              📧 Correo Electrónico
+              📧 {t('restaurant.email')}
             </label>
             <input
               id="email"
               type="email"
               className={`form-input ${errors.email ? 'form-input--error' : ''}`}
-              placeholder="info@restaurante.com"
+              placeholder={t('restaurant.emailPlaceholder')}
               {...register('email', {
-                required: 'El correo electrónico es requerido',
+                required: t('auth.validation.emailRequired'),
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: 'Ingresa un correo electrónico válido'
+                  message: t('auth.validation.emailInvalid')
                 }
               })}
             />
@@ -150,18 +152,18 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, isLoading = f
         <div className="form-row">
           <div className="form-group">
             <label htmlFor="website" className="form-label">
-              🌐 Sitio Web
+              🌐 {t('restaurant.websiteLabel')}
             </label>
             <input
               id="website"
               type="url"
               className={`form-input ${errors.website ? 'form-input--error' : ''}`}
-              placeholder="https://www.restaurante.com"
+              placeholder={t('restaurant.websitePlaceholder')}
               {...register('website', {
-                required: 'El sitio web es requerido',
+                required: t('auth.validation.websiteRequired'),
                 pattern: {
                   value: /^https?:\/\/.+/,
-                  message: 'Ingresa una URL válida (debe comenzar con http:// o https://)'
+                  message: t('auth.validation.websiteInvalid')
                 }
               })}
             />
@@ -172,18 +174,18 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, isLoading = f
 
           <div className="form-group">
             <label htmlFor="clientId" className="form-label">
-              🆔 ID del Cliente
+              {t('restaurant.clientId')}
             </label>
             <input
               id="clientId"
               type="text"
               className={`form-input ${errors.clientId ? 'form-input--error' : ''}`}
-              placeholder="123e4567-e89b-12d3-a456-426614174000"
+              placeholder={t('restaurant.clientIdPlaceholder')}
               {...register('clientId', {
-                required: 'El ID del cliente es requerido',
+                required: t('auth.validation.clientIdRequired'),
                 pattern: {
                   value: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
-                  message: 'Ingresa un UUID válido'
+                  message: t('auth.validation.clientIdInvalid')
                 }
               })}
             />
@@ -202,7 +204,7 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, isLoading = f
             loading={isLoading}
             disabled={!isValid || isLoading}
           >
-            {isLoading ? 'Creando restaurante...' : 'Crear Restaurante'}
+            {isLoading ? t('restaurant.creatingRestaurant') : t('restaurant.createButton')}
           </Button>
         </div>
       </form>

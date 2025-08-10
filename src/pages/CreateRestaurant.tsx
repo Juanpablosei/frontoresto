@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Button } from '../components/buttons';
 import UserInfo from '../components/auth/UserInfo';
 import { useAuth } from '../hooks/useAuth';
+import { useTranslation } from '../hooks/useTranslation';
 
 interface CreateRestaurantData {
   name: string;
@@ -17,6 +18,7 @@ interface CreateRestaurantData {
 const CreateRestaurant: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -38,13 +40,13 @@ const CreateRestaurant: React.FC = () => {
       console.log('Restaurante creado:', restaurantData);
       
       // Mostrar mensaje de éxito (aquí podrías usar un toast)
-      alert('¡Restaurante creado exitosamente!');
+      alert(t('success.created'));
       
       // Redirigir de vuelta a la vista de restaurantes
       navigate('/restaurants');
     } catch (error) {
       console.error('Error al crear restaurante:', error);
-      alert('Error al crear el restaurante. Por favor, intenta de nuevo.');
+      alert(t('errors.general'));
     }
   };
 
@@ -57,8 +59,8 @@ const CreateRestaurant: React.FC = () => {
       <div className="bg-white/10 backdrop-blur-lg border-b border-white/20 py-8">
         <div className="max-w-6xl mx-auto px-8 flex flex-col lg:flex-row justify-between items-center gap-4 lg:gap-0">
           <div className="text-center lg:text-left">
-            <h1 className="text-3xl lg:text-4xl font-bold text-white mb-2 shadow-lg">➕ Crear Nuevo Restaurante</h1>
-            <p className="text-white/90 text-lg">Completa la información de tu nuevo restaurante</p>
+            <h1 className="text-3xl lg:text-4xl font-bold text-white mb-2 shadow-lg">➕ {t('restaurant.create')}</h1>
+            <p className="text-white/90 text-lg">{t('restaurant.createDescription')}</p>
           </div>
           <div className="flex gap-4">
             <UserInfo />
@@ -70,21 +72,21 @@ const CreateRestaurant: React.FC = () => {
         <div className="bg-white/95 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20 mb-8">
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
             <div className="border-b border-amber-200 pb-8 mb-4">
-              <h3 className="text-2xl font-semibold text-amber-800 mb-6 pb-2 border-b-2 border-amber-600">📋 Información Básica</h3>
+              <h3 className="text-2xl font-semibold text-amber-800 mb-6 pb-2 border-b-2 border-amber-600">📋 {t('restaurant.basicInfo')}</h3>
               
               <div className="mb-6">
-                <label htmlFor="name" className="block font-semibold text-amber-800 mb-2 text-base">🏪 Nombre del Restaurante *</label>
+                <label htmlFor="name" className="block font-semibold text-amber-800 mb-2 text-base">🏪 {t('restaurant.restaurantName')} *</label>
                 <input
                   id="name"
                   type="text"
                   {...register('name', {
-                    required: 'El nombre del restaurante es requerido',
+                    required: t('auth.validation.restaurantNameRequired'),
                     minLength: {
                       value: 3,
-                      message: 'El nombre debe tener al menos 3 caracteres'
+                      message: t('auth.validation.restaurantNameMinLength')
                     }
                   })}
-                  placeholder="Ej: Restaurante El Buen Sabor"
+                  placeholder={t('restaurant.namePlaceholder')}
                   className={`w-full p-3 border-2 border-amber-200 rounded-lg text-base transition-all duration-300 bg-white focus:outline-none focus:border-amber-600 focus:shadow-lg focus:shadow-amber-600/10 ${errors.name ? 'border-red-500' : ''}`}
                 />
                 {errors.name && (
@@ -93,17 +95,17 @@ const CreateRestaurant: React.FC = () => {
               </div>
 
               <div className="mb-6">
-                <label htmlFor="description" className="block font-semibold text-amber-800 mb-2 text-base">📝 Descripción</label>
+                <label htmlFor="description" className="block font-semibold text-amber-800 mb-2 text-base">📝 {t('common.description')}</label>
                 <textarea
                   id="description"
                   {...register('description', {
-                    required: 'La descripción es requerida',
+                    required: t('auth.validation.descriptionRequired'),
                     minLength: {
                       value: 10,
-                      message: 'La descripción debe tener al menos 10 caracteres'
+                      message: t('auth.validation.descriptionMinLength')
                     }
                   })}
-                  placeholder="Describe tu restaurante, especialidades, etc."
+                  placeholder={t('restaurant.descriptionPlaceholder')}
                   rows={4}
                   className={`w-full p-3 border-2 border-amber-200 rounded-lg text-base transition-all duration-300 bg-white focus:outline-none focus:border-amber-600 focus:shadow-lg focus:shadow-amber-600/10 resize-vertical min-h-[100px] ${errors.description ? 'border-red-500' : ''}`}
                 />
@@ -114,17 +116,17 @@ const CreateRestaurant: React.FC = () => {
             </div>
 
             <div className="border-b border-amber-200 pb-8 mb-4">
-              <h3 className="text-2xl font-semibold text-amber-800 mb-6 pb-2 border-b-2 border-amber-600">📍 Información de Contacto</h3>
+              <h3 className="text-2xl font-semibold text-amber-800 mb-6 pb-2 border-b-2 border-amber-600">📍 {t('restaurant.contactInfo')}</h3>
               
               <div className="mb-6">
-                <label htmlFor="address" className="block font-semibold text-amber-800 mb-2 text-base">🏠 Dirección *</label>
+                <label htmlFor="address" className="block font-semibold text-amber-800 mb-2 text-base">🏠 {t('restaurant.address')} *</label>
                 <input
                   id="address"
                   type="text"
                   {...register('address', {
-                    required: 'La dirección es requerida'
+                    required: t('auth.validation.addressRequired')
                   })}
-                  placeholder="Ej: Calle Principal 123, Ciudad"
+                  placeholder={t('restaurant.addressPlaceholder')}
                   className={`w-full p-3 border-2 border-amber-200 rounded-lg text-base transition-all duration-300 bg-white focus:outline-none focus:border-amber-600 focus:shadow-lg focus:shadow-amber-600/10 ${errors.address ? 'border-red-500' : ''}`}
                 />
                 {errors.address && (
@@ -134,18 +136,18 @@ const CreateRestaurant: React.FC = () => {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                 <div>
-                  <label htmlFor="phone" className="block font-semibold text-amber-800 mb-2 text-base">📞 Teléfono *</label>
+                  <label htmlFor="phone" className="block font-semibold text-amber-800 mb-2 text-base">📞 {t('restaurant.phone')} *</label>
                   <input
                     id="phone"
                     type="tel"
                     {...register('phone', {
-                      required: 'El teléfono es requerido',
+                      required: t('auth.validation.phoneRequired'),
                       pattern: {
                         value: /^[\+]?[1-9][\d]{0,15}$/,
-                        message: 'Ingresa un número de teléfono válido'
+                        message: t('auth.validation.phoneInvalid')
                       }
                     })}
-                    placeholder="Ej: +1 234 567 8900"
+                    placeholder={t('restaurant.phonePlaceholder')}
                     className={`w-full p-3 border-2 border-amber-200 rounded-lg text-base transition-all duration-300 bg-white focus:outline-none focus:border-amber-600 focus:shadow-lg focus:shadow-amber-600/10 ${errors.phone ? 'border-red-500' : ''}`}
                   />
                   {errors.phone && (
@@ -154,18 +156,18 @@ const CreateRestaurant: React.FC = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block font-semibold text-amber-800 mb-2 text-base">📧 Email *</label>
+                  <label htmlFor="email" className="block font-semibold text-amber-800 mb-2 text-base">📧 {t('restaurant.email')} *</label>
                   <input
                     id="email"
                     type="email"
                     {...register('email', {
-                      required: 'El email es requerido',
+                      required: t('auth.validation.emailRequired'),
                       pattern: {
                         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                        message: 'Ingresa un email válido'
+                        message: t('auth.validation.emailInvalid')
                       }
                     })}
-                    placeholder="Ej: info@restaurante.com"
+                    placeholder={t('restaurant.emailPlaceholder')}
                     className={`w-full p-3 border-2 border-amber-200 rounded-lg text-base transition-all duration-300 bg-white focus:outline-none focus:border-amber-600 focus:shadow-lg focus:shadow-amber-600/10 ${errors.email ? 'border-red-500' : ''}`}
                   />
                   {errors.email && (
@@ -175,17 +177,17 @@ const CreateRestaurant: React.FC = () => {
               </div>
 
               <div className="mb-6">
-                <label htmlFor="website" className="block font-semibold text-amber-800 mb-2 text-base">🌐 Sitio Web</label>
+                <label htmlFor="website" className="block font-semibold text-amber-800 mb-2 text-base">🌐 {t('restaurant.websiteLabel')}</label>
                 <input
                   id="website"
                   type="url"
                   {...register('website', {
                     pattern: {
                       value: /^https?:\/\/.+/,
-                      message: 'Ingresa una URL válida (debe comenzar con http:// o https://)'
+                      message: t('auth.validation.websiteInvalid')
                     }
                   })}
-                  placeholder="Ej: https://www.restaurante.com"
+                  placeholder={t('restaurant.websitePlaceholder')}
                   className={`w-full p-3 border-2 border-amber-200 rounded-lg text-base transition-all duration-300 bg-white focus:outline-none focus:border-amber-600 focus:shadow-lg focus:shadow-amber-600/10 ${errors.website ? 'border-red-500' : ''}`}
                 />
                 {errors.website && (
@@ -201,7 +203,7 @@ const CreateRestaurant: React.FC = () => {
                 size="large"
                 onClick={handleCancel}
               >
-                ❌ Cancelar
+                ❌ {t('common.cancel')}
               </Button>
               
               <Button
@@ -211,7 +213,7 @@ const CreateRestaurant: React.FC = () => {
                 loading={isSubmitting}
                 disabled={isSubmitting}
               >
-                {isSubmitting ? '🔄 Creando...' : '✅ Crear Restaurante'}
+                {isSubmitting ? '🔄 ' + t('restaurant.creatingRestaurant') : '✅ ' + t('restaurant.createButton')}
               </Button>
             </div>
           </form>
