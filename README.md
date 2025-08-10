@@ -1,46 +1,116 @@
-# Getting Started with Create React App
+# RestoManager - Sistema de Gestión de Restaurantes
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Sistema completo para la administración de restaurantes con control de mesas, productos, menús, empleados y estadísticas en tiempo real.
 
-## Available Scripts
+## 🚀 Tecnologías
 
-In the project directory, you can run:
+- **React 19** - Biblioteca de interfaz de usuario
+- **TypeScript** - Tipado estático
+- **Vite** - Herramienta de construcción moderna
+- **Tailwind CSS** - Framework de CSS utilitario
+- **Zustand** - Gestión de estado
+- **React Router** - Enrutamiento
+- **React Hook Form** - Manejo de formularios
+- **i18next** - Internacionalización
+- **React Icons** - Iconografía
 
-### `npm start`
+## 📦 Instalación
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```bash
+# Clonar el repositorio
+git clone <repository-url>
+cd frontend
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+# Instalar dependencias
+npm install
 
-### `npm test`
+# Iniciar servidor de desarrollo
+npm run dev
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🛠️ Scripts Disponibles
+
+### `npm run dev`
+Inicia el servidor de desarrollo en modo Vite.\
+Abre [http://localhost:3000](http://localhost:3000) para ver la aplicación en el navegador.
 
 ### `npm run build`
+Construye la aplicación para producción en la carpeta `build`.\
+Optimiza el bundle para el mejor rendimiento.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### `npm run preview`
+Sirve la aplicación construida localmente para previsualización.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### `npm run lint`
+Ejecuta ESLint para verificar el código.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🏗️ Estructura del Proyecto
 
-### `npm run eject`
+```
+src/
+├── components/          # Componentes reutilizables
+│   ├── auth/           # Componentes de autenticación
+│   ├── dashboard/      # Componentes del dashboard
+│   ├── restaurant/     # Componentes de restaurantes
+│   ├── theme/          # Componentes de tema
+│   └── ...
+├── pages/              # Páginas de la aplicación
+│   ├── auth/           # Páginas de autenticación
+│   ├── dashboard/      # Dashboard principal
+│   ├── restaurants/    # Gestión de restaurantes
+│   └── admin/          # Panel de administración
+├── store/              # Estado global (Zustand)
+├── hooks/              # Hooks personalizados
+├── i18n/               # Configuración de internacionalización
+├── mock/               # Datos de prueba
+└── types/              # Definiciones de tipos TypeScript
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## 🌍 Internacionalización
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+El proyecto soporta múltiples idiomas:
+- **Español** (por defecto)
+- **Inglés**
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Los archivos de traducción se encuentran en `src/i18n/locales/`.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## 🎨 Temas
 
-## Learn More
+El sistema incluye múltiples temas de colores que se pueden cambiar dinámicamente desde la interfaz.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 📱 Características
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- ✅ **Dashboard Unificado** - Vista única para admin y propietarios
+- ✅ **Gestión de Restaurantes** - CRUD completo
+- ✅ **Gestión de Empleados** - Asignación y transferencias
+- ✅ **Gestión de Menús** - Creación y edición de menús
+- ✅ **Gestión de Platos** - Configuración de platos
+- ✅ **Gestión de Productos** - Inventario de productos
+- ✅ **Horarios Detallados** - Wizard de configuración de turnos
+- ✅ **Estadísticas** - Métricas en tiempo real
+- ✅ **Multi-idioma** - Soporte completo para i18n
+- ✅ **Temas Dinámicos** - Cambio de colores en tiempo real
+
+## 🚀 Despliegue
+
+### Build de Producción
+```bash
+npm run build
+```
+
+### Servir Build Local
+```bash
+npm run preview
+```
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT.
+
+## 🤝 Contribución
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
