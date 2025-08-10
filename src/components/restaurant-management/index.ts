@@ -1,0 +1,9 @@
+export { default as Header } from './Header';
+export { default as TabNavigation } from './TabNavigation';
+export { default as OverviewTab } from './OverviewTab';
+export { default as EmployeesTab } from './EmployeesTab';
+export { default as MenusTab } from './MenusTab';
+export { default as PlatosTab } from './PlatosTab';
+export { default as ProductsTab } from './ProductsTab';
+export { default as TablesTab } from './TablesTab';
+export { default as StatsTab } from './StatsTab';
