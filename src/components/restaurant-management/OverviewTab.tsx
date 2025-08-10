@@ -167,7 +167,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
             </div>
             <div className="text-center p-4 rounded-lg" style={{ backgroundColor: `${getCardBackground()}80` }}>
               <span className="block text-3xl font-bold mb-2" style={{ color: getTextColor(900) }}>{platos.length}</span>
-              <span className="block text-sm" style={{ color: getTextColor(600) }}>{t('restaurant.platos')}</span>
+                              <span className="block text-sm" style={{ color: getTextColor(600) }}>{t('common.platos')}</span>
             </div>
           </div>
         </div>

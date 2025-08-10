@@ -1,0 +1,237 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { useAuth } from '../hooks/useAuth';
+import { useRestaurantStore, Employee } from '../store/restaurantStore';
+import UserInfo from '../components/auth/UserInfo';
+import EmployeeTransferModal from '../components/restaurant/EmployeeTransferModal';
+import './Restaurants.css';
+
+interface EditRestaurantData {
+  name: string;
+  description: string;
+  address: string;
+  phone: string;
+  email: string;
+  website: string;
+}
+
+const Restaurants: React.FC = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [transferModalOpen, setTransferModalOpen] = useState(false);
+  const [selectedEmployeeForTransfer, setSelectedEmployeeForTransfer] = useState<Employee | null>(null);
+  const [showAllEmployees, setShowAllEmployees] = useState(false);
+  
+  // Usar el store de Zustand
+  const {
+    restaurants,
+    employees,
+    showRestaurants,
+    editingRestaurant,
+    showEmployees,
+    selectedRestaurantEmployees,
+    selectedRestaurantForEmployees,
+    setShowRestaurants,
+    setShowEmployees,
+    setSelectedRestaurantEmployees,
+    setSelectedRestaurantForEmployees,
+    setEditingRestaurant,
+    updateRestaurant,
+    getEmployeesByRestaurant,
+    getRestaurantById
+  } = useRestaurantStore();
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+    reset
+  } = useForm<EditRestaurantData>();
+
+  const handleRestaurantSelect = (restaurant: any) => {
+    navigate(`/restaurants/${restaurant.id}`);
+  };
+
+
+
+  const handleShowRestaurants = () => {
+    setShowRestaurants(true);
+    setShowAllEmployees(false);
+  };
+
+  const handleHideRestaurants = () => {
+    setShowRestaurants(false);
+    setEditingRestaurant(null);
+  };
+
+  const handleShowAllEmployees = () => {
+    setShowAllEmployees(true);
+    setShowRestaurants(false);
+  };
+
+  const handleHideAllEmployees = () => {
+    setShowAllEmployees(false);
+  };
+
+  const handleShowEmployees = (restaurant: any, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSelectedRestaurantForEmployees(restaurant);
+    
+    // Obtener empleados del restaurante desde el store
+    const restaurantEmployees = getEmployeesByRestaurant(restaurant.id);
+    setSelectedRestaurantEmployees(restaurantEmployees);
+    setShowEmployees(true);
+  };
+
+  const handleHideEmployees = () => {
+    setShowEmployees(false);
+    setSelectedRestaurantForEmployees(null);
+    setSelectedRestaurantEmployees([]);
+  };
+
+  const handleEditRestaurant = (restaurant: any, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setEditingRestaurant(restaurant);
+    setValue('name', restaurant.name);
+    setValue('description', restaurant.description);
+    setValue('address', restaurant.address);
+    setValue('phone', restaurant.phone);
+    setValue('email', restaurant.email);
+    setValue('website', restaurant.website);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingRestaurant(null);
+    reset();
+  };
+
+  const onSubmitEdit = (data: EditRestaurantData) => {
+    if (editingRestaurant) {
+      updateRestaurant(editingRestaurant.id, data);
+      setEditingRestaurant(null);
+      reset();
+    }
+  };
+
+  const handleTransferEmployee = (employee: Employee, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSelectedEmployeeForTransfer(employee);
+    setTransferModalOpen(true);
+  };
+
+  const handleCloseTransferModal = () => {
+    setTransferModalOpen(false);
+    setSelectedEmployeeForTransfer(null);
+    // Refrescar la lista de empleados después de la transferencia
+    if (selectedRestaurantForEmployees) {
+      const updatedEmployees = getEmployeesByRestaurant(selectedRestaurantForEmployees.id);
+      setSelectedRestaurantEmployees(updatedEmployees);
+    }
+  };
+
+  return (
+    <div className="restaurants-page">
+      <div className="restaurants-header">
+        <div className="header-content">
+          <div className="header-info">
+            <h1>🏪 Mis Restaurantes</h1>
+            <p>Gestiona tus restaurantes y configuraciones</p>
+          </div>
+          <div className="header-actions">
+            <UserInfo />
+          </div>
+        </div>
+      </div>
+
+      <div className="restaurants-content">
+        <div className="quick-actions">
+          <h3>Acciones Rápidas</h3>
+          <div className="actions-grid">
+            <button 
+              className="action-btn"
+              onClick={() => navigate('/restaurants/create')}
+            >
+              <span className="action-icon">➕</span>
+              <span>Agregar Restaurante</span>
+            </button>
+            <button className="action-btn">
+              <span className="action-icon">👥</span>
+              <span>Contratar Empleado</span>
+            </button>
+            <button className="action-btn">
+              <span className="action-icon">🍽️</span>
+              <span>Crear Menú</span>
+            </button>
+            <button className="action-btn">
+              <span className="action-icon">📊</span>
+              <span>Ver Reportes</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Sección de Lista de Restaurantes - Solo se muestra cuando showRestaurants es true */}
+        {showRestaurants && (
+          <div className="restaurants-section">
+            <div className="section-header">
+              <div className="header-actions-top">
+                <button 
+                  className="back-btn"
+                  onClick={handleHideRestaurants}
+                >
+                  ← Volver al Dashboard
+                </button>
+              </div>
+              <h2>📋 Mis Restaurantes ({restaurants.length})</h2>
+              <p>Selecciona un restaurante para ver sus detalles</p>
+            </div>
+
+            {restaurants.length === 0 ? (
+              <div className="empty-restaurants">
+                <div className="empty-icon">🏪</div>
+                <h3>No tienes restaurantes registrados</h3>
+                <p>Crea tu primer restaurante para comenzar a gestionar tu negocio</p>
+                <button 
+                  className="create-first-btn"
+                  onClick={() => navigate('/restaurants/create')}
+                >
+                  ➕ Crear Mi Primer Restaurante
+                </button>
+              </div>
+            ) : (
+              <div className="restaurants-grid">
+                {restaurants.map((restaurant) => (
+                  <div
+                    key={restaurant.id}
+                    className="restaurant-card"
+                    onClick={() => handleRestaurantSelect(restaurant)}
+                  >
+                    <div className="restaurant-header">
+                      <div className="restaurant-icon">
+                        <span className="icon">🏪</span>
+                      </div>
+                      <div className="restaurant-info">
+                        <h3 className="restaurant-name">{restaurant.name}</h3>
+                        <span className={`status-badge ${restaurant.isOpen ? 'open' : 'closed'}`}>
+                          {restaurant.isOpen ? '🟢 Abierto' : '🔴 Cerrado'}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="restaurant-details">
+                      <div className="detail-item">
+                        <span className="detail-label">📍 Dirección:</span>
+                        <span className="detail-value">{restaurant.address}</span>
+                      </div>
+                      <div className="detail-item">
+                        <span className="detail-label">📞 Teléfono:</span>
+                        <span className="detail-value">{restaurant.phone}</span>
+                      </div>
+                      <div className="detail-item">
+                        <span className="detail-label">📧 Email:</span>
+                        <span className="detail-value">{restaurant.email}</span>
+                      </div>
+                      <div className="detail-item">
+                        <span className="detail-label">📅 Creado:</span>
+   

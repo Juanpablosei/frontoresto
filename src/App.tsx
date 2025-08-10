@@ -2,11 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store/authStore';
 import Home from './pages/Home';
-import Login from './pages/auth/Login';
-import Register from './pages/auth/Register';
-import UnifiedDashboard from './pages/UnifiedDashboard';
-import RestaurantManagement from './pages/RestaurantManagement';
-import CreateRestaurant from './pages/CreateRestaurant';
+import { Login, Register } from './pages/auth';
+import { UnifiedDashboard } from './pages/dashboard';
+import { RestaurantManagement, CreateRestaurant } from './pages/restaurants';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import ThemeProvider from './components/theme/ThemeProvider';
 

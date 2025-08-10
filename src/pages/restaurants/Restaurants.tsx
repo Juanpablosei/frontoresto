@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-import { useRestaurantStore, Employee } from '../store/restaurantStore';
-import EmployeeTransferModal from '../components/restaurant/EmployeeTransferModal';
+import { useAuth } from '../../hooks/useAuth';
+import { useRestaurantStore, Employee } from '../../store/restaurantStore';
+import EmployeeTransferModal from '../../components/restaurant/EmployeeTransferModal';
 import {
   Header,
   QuickActions,
@@ -11,7 +11,7 @@ import {
   EmployeesList,
   EditRestaurantForm,
   DashboardGrid
-} from '../components/restaurants';
+} from '../../components/restaurants';
 
 
 interface EditRestaurantData {

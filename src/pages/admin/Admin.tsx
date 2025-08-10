@@ -1,5 +1,5 @@
 import React from 'react';
-import { AdminPanel } from '../components/admin';
+import { AdminPanel } from '../../components/admin';
 
 const Admin: React.FC = () => {
   const handleLogout = () => {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-import { useTranslation } from '../hooks/useTranslation';
-import { Header, RestaurantForm } from '../components/create-restaurant';
+import { useAuth } from '../../hooks/useAuth';
+import { useTranslation } from '../../hooks/useTranslation';
+import { Header, RestaurantForm } from '../../components/create-restaurant';
 
 interface CreateRestaurantData {
   name: string;

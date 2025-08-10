@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../store/authStore';
-import { useRestaurantStore } from '../store/restaurantStore';
-import { mockUsers, getTranslatedUserName } from '../mock/users';
-import { useTranslation } from '../hooks/useTranslation';
+import { useAuthStore } from '../../store/authStore';
+import { useRestaurantStore } from '../../store/restaurantStore';
+import { mockUsers, getTranslatedUserName } from '../../mock/users';
+import { useTranslation } from '../../hooks/useTranslation';
 import {
   DashboardHeader,
   UserList
-} from '../components/dashboard';
-import RestaurantsList from '../components/restaurants/RestaurantsList';
+} from '../../components/dashboard';
+import RestaurantsList from '../../components/restaurants/RestaurantsList';
 
 const UnifiedDashboard: React.FC = () => {
   const navigate = useNavigate();

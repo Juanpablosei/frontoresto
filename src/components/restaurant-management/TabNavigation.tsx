@@ -15,7 +15,7 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
     { id: 'overview', label: t('restaurant.overview'), icon: '📊' },
     { id: 'employees', label: t('restaurant.employees'), icon: '👥' },
     { id: 'menus', label: t('restaurant.menus'), icon: '🍽️' },
-    { id: 'platos', label: t('restaurant.platos'), icon: '🍴' },
+    { id: 'platos', label: t('common.platos'), icon: '🍴' },
     { id: 'products', label: t('restaurant.products'), icon: '📦' },
     { id: 'tables', label: t('restaurant.tables'), icon: '🪑' },
     { id: 'stats', label: t('restaurant.statistics'), icon: '📈' }

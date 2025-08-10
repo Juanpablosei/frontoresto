@@ -43,7 +43,7 @@ const PlatosTab: React.FC<PlatosTabProps> = ({
             className="text-xl font-bold"
             style={{ color: getTextColor(900) }}
           >
-            🍴 {t('restaurant.platos')}({platos.length})
+            🍴 {t('common.platos')}({platos.length})
           </h3>
           <Button
             variant="primary"

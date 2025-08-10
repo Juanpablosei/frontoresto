@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useRestaurantStore } from '../store/restaurantStore';
-import { useRestaurantSchedule } from '../store/scheduleStore';
-import EmployeeTransferModal from '../components/restaurant/EmployeeTransferModal';
-import AddEmployeeModal from '../components/restaurant/AddEmployeeModal';
-import ScheduleWizard from '../components/restaurant/ScheduleWizard';
+import { useRestaurantStore } from '../../store/restaurantStore';
+import { useRestaurantSchedule } from '../../store/scheduleStore';
+import EmployeeTransferModal from '../../components/restaurant/EmployeeTransferModal';
+import AddEmployeeModal from '../../components/restaurant/AddEmployeeModal';
+import ScheduleWizard from '../../components/restaurant/ScheduleWizard';
 import { 
   Header,
   TabNavigation,
@@ -15,8 +15,8 @@ import {
   ProductsTab,
   TablesTab,
   StatsTab
-} from '../components/restaurant-management';
-import { mockMenus, mockPlatos, mockProducts, type MockMenu, type MockPlato, type MockProduct } from '../mock';
+} from '../../components/restaurant-management';
+import { mockMenus, mockPlatos, mockProducts, type MockMenu, type MockPlato, type MockProduct } from '../../mock';
 
 const RestaurantManagement: React.FC = () => {
   const { id } = useParams<{ id: string }>();
