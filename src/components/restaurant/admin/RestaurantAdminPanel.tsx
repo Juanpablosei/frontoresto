@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Restaurant, AdminPanelState } from './types';
-import RestaurantList from './RestaurantList';
+import RestaurantsList from '../../restaurants/RestaurantsList';
 import RestaurantDetails from './RestaurantDetails';
 import RestaurantActions from './RestaurantActions';
 
@@ -112,7 +112,7 @@ const RestaurantAdminPanel: React.FC = () => {
     }
   };
 
-  const handleCreateRestaurant = async (data: any) => {
+  const handleCreateRestaurant = async (data?: any) => {
     setState(prev => ({ ...prev, isLoading: true }));
     
     try {
@@ -121,7 +121,13 @@ const RestaurantAdminPanel: React.FC = () => {
       
       const newRestaurant: Restaurant = {
         id: Date.now().toString(),
-        ...data,
+        name: data?.name || 'Nuevo Restaurante',
+        description: data?.description || '',
+        address: data?.address || '',
+        phone: data?.phone || '',
+        email: data?.email || '',
+        website: data?.website || '',
+        clientId: data?.clientId || '',
         isOpen: false,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
@@ -140,6 +146,16 @@ const RestaurantAdminPanel: React.FC = () => {
     }
   };
 
+  // Wrapper para compatibilidad con el nuevo componente
+  const handleCreateRestaurantWrapper = () => {
+    handleCreateRestaurant();
+  };
+
+  // Wrapper para compatibilidad con el nuevo componente
+  const handleRestaurantSelectWrapper = (restaurant: any) => {
+    handleRestaurantSelect(restaurant as Restaurant);
+  };
+
   return (
     <div className="restaurant-admin-panel">
       <div className="admin-header">
@@ -156,11 +172,12 @@ const RestaurantAdminPanel: React.FC = () => {
 
       <div className="admin-content">
         <div className="admin-sidebar">
-          <RestaurantList
+          <RestaurantsList
             restaurants={[]}
+            mode="admin-panel"
             selectedRestaurant={state.selectedRestaurant}
-            onRestaurantSelect={handleRestaurantSelect}
-            onCreateRestaurant={handleCreateRestaurant}
+            onRestaurantSelect={handleRestaurantSelectWrapper}
+            onCreateRestaurant={handleCreateRestaurantWrapper}
             isLoading={state.isLoading}
           />
         </div>

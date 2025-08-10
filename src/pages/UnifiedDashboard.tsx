@@ -4,11 +4,11 @@ import { useAuthStore } from '../store/authStore';
 import { useRestaurantStore } from '../store/restaurantStore';
 import { mockUsers, getTranslatedUserName } from '../mock/users';
 import { useTranslation } from '../hooks/useTranslation';
-import { 
-  DashboardHeader, 
-  UserList, 
-  RestaurantList 
+import {
+  DashboardHeader,
+  UserList
 } from '../components/dashboard';
+import RestaurantsList from '../components/restaurants/RestaurantsList';
 
 const UnifiedDashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -75,8 +75,8 @@ const UnifiedDashboard: React.FC = () => {
     setUserRestaurants([]);
   };
 
-  const handleRestaurantSelect = (restaurantId: string) => {
-    navigate(`/restaurants/${restaurantId}`);
+  const handleRestaurantSelect = (restaurant: any) => {
+    navigate(`/restaurants/${restaurant.id}`);
   };
 
   const handleCreateRestaurant = () => {
@@ -155,8 +155,9 @@ const UnifiedDashboard: React.FC = () => {
 
         {/* Vista de Admin - Restaurantes de un usuario específico */}
         {isAdmin && showingUserRestaurants && (
-          <RestaurantList
+          <RestaurantsList
             restaurants={userRestaurants}
+            mode="dashboard"
             onCreateRestaurant={handleCreateRestaurant}
             onRestaurantSelect={handleRestaurantSelect}
           />
@@ -164,8 +165,9 @@ const UnifiedDashboard: React.FC = () => {
 
         {/* Vista de Owner - Lista de Restaurantes */}
         {isOwner && showRestaurants && (
-          <RestaurantList
+          <RestaurantsList
             restaurants={currentRestaurants}
+            mode="dashboard"
             onCreateRestaurant={handleCreateRestaurant}
             onRestaurantSelect={handleRestaurantSelect}
           />

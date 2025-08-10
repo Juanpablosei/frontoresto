@@ -12,7 +12,7 @@ import {
   EditRestaurantForm,
   DashboardGrid
 } from '../components/restaurants';
-import './Restaurants.css';
+
 
 interface EditRestaurantData {
   name: string;
@@ -117,10 +117,10 @@ const Restaurants: React.FC = () => {
   };
 
   return (
-    <div className="restaurants-page">
+    <div className="min-h-screen bg-gray-50">
       <Header />
 
-      <div className="restaurants-content">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <QuickActions />
 
         {/* Sección de Lista de Restaurantes */}
