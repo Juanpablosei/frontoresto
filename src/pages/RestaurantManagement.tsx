@@ -107,6 +107,75 @@ const RestaurantManagement: React.FC = () => {
     }
   ]);
 
+  // Estado para los platos
+  const [platos, setPlatos] = useState([
+    {
+      id: 'plato-1',
+      name: 'Milanesa a la Napolitana',
+      description: 'Milanesa de ternera con jamón, queso mozzarella y salsa de tomate',
+      category: 'PRINCIPAL',
+      price: 3200,
+      isActive: true,
+      ingredients: ['Carne de ternera', 'Pan rallado', 'Jamón', 'Queso mozzarella', 'Salsa de tomate'],
+      preparationTime: 25,
+      allergens: ['Gluten', 'Lactosa'],
+      createdAt: '2024-01-10',
+      updatedAt: '2024-01-20'
+    },
+    {
+      id: 'plato-2',
+      name: 'Pizza Margherita',
+      description: 'Pizza tradicional con masa artesanal, mozzarella y albahaca fresca',
+      category: 'PIZZA',
+      price: 2800,
+      isActive: true,
+      ingredients: ['Masa de pizza', 'Salsa de tomate', 'Mozzarella', 'Albahaca', 'Aceite de oliva'],
+      preparationTime: 30,
+      allergens: ['Gluten', 'Lactosa'],
+      createdAt: '2024-01-08',
+      updatedAt: '2024-01-18'
+    },
+    {
+      id: 'plato-3',
+      name: 'Ensalada César',
+      description: 'Lechuga romana, crutones, parmesano y aderezo César casero',
+      category: 'ENSALADA',
+      price: 2200,
+      isActive: true,
+      ingredients: ['Lechuga romana', 'Crutones', 'Parmesano', 'Aderezo César', 'Limón'],
+      preparationTime: 15,
+      allergens: ['Gluten', 'Lactosa'],
+      createdAt: '2024-01-12',
+      updatedAt: '2024-01-22'
+    },
+    {
+      id: 'plato-4',
+      name: 'Tiramisú Clásico',
+      description: 'Postre italiano con café, mascarpone y cacao en polvo',
+      category: 'POSTRE',
+      price: 1800,
+      isActive: true,
+      ingredients: ['Bizcochos de soletilla', 'Café espresso', 'Mascarpone', 'Huevos', 'Azúcar', 'Cacao'],
+      preparationTime: 20,
+      allergens: ['Gluten', 'Lactosa', 'Huevo'],
+      createdAt: '2024-01-05',
+      updatedAt: '2024-01-15'
+    },
+    {
+      id: 'plato-5',
+      name: 'Pasta Carbonara',
+      description: 'Pasta con salsa cremosa de huevo, queso parmesano y panceta',
+      category: 'PASTA',
+      price: 2600,
+      isActive: false,
+      ingredients: ['Pasta spaghetti', 'Huevos', 'Parmesano', 'Panceta', 'Pimienta negra'],
+      preparationTime: 20,
+      allergens: ['Gluten', 'Lactosa', 'Huevo'],
+      createdAt: '2024-01-15',
+      updatedAt: '2024-01-25'
+    }
+  ]);
+
   // Estado para los productos
   const [products, setProducts] = useState([
     {
@@ -482,6 +551,40 @@ const RestaurantManagement: React.FC = () => {
     setProducts(prev => [...prev, newProduct]);
   };
 
+  // Funciones para manejar platos
+  const handleTogglePlatoStatus = (platoId: string) => {
+    setPlatos(platos.map(plato => 
+      plato.id === platoId 
+        ? { ...plato, isActive: !plato.isActive }
+        : plato
+    ));
+  };
+
+  const handleEditPlato = (platoId: string) => {
+    console.log('Editar plato:', platoId);
+  };
+
+  const handleDeletePlato = (platoId: string) => {
+    setPlatos(platos.filter(plato => plato.id !== platoId));
+  };
+
+  const handleAddPlato = () => {
+    const newPlato = {
+      id: `plato-${Date.now()}`,
+      name: 'Nuevo Plato',
+      description: 'Descripción del nuevo plato',
+      category: 'PRINCIPAL',
+      price: 0,
+      isActive: true,
+      ingredients: [],
+      preparationTime: 15,
+      allergens: [],
+      createdAt: new Date().toISOString().split('T')[0],
+      updatedAt: new Date().toISOString().split('T')[0]
+    };
+    setPlatos(prev => [...prev, newPlato]);
+  };
+
   if (!restaurant) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -605,7 +708,7 @@ const RestaurantManagement: React.FC = () => {
           >
             📊 Estadísticas
           </h3>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="text-center p-4 rounded-lg" style={{ backgroundColor: `${getCardBackground()}80` }}>
               <span className="block text-3xl font-bold mb-2" style={{ color: getTextColor(900) }}>{employees.length}</span>
               <span className="block text-sm" style={{ color: getTextColor(600) }}>{t('restaurant.employees')}</span>
@@ -615,12 +718,16 @@ const RestaurantManagement: React.FC = () => {
               <span className="block text-sm" style={{ color: getTextColor(600) }}>{t('restaurant.tables')}</span>
             </div>
             <div className="text-center p-4 rounded-lg" style={{ backgroundColor: `${getCardBackground()}80` }}>
-              <span className="block text-3xl font-bold mb-2" style={{ color: getTextColor(900) }}>45</span>
+              <span className="block text-3xl font-bold mb-2" style={{ color: getTextColor(900) }}>{products.length}</span>
               <span className="block text-sm" style={{ color: getTextColor(600) }}>{t('restaurant.products')}</span>
             </div>
             <div className="text-center p-4 rounded-lg" style={{ backgroundColor: `${getCardBackground()}80` }}>
-              <span className="block text-3xl font-bold mb-2" style={{ color: getTextColor(900) }}>8</span>
+              <span className="block text-3xl font-bold mb-2" style={{ color: getTextColor(900) }}>{menus.length}</span>
               <span className="block text-sm" style={{ color: getTextColor(600) }}>{t('restaurant.menus')}</span>
+            </div>
+            <div className="text-center p-4 rounded-lg" style={{ backgroundColor: `${getCardBackground()}80` }}>
+              <span className="block text-3xl font-bold mb-2" style={{ color: getTextColor(900) }}>{platos.length}</span>
+              <span className="block text-sm" style={{ color: getTextColor(600) }}>{t('restaurant.platos')}</span>
             </div>
           </div>
         </div>
@@ -1314,6 +1421,219 @@ const RestaurantManagement: React.FC = () => {
     </div>
   );
 
+  const renderPlatosTab = () => (
+    <div className="space-y-6">
+      <div 
+        className="p-6 rounded-xl border shadow-lg"
+        style={{
+          backgroundColor: getCardBackground(),
+          borderColor: getCardBorder(),
+        }}
+      >
+        <div className="flex justify-between items-center mb-6">
+          <h3 
+            className="text-xl font-bold"
+            style={{ color: getTextColor(900) }}
+          >
+            🍴 {t('restaurant.platos')}({platos.length})
+          </h3>
+          <Button
+            variant="primary"
+            onClick={handleAddPlato}
+          >
+            ➕ {t('restaurant.addPlato')}
+          </Button>
+        </div>
+
+        {platos.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="text-6xl mb-4">🍴</div>
+            <h3 
+              className="text-2xl font-semibold mb-2"
+              style={{ color: getTextColor(900) }}
+            >
+              {t('restaurant.noPlatos')}
+            </h3>
+            <p 
+              className="text-base"
+              style={{ color: getTextColor(600) }}
+            >
+              {t('restaurant.addPlatosToOperate')}
+            </p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr 
+                  className="border-b"
+                  style={{ borderColor: getCardBorder() }}
+                >
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: getTextColor(700) }}
+                  >
+                    {t('restaurant.plato')}
+                  </th>
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: getTextColor(700) }}
+                  >
+                    {t('restaurant.category')}
+                  </th>
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: getTextColor(700) }}
+                  >
+                    {t('restaurant.price')}
+                  </th>
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: getTextColor(700) }}
+                  >
+                    {t('restaurant.ingredients')}
+                  </th>
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: getTextColor(700) }}
+                  >
+                    {t('restaurant.preparationTime')}
+                  </th>
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: getTextColor(700) }}
+                  >
+                    {t('restaurant.status')}
+                  </th>
+                  <th 
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    style={{ color: getTextColor(700) }}
+                  >
+                    {t('restaurant.actions')}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {platos.map((plato, index) => (
+                  <tr 
+                    key={plato.id}
+                    className="border-b transition-colors duration-200 hover:bg-opacity-50"
+                    style={{ 
+                      borderColor: getCardBorder(),
+                      backgroundColor: 'transparent'
+                    }}
+                  >
+                    <td className="px-6 py-4">
+                      <div>
+                        <div 
+                          className="font-medium"
+                          style={{ color: getTextColor(900) }}
+                        >
+                          {plato.name}
+                        </div>
+                        <div 
+                          className="text-sm"
+                          style={{ color: getTextColor(600) }}
+                        >
+                          {plato.description}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span 
+                        className="px-2 py-1 text-xs font-medium rounded-full"
+                        style={{
+                          backgroundColor: getInfoColor(),
+                          color: 'white'
+                        }}
+                      >
+                        {plato.category}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span 
+                        className="font-medium"
+                        style={{ color: getTextColor(900) }}
+                      >
+                        ${plato.price.toLocaleString()}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="text-sm" style={{ color: getTextColor(600) }}>
+                        {plato.ingredients.length} {t('restaurant.ingredients')}
+                      </div>
+                      <div className="text-xs" style={{ color: getTextColor(500) }}>
+                        {plato.ingredients.slice(0, 2).join(', ')}
+                        {plato.ingredients.length > 2 && '...'}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span 
+                        className="text-sm"
+                        style={{ color: getTextColor(600) }}
+                      >
+                        {plato.preparationTime} {t('restaurant.minutes')}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span 
+                        className={`px-2 py-1 text-xs font-medium rounded-full ${
+                          plato.isActive ? 'text-white' : 'text-white'
+                        }`}
+                        style={{
+                          backgroundColor: plato.isActive ? getSuccessColor() : getDangerColor()
+                        }}
+                      >
+                        {plato.isActive ? t('restaurant.active') : t('restaurant.inactive')}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => handleTogglePlatoStatus(plato.id)}
+                          className="p-1 rounded transition-colors duration-200"
+                          style={{ 
+                            color: plato.isActive ? getWarningColor() : getSuccessColor(),
+                            backgroundColor: 'transparent'
+                          }}
+                          title={plato.isActive ? t('restaurant.deactivatePlato') : t('restaurant.activatePlato')}
+                        >
+                          {plato.isActive ? '⏸️' : '▶️'}
+                        </button>
+                        <button
+                          onClick={() => handleEditPlato(plato.id)}
+                          className="p-1 rounded transition-colors duration-200"
+                          style={{ 
+                            color: getInfoColor(),
+                            backgroundColor: 'transparent'
+                          }}
+                          title={t('restaurant.editPlato')}
+                        >
+                          ✏️
+                        </button>
+                        <button
+                          onClick={() => handleDeletePlato(plato.id)}
+                          className="p-1 rounded transition-colors duration-200"
+                          style={{ 
+                            color: getDangerColor(),
+                            backgroundColor: 'transparent'
+                          }}
+                          title={t('restaurant.deletePlato')}
+                        >
+                          🗑️
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   const renderProductsTab = () => (
     <div className="space-y-6">
       <div 
@@ -1631,6 +1951,7 @@ const RestaurantManagement: React.FC = () => {
             { id: 'overview', label: t('restaurant.overview'), icon: '📊' },
             { id: 'employees', label: t('restaurant.employees'), icon: '👥' },
             { id: 'menus', label: t('restaurant.menus'), icon: '🍽️' },
+            { id: 'platos', label: t('restaurant.platos'), icon: '🍴' },
             { id: 'products', label: t('restaurant.products'), icon: '📦' },
             { id: 'tables', label: t('restaurant.tables'), icon: '🪑' },
             { id: 'stats', label: t('restaurant.statistics'), icon: '📈' }
@@ -1658,6 +1979,7 @@ const RestaurantManagement: React.FC = () => {
         {activeTab === 'overview' && renderOverviewTab()}
         {activeTab === 'employees' && renderEmployeesTab()}
         {activeTab === 'menus' && renderMenusTab()}
+        {activeTab === 'platos' && renderPlatosTab()}
         {activeTab === 'products' && renderProductsTab()}
         {activeTab === 'tables' && renderTablesTab()}
         {activeTab === 'stats' && renderStatsTab()}
