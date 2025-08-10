@@ -42,32 +42,32 @@ const UserInfo: React.FC = () => {
 
   return (
     <div 
-      className="flex items-center gap-4 p-4 rounded-xl border shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl"
+      className="flex items-center gap-3 p-3 rounded-xl border shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl max-w-lg"
       style={{
         backgroundColor: getCardBackground(),
         borderColor: getCardBorder(),
       }}
     >
-      <div className="flex items-center justify-center w-12 h-12 rounded-full flex-shrink-0"
+      <div className="flex items-center justify-center w-10 h-10 rounded-full flex-shrink-0"
            style={{ backgroundColor: getInfoColor() }}>
-        <span className="text-2xl text-white">👤</span>
+        <span className="text-lg text-white">👤</span>
       </div>
 
       <div className="flex-1 min-w-0">
         <div 
-          className="font-semibold text-base mb-1"
+          className="font-semibold text-sm mb-1 truncate"
           style={{ color: getTextColor(900) }}
         >
           {user.name}
         </div>
         <div 
-          className="text-sm mb-2"
+          className="text-xs mb-1 truncate"
           style={{ color: getTextColor(600) }}
         >
           {user.email}
         </div>
         <div
-          className="inline-block px-3 py-1 rounded-full text-white text-xs font-semibold uppercase shadow-sm"
+          className="inline-block px-2 py-0.5 rounded-full text-white text-xs font-semibold uppercase shadow-sm"
           style={{ backgroundColor: getRoleColor(user.role) }}
         >
           {getRoleName(user.role)}
