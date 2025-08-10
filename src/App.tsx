@@ -44,7 +44,7 @@ const App: React.FC = () => {
             <Route 
               path="/create-restaurant" 
               element={
-                <ProtectedRoute requiredRoles={['CLIENT_OWNER']}>
+                <ProtectedRoute requiredRoles={['ADMIN', 'CLIENT_OWNER']}>
                   <CreateRestaurant />
                 </ProtectedRoute>
               } 

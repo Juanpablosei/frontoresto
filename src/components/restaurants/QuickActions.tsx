@@ -10,7 +10,7 @@ const QuickActions: React.FC = () => {
       <div className="actions-grid">
         <button 
           className="action-btn"
-          onClick={() => navigate('/restaurants/create')}
+          onClick={() => navigate('/create-restaurant')}
         >
           <span className="action-icon">➕</span>
           <span>Agregar Restaurante</span>

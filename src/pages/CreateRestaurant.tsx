@@ -18,6 +18,8 @@ const CreateRestaurant: React.FC = () => {
   const { user } = useAuth();
   const { t } = useTranslation();
 
+
+
   const handleSubmit = async (data: CreateRestaurantData) => {
     try {
       // Simular envío al backend

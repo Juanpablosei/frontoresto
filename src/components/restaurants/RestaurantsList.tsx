@@ -49,10 +49,10 @@ const RestaurantsList: React.FC<RestaurantsListProps> = ({
           <div className="empty-icon">🏪</div>
           <h3>No tienes restaurantes registrados</h3>
           <p>Crea tu primer restaurante para comenzar a gestionar tu negocio</p>
-          <button 
-            className="create-first-btn"
-            onClick={() => navigate('/restaurants/create')}
-          >
+                      <button 
+              className="create-first-btn"
+              onClick={() => navigate('/create-restaurant')}
+            >
             ➕ Crear Mi Primer Restaurante
           </button>
         </div>
