@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useRestaurantStore } from '../store/restaurantStore';
 import { useRestaurantSchedule } from '../store/scheduleStore';
 import EmployeeTransferModal from '../components/restaurant/EmployeeTransferModal';
-import ShiftAssignmentModal from '../components/restaurant/ShiftAssignmentModal';
 import AddEmployeeModal from '../components/restaurant/AddEmployeeModal';
 import ScheduleWizard from '../components/restaurant/ScheduleWizard';
 import { 
@@ -22,8 +21,8 @@ import { mockMenus, mockPlatos, mockProducts, type MockMenu, type MockPlato, typ
 const RestaurantManagement: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { getRestaurantById, getEmployeesByRestaurant, clearAndReload } = useRestaurantStore();
-  const { schedule, saveSchedule } = useRestaurantSchedule(id || '');
+  const { getRestaurantById, getEmployeesByRestaurant } = useRestaurantStore();
+  const { schedule } = useRestaurantSchedule(id || '');
   
   const [restaurant, setRestaurant] = useState<any>(null);
   const [employees, setEmployees] = useState<any[]>([]);
@@ -31,14 +30,7 @@ const RestaurantManagement: React.FC = () => {
   const [transferModalOpen, setTransferModalOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState<any>(null);
   
-  // Estado para el modal de asignación de empleados al turno
-  const [shiftAssignmentModalOpen, setShiftAssignmentModalOpen] = useState(false);
-  const [newShiftData, setNewShiftData] = useState<{
-    day: string;
-    shiftId?: string;
-    shiftName: string;
-    dayName: string;
-  } | null>(null);
+
 
   // Estado para el modal de agregar empleado
   const [addEmployeeModalOpen, setAddEmployeeModalOpen] = useState(false);
@@ -55,8 +47,7 @@ const RestaurantManagement: React.FC = () => {
   // Estado para los productos
   const [products, setProducts] = useState<MockProduct[]>(mockProducts);
 
-  // Usar el schedule del store de Zustand
-  const detailedSchedule = schedule;
+
 
   useEffect(() => {
     if (id) {
