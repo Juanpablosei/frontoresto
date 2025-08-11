@@ -108,7 +108,9 @@
       "websiteRequired": "Website is required",
       "websiteInvalid": "Enter a valid URL (must start with http:// or https://)",
       "clientIdRequired": "Client ID is required",
-      "clientIdInvalid": "Enter a valid UUID"
+      "clientIdInvalid": "Enter a valid UUID",
+      "required": "This field is required",
+      "atLeastOnePlato": "Must select at least one dish"
     },
     "roles": {
       "admin": "Administrator",
@@ -237,6 +239,17 @@
     "editPlato": "Edit Dish",
     "fillExample": "📝 Fill Example",
     "noPlatos": "No dishes in this restaurant",
+    "addMenu": "Add Menu",
+    "editMenu": "Edit Menu",
+    "menuName": "Menu Name",
+    "menuNamePlaceholder": "Ex: Main Menu",
+    "menuDescriptionPlaceholder": "Menu description...",
+    "noPlatosSelected": "No dishes selected",
+    "clickAddPlato": "Click 'Add Dish' to start",
+    "searchPlatos": "Search Dishes",
+    "searchPlatosPlaceholder": "Search by name, description or category...",
+    "noPlatosFound": "No dishes found with that search",
+    "noPlatosAvailable": "No dishes available to add",
     "addPlatosToOperate": "Add dishes to start operating",
     "plato": "Dish",
     "ingredients": "Ingredients",

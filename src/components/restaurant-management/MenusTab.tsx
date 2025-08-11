@@ -2,9 +2,10 @@ import React from 'react';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import Button from '../buttons/Button';
+import { MockMenu } from '../../mock/menusData';
 
 interface MenusTabProps {
-  menus: any[];
+  menus: MockMenu[];
   onAddMenu: () => void;
   onEditMenu: (menuId: string) => void;
   onToggleMenuStatus: (menuId: string) => void;
@@ -92,13 +93,7 @@ const MenusTab: React.FC<MenusTabProps> = ({
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     style={{ color: getTextColor(700) }}
                   >
-                    {t('restaurant.price')}
-                  </th>
-                  <th 
-                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
-                    style={{ color: getTextColor(700) }}
-                  >
-                    {t('restaurant.items')}
+                    {t('restaurant.platos')}
                   </th>
                   <th 
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
@@ -164,12 +159,7 @@ const MenusTab: React.FC<MenusTabProps> = ({
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span style={{ color: getTextColor(800) }}>
-                        {menu.price > 0 ? `$${menu.price.toLocaleString()}` : t('restaurant.free')}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span style={{ color: getTextColor(800) }}>
-                        {menu.items} {t('restaurant.items')}
+                        {menu.platos.length} {t('restaurant.platos')}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">

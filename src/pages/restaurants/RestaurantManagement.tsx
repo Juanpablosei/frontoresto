@@ -17,6 +17,7 @@ import {
   StatsTab
 } from '../../components/restaurant-management';
 import AddPlatoModal from '../../components/restaurant-management/AddPlatoModal';
+import AddMenuModal from '../../components/restaurant-management/AddMenuModal';
 import { mockMenus, mockPlatos, mockIngredients, type MockMenu, type MockPlato, type MockIngredient } from '../../mock';
 
 const RestaurantManagement: React.FC = () => {
@@ -51,6 +52,10 @@ const RestaurantManagement: React.FC = () => {
   // Estado para el modal de platos
   const [platoModalOpen, setPlatoModalOpen] = useState(false);
   const [editingPlato, setEditingPlato] = useState<MockPlato | null>(null);
+
+  // Estado para el modal de menús
+  const [menuModalOpen, setMenuModalOpen] = useState(false);
+  const [editingMenu, setEditingMenu] = useState<MockMenu | null>(null);
 
 
 
@@ -146,8 +151,11 @@ const RestaurantManagement: React.FC = () => {
   };
 
   const handleEditMenu = (menuId: string) => {
-    console.log('Editar menú:', menuId);
-    // Implementar edición del menú
+    const menu = menus.find(m => m.id === menuId);
+    if (menu) {
+      setEditingMenu(menu);
+      setMenuModalOpen(true);
+    }
   };
 
   const handleDeleteMenu = (menuId: string) => {
@@ -155,18 +163,8 @@ const RestaurantManagement: React.FC = () => {
   };
 
   const handleAddMenu = () => {
-    const newMenu = {
-      id: `menu-${Date.now()}`,
-      name: 'Nuevo Menú',
-      description: 'Descripción del nuevo menú',
-      category: 'PRINCIPAL',
-      price: 0,
-      isActive: true,
-      items: 0,
-      createdAt: new Date().toISOString().split('T')[0],
-      updatedAt: new Date().toISOString().split('T')[0]
-    };
-    setMenus(prev => [...prev, newMenu]);
+    setEditingMenu(null);
+    setMenuModalOpen(true);
   };
 
   // Funciones para manejar productos
@@ -255,6 +253,31 @@ const RestaurantManagement: React.FC = () => {
   const handleClosePlatoModal = () => {
     setPlatoModalOpen(false);
     setEditingPlato(null);
+  };
+
+  const handleSaveMenu = (menuData: Omit<MockMenu, 'id' | 'createdAt' | 'updatedAt'>) => {
+    if (editingMenu) {
+      setMenus(prev => prev.map(menu =>
+        menu.id === editingMenu.id
+          ? { ...menuData, id: menu.id, createdAt: menu.createdAt, updatedAt: new Date().toISOString().split('T')[0] }
+          : menu
+      ));
+    } else {
+      const newMenu: MockMenu = {
+        ...menuData,
+        id: `menu-${Date.now()}`,
+        createdAt: new Date().toISOString().split('T')[0],
+        updatedAt: new Date().toISOString().split('T')[0]
+      };
+      setMenus(prev => [...prev, newMenu]);
+    }
+    setMenuModalOpen(false);
+    setEditingMenu(null);
+  };
+
+  const handleCloseMenuModal = () => {
+    setMenuModalOpen(false);
+    setEditingMenu(null);
   };
 
   if (!restaurant) {
@@ -357,6 +380,15 @@ const RestaurantManagement: React.FC = () => {
         initialData={editingPlato}
         isEditing={!!editingPlato}
         availableIngredients={products}
+      />
+
+      <AddMenuModal
+        isOpen={menuModalOpen}
+        onClose={handleCloseMenuModal}
+        onSave={handleSaveMenu}
+        initialData={editingMenu}
+        isEditing={!!editingMenu}
+        availablePlatos={platos}
       />
     </div>
   );

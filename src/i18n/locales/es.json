@@ -108,7 +108,9 @@
       "websiteRequired": "El sitio web es requerido",
       "websiteInvalid": "Ingresa una URL válida (debe comenzar con http:// o https://)",
       "clientIdRequired": "El ID del cliente es requerido",
-      "clientIdInvalid": "Ingresa un UUID válido"
+      "clientIdInvalid": "Ingresa un UUID válido",
+      "required": "Este campo es requerido",
+      "atLeastOnePlato": "Debe seleccionar al menos un plato"
     },
     "roles": {
       "admin": "Administrador",
@@ -237,6 +239,17 @@
     "editPlato": "Editar Plato",
     "fillExample": "📝 Llenar Ejemplo",
     "noPlatos": "No hay platos en este restaurante",
+    "addMenu": "Agregar Menú",
+    "editMenu": "Editar Menú",
+    "menuName": "Nombre del Menú",
+    "menuNamePlaceholder": "Ej: Menú Principal",
+    "menuDescriptionPlaceholder": "Descripción del menú...",
+    "noPlatosSelected": "No hay platos seleccionados",
+    "clickAddPlato": "Haz clic en 'Agregar Plato' para comenzar",
+    "searchPlatos": "Buscar Platos",
+    "searchPlatosPlaceholder": "Buscar por nombre, descripción o categoría...",
+    "noPlatosFound": "No se encontraron platos con esa búsqueda",
+    "noPlatosAvailable": "No hay platos disponibles para agregar",
     "addPlatosToOperate": "Agrega platos para comenzar a operar",
     "plato": "Plato",
     "ingredients": "Ingredientes",
