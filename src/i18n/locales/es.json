@@ -234,6 +234,8 @@
     "activateMenu": "Activar menú",
     "deleteMenu": "Eliminar menú",
     "addPlato": "Agregar Plato",
+    "editPlato": "Editar Plato",
+    "fillExample": "📝 Llenar Ejemplo",
     "noPlatos": "No hay platos en este restaurante",
     "addPlatosToOperate": "Agrega platos para comenzar a operar",
     "plato": "Plato",

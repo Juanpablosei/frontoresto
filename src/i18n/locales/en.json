@@ -234,6 +234,8 @@
     "activateMenu": "Activate menu",
     "deleteMenu": "Delete menu",
     "addPlato": "Add Dish",
+    "editPlato": "Edit Dish",
+    "fillExample": "📝 Fill Example",
     "noPlatos": "No dishes in this restaurant",
     "addPlatosToOperate": "Add dishes to start operating",
     "plato": "Dish",

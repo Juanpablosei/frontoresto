@@ -16,6 +16,7 @@ import {
   TablesTab,
   StatsTab
 } from '../../components/restaurant-management';
+import AddPlatoModal from '../../components/restaurant-management/AddPlatoModal';
 import { mockMenus, mockPlatos, mockIngredients, type MockMenu, type MockPlato, type MockIngredient } from '../../mock';
 
 const RestaurantManagement: React.FC = () => {
@@ -46,6 +47,10 @@ const RestaurantManagement: React.FC = () => {
 
   // Estado para los productos/ingredientes
   const [products, setProducts] = useState<MockIngredient[]>(mockIngredients);
+
+  // Estado para el modal de platos
+  const [platoModalOpen, setPlatoModalOpen] = useState(false);
+  const [editingPlato, setEditingPlato] = useState<MockPlato | null>(null);
 
 
 
@@ -209,7 +214,11 @@ const RestaurantManagement: React.FC = () => {
   };
 
   const handleEditPlato = (platoId: string) => {
-    console.log('Editar plato:', platoId);
+    const plato = platos.find(p => p.id === platoId);
+    if (plato) {
+      setEditingPlato(plato);
+      setPlatoModalOpen(true);
+    }
   };
 
   const handleDeletePlato = (platoId: string) => {
@@ -217,20 +226,35 @@ const RestaurantManagement: React.FC = () => {
   };
 
   const handleAddPlato = () => {
-    const newPlato = {
-      id: `plato-${Date.now()}`,
-      name: 'Nuevo Plato',
-      description: 'Descripción del nuevo plato',
-      category: 'PRINCIPAL',
-      price: 0,
-      isActive: true,
-      ingredients: [],
-      preparationTime: 15,
-      allergens: [],
-      createdAt: new Date().toISOString().split('T')[0],
-      updatedAt: new Date().toISOString().split('T')[0]
-    };
-    setPlatos(prev => [...prev, newPlato]);
+    setEditingPlato(null);
+    setPlatoModalOpen(true);
+  };
+
+  const handleSavePlato = (platoData: Omit<MockPlato, 'id' | 'createdAt' | 'updatedAt'>) => {
+    if (editingPlato) {
+      // Editar plato existente
+      setPlatos(prev => prev.map(plato => 
+        plato.id === editingPlato.id 
+          ? { ...platoData, id: plato.id, createdAt: plato.createdAt, updatedAt: new Date().toISOString().split('T')[0] }
+          : plato
+      ));
+    } else {
+      // Agregar nuevo plato
+      const newPlato: MockPlato = {
+        ...platoData,
+        id: `plato-${Date.now()}`,
+        createdAt: new Date().toISOString().split('T')[0],
+        updatedAt: new Date().toISOString().split('T')[0]
+      };
+      setPlatos(prev => [...prev, newPlato]);
+    }
+    setPlatoModalOpen(false);
+    setEditingPlato(null);
+  };
+
+  const handleClosePlatoModal = () => {
+    setPlatoModalOpen(false);
+    setEditingPlato(null);
   };
 
   if (!restaurant) {
@@ -324,6 +348,15 @@ const RestaurantManagement: React.FC = () => {
         isOpen={scheduleWizardOpen}
         onClose={handleCloseScheduleWizard}
         restaurantId={id || ''}
+      />
+
+      <AddPlatoModal
+        isOpen={platoModalOpen}
+        onClose={handleClosePlatoModal}
+        onSave={handleSavePlato}
+        initialData={editingPlato}
+        isEditing={!!editingPlato}
+        availableIngredients={products}
       />
     </div>
   );
