@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useThemeColors } from '../../hooks/useThemeColors';
 import Button from '../buttons/Button';
+import AddProductModal from './AddProductModal';
+import { MockIngredient } from '../../mock/productsData';
 
 interface ProductsTabProps {
-  products: any[];
-  onAddProduct: () => void;
-  onEditProduct: (productId: string) => void;
+  products: MockIngredient[];
+  onAddProduct: (product: Omit<MockIngredient, 'id' | 'createdAt' | 'updatedAt'>) => void;
+  onEditProduct: (productId: string, productData: Omit<MockIngredient, 'id' | 'createdAt' | 'updatedAt'>) => void;
   onToggleProductStatus: (productId: string) => void;
   onDeleteProduct: (productId: string) => void;
 }
@@ -29,6 +31,39 @@ const ProductsTab: React.FC<ProductsTabProps> = ({
     getWarningColor
   } = useThemeColors();
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<MockIngredient | null>(null);
+
+  const handleAddProduct = () => {
+    setEditingProduct(null);
+    setIsModalOpen(true);
+  };
+
+  const handleEditProduct = (productId: string) => {
+    const product = products.find(p => p.id === productId);
+    if (product) {
+      setEditingProduct(product);
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleSaveProduct = (productData: Omit<MockIngredient, 'id' | 'createdAt' | 'updatedAt'>) => {
+    if (editingProduct) {
+      // Si estamos editando, llamar a onEditProduct
+      onEditProduct(editingProduct.id, productData);
+    } else {
+      // Si estamos creando, llamar a onAddProduct
+      onAddProduct(productData);
+    }
+    setIsModalOpen(false);
+    setEditingProduct(null);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setEditingProduct(null);
+  };
+
   return (
     <div className="space-y-6">
       <div 
@@ -47,7 +82,7 @@ const ProductsTab: React.FC<ProductsTabProps> = ({
           </h3>
           <Button
             variant="primary"
-            onClick={onAddProduct}
+            onClick={handleAddProduct}
           >
             ➕ {t('restaurant.addProduct')}
           </Button>
@@ -105,7 +140,7 @@ const ProductsTab: React.FC<ProductsTabProps> = ({
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
                     style={{ color: getTextColor(700) }}
                   >
-                    {t('restaurant.preparationTime')}
+                    Proveedor
                   </th>
                   <th 
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
@@ -191,26 +226,34 @@ const ProductsTab: React.FC<ProductsTabProps> = ({
                           className="text-xs block"
                           style={{ color: getTextColor(600) }}
                         >
-                          {t('restaurant.cost')}: ${product.cost.toLocaleString()}
+                          Costo: ${product.cost.toLocaleString()}
                         </span>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span 
-                        className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          product.stock > 10 ? 'text-white' : 'text-white'
-                        }`}
-                        style={{
-                          backgroundColor: product.stock > 10 ? getSuccessColor() : 
+                      <div>
+                        <span 
+                          className={`px-3 py-1 rounded-full text-xs font-medium text-white`}
+                          style={{
+                            backgroundColor: product.stock > product.minStock ? getSuccessColor() : 
                                          product.stock > 0 ? getWarningColor() : getDangerColor()
-                        }}
-                      >
-                        {product.stock} {t('restaurant.units')}
-                      </span>
+                          }}
+                        >
+                          {product.stock} {product.unit}
+                        </span>
+                        {product.stock <= product.minStock && (
+                          <span 
+                            className="text-xs block mt-1"
+                            style={{ color: getWarningColor() }}
+                          >
+                            Stock bajo
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span style={{ color: getTextColor(800) }}>
-                        {product.preparationTime} {t('restaurant.minutes')}
+                        {product.supplier}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -233,7 +276,7 @@ const ProductsTab: React.FC<ProductsTabProps> = ({
                             color: getTextColor(600),
                             backgroundColor: 'transparent'
                           }}
-                          onClick={() => onEditProduct(product.id)}
+                          onClick={() => handleEditProduct(product.id)}
                           title={t('restaurant.editProduct')}
                         >
                           ✏️
@@ -269,6 +312,14 @@ const ProductsTab: React.FC<ProductsTabProps> = ({
           </div>
         )}
       </div>
+
+      <AddProductModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSave={handleSaveProduct}
+        initialData={editingProduct}
+        isEditing={!!editingProduct}
+      />
     </div>
   );
 };

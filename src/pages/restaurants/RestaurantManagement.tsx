@@ -16,7 +16,7 @@ import {
   TablesTab,
   StatsTab
 } from '../../components/restaurant-management';
-import { mockMenus, mockPlatos, mockProducts, type MockMenu, type MockPlato, type MockProduct } from '../../mock';
+import { mockMenus, mockPlatos, mockIngredients, type MockMenu, type MockPlato, type MockIngredient } from '../../mock';
 
 const RestaurantManagement: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -44,8 +44,8 @@ const RestaurantManagement: React.FC = () => {
   // Estado para los platos
   const [platos, setPlatos] = useState<MockPlato[]>(mockPlatos);
 
-  // Estado para los productos
-  const [products, setProducts] = useState<MockProduct[]>(mockProducts);
+  // Estado para los productos/ingredientes
+  const [products, setProducts] = useState<MockIngredient[]>(mockIngredients);
 
 
 
@@ -173,27 +173,26 @@ const RestaurantManagement: React.FC = () => {
     ));
   };
 
-  const handleEditProduct = (productId: string) => {
-    console.log('Editar producto:', productId);
-    // Implementar edición del producto
+  const handleEditProduct = (productId: string, productData: Omit<MockIngredient, 'id' | 'createdAt' | 'updatedAt'>) => {
+    setProducts(prev => prev.map(product => 
+      product.id === productId 
+        ? {
+            ...product,
+            ...productData,
+            updatedAt: new Date().toISOString().split('T')[0]
+          }
+        : product
+    ));
   };
 
   const handleDeleteProduct = (productId: string) => {
     setProducts(prev => prev.filter(product => product.id !== productId));
   };
 
-  const handleAddProduct = () => {
-    const newProduct = {
-      id: `prod-${Date.now()}`,
-      name: 'Nuevo Producto',
-      description: 'Descripción del nuevo producto',
-      category: 'PRINCIPAL',
-      price: 0,
-      cost: 0,
-      stock: 0,
-      isActive: true,
-      allergens: [],
-      preparationTime: 10,
+  const handleAddProduct = (productData: Omit<MockIngredient, 'id' | 'createdAt' | 'updatedAt'>) => {
+    const newProduct: MockIngredient = {
+      id: `ing-${Date.now()}`,
+      ...productData,
       createdAt: new Date().toISOString().split('T')[0],
       updatedAt: new Date().toISOString().split('T')[0]
     };
